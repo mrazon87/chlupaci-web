@@ -5,6 +5,7 @@ Statický web aplikace Chlupáči (doména mojichlupaci.cz): úvod, zásady ochr
 ## Struktura
 
 - `index.html`, `podpora.html` – psané ručně
+- `karta.html`, `karta.js`, `karta.css` – karta mazlíčka podle odkazu (sdílení z aplikace): odkaz má tvar `karta.html#<token>`, token je za `#`, takže ho prohlížeč nikam neposílá (ani GitHub Pages ho neuvidí); `karta.js` ho pošle v těle POST serveru a vykreslí odpověď přes `textContent`. `noindex`, `no-referrer`, přísná CSP (`connect-src` jen náš Supabase), žádné cookies ani úložiště, nic od třetích stran, bez odkazu z ostatních stránek. Neplatný, prošlý i odvolaný odkaz ukážou totéž: „Odkaz už neplatí“. `?demo=1` (nebo `neplati`, `omezeno`, `chyba`) vykreslí ukázku bez serveru.
 - `zasady.html`, `podminky.html` – **generované**, needitujte je ručně
 - `style.css` – barvy podle aplikace, světlý a tmavý režim přes `prefers-color-scheme`
 - `scripts/build_legal.py` + `scripts/legal_template.html` – generátor právních stránek

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karta mazlíčka – Chlupáči</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src https://wyqyqblpddsvfqhokhjb.supabase.co; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F3F5F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1517" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preload" href="fonts/geist-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="karta.css">
+</head>
+<body class="karta">
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="5.5" cy="11" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/><circle cx="18.5" cy="11" r="2"/><path d="M12 12.5c-3 0-5.5 3-5.5 5.2 0 1.6 1.3 2.3 2.7 2.3 1 0 1.8-.5 2.8-.5s1.8.5 2.8.5c1.4 0 2.7-.7 2.7-2.3 0-2.2-2.5-5.2-5.5-5.2z"/></symbol>
+</svg>
+<a class="skip" href="#hlavni">Přeskočit na obsah</a>
+<header class="wrap site-header">
+  <a class="brand" href="index.html">Chlupáči</a>
+</header>
+
+<main id="hlavni" class="wrap card-page" tabindex="-1">
+  <!-- Stavy stránky: vždy je vidět právě jeden. Obsah karty se vykresluje v karta.js přes textContent, nikdy jako HTML. -->
+  <section id="nacitani" class="state" aria-live="polite">
+    <p class="state-title">Načítám kartu…</p>
+  </section>
+
+  <section id="neplati" class="state" hidden>
+    <h1>Odkaz už neplatí</h1>
+    <p>Odkaz mohl vypršet, nebo ho majitel odvolal. Požádejte majitele mazlíčka o nový.</p>
+  </section>
+
+  <section id="omezeno" class="state" hidden>
+    <h1>Příliš mnoho pokusů</h1>
+    <p>Zkuste to prosím za deset minut.</p>
+  </section>
+
+  <section id="chyba" class="state" hidden>
+    <h1>Kartu se nepodařilo načíst</h1>
+    <p>Zkontrolujte připojení k internetu a zkuste to znovu.</p>
+    <button id="znovu" class="again" type="button">Zkusit znovu</button>
+  </section>
+
+  <article id="karta" class="pet" hidden aria-labelledby="jmeno">
+    <p class="eyebrow" id="platnost"></p>
+    <figure id="foto-box" class="photo" hidden><img id="foto" alt="" width="480" height="480"></figure>
+    <div class="who">
+      <h1 id="jmeno"></h1>
+      <p id="popis" class="line"></p>
+    </div>
+    <div id="alergie" class="allergy" hidden><span class="label">Alergie</span><span id="alergie-text" class="what"></span></div>
+
+    <div class="group" id="udaje"></div>
+
+    <h2>Očkování</h2>
+    <div id="vzteklina" class="rabies"></div>
+    <div class="group" id="ockovani" hidden></div>
+    <p class="note" id="ockovani-pozn"></p>
+
+    <h2 id="leky-h" hidden>Léky</h2>
+    <div class="group" id="leky" hidden></div>
+
+    <h2 id="kontakty-h" hidden>Kontakty</h2>
+    <div class="group" id="kontakty" hidden></div>
+
+    <p class="note foot" id="stav"></p>
+  </article>
+  <noscript><p class="state-title">Karta potřebuje JavaScript.</p></noscript>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Patička">
+      <ul>
+        <li><a href="zasady.html">Zásady ochrany osobních údajů</a></li>
+        <li><a href="podpora.html">Podpora</a></li>
+        <li><span class="copy">© 2026 Chlupáči</span></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+<script src="karta.js"></script>
+</body>
+</html>
