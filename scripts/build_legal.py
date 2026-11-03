@@ -25,7 +25,7 @@ PAGES = [
     {
         "md": "podminky-pouziti.md",
         "out": "podminky.html",
-        "description": "Podmínky použití aplikace Chlupáči: zkušební doba a Premium, účet a domácnost, vaše data a odpovědnost.",
+        "description": "Podmínky použití aplikace Chlupáči: zkušební doba, verze zdarma a Premium, účet a domácnost, vaše data a odpovědnost.",
     },
 ]
 
