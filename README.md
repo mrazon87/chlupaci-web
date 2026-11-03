@@ -5,6 +5,8 @@ Statický web aplikace Chlupáči (doména mojichlupaci.cz): úvod, zásady ochr
 ## Struktura
 
 - `index.html`, `podpora.html` – psané ručně
+- `pozvanka.html` – veřejná nápověda k pozvánce do domácnosti (#103) pro toho, komu se odkaz neotevřel v aplikaci; `404.html` + `404.js` – GitHub Pages ji ukáže na každé neexistující adrese, `404.js` na adrese `/pozvanka/<kód>` přepne obecnou hlášku na stejný návod (kód z adresy se nikam nevypisuje; odkazy v `404.html` jsou absolutní, protože se stránka servíruje na libovolné hloubce)
+- `.well-known/apple-app-site-association` – soubor bez přípony pro univerzální odkazy aplikace, jen cesta `/pozvanka/*` (appID `RGZ4KGT88F.cz.mrazek.chlupaci`); `.nojekyll` je nutný, jinak GitHub Pages složku začínající tečkou vynechá. Po nasazení: `curl -sI https://mojichlupaci.cz/.well-known/apple-app-site-association` (200, bez přesměrování, `content-type`)
 - `zasady.html`, `podminky.html` – **generované**, needitujte je ručně
 - `style.css` – barvy podle aplikace, světlý a tmavý režim přes `prefers-color-scheme`
 - `scripts/build_legal.py` + `scripts/legal_template.html` – generátor právních stránek
