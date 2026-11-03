@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["RGZ4KGT88F.cz.mrazek.chlupaci"],
+        "components": [
+          { "/": "/pozvanka/*", "comment": "Pozvánka do domácnosti (#103)" }
+        ]
+      }
+    ]
+  }
+}
