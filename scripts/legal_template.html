@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#F3F5F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1517" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://mojichlupaci.cz/{{path}}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:site_name" content="Chlupáči">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="https://mojichlupaci.cz/{{path}}">
+<meta property="og:image" content="https://mojichlupaci.cz/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pes a kočka, logo aplikace Chlupáči">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/geist-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#hlavni">Přeskočit na obsah</a>
+<header class="wrap site-header">
+  <a class="brand" href="index.html">Chlupáči</a>
+    <nav class="site-nav" aria-label="Hlavní">
+      <a href="podpora.html">Podpora</a>
+    </nav>
+</header>
+
+<main id="hlavni" class="wrap legal" tabindex="-1">
+  <header class="legal-head">
+    <h1>{{h1}}</h1>
+    {{chip}}
+  </header>
+
+  <nav class="toc" aria-label="Obsah">
+    <span class="eyebrow">Obsah</span>
+    <ul>
+{{toc}}
+    </ul>
+  </nav>
+
+  <article class="doc">
+{{body}}
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Patička">
+      <ul>
+        <li><a href="zasady.html">Zásady ochrany osobních údajů</a></li>
+        <li><a href="podminky.html">Podmínky použití</a></li>
+        <li><a href="podpora.html">Podpora</a></li>
+        <li><a href="mailto:podpora@mojichlupaci.cz">podpora@mojichlupaci.cz</a></li>
+        <li><span class="copy">© 2026 Chlupáči</span></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+<script src="toc.js" defer></script>
+</body>
+</html>
