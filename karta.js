@@ -83,6 +83,24 @@
     $('alergie').hidden = !allergy;
     if (allergy) $('alergie-text').textContent = allergy;
 
+    // chronická onemocnění (#231): jen text přes textContent, délky a počet ořezané stejně jako na serveru
+    var conds = Array.isArray(c.conditions) ? c.conditions.slice(0, 8) : [];
+    var cl = $('onemocneni-list');
+    clear(cl);
+    conds.forEach(function (x) {
+      var cn = x && str(x.name, 120);
+      if (!cn) return;
+      var row = h('div', 'cond');
+      var title = h('span', 'what', cn);
+      var since = str(x.since, 20);
+      if (since) title.appendChild(h('span', 'since', ' · od ' + since));
+      row.appendChild(title);
+      var note = str(x.note, 400);
+      if (note) row.appendChild(h('span', 'note', note));
+      cl.appendChild(row);
+    });
+    $('onemocneni').hidden = !cl.firstChild;
+
     var facts = $('udaje');
     clear(facts);
     var birth = isoDay(c.birth);
@@ -166,7 +184,7 @@
   var DEMO = {
     ok: {
       card: {
-        v: 1, name: 'Rex', line: 'Labrador · samec', birth: '2020-05-01', chip: '999 000 000 000 001', allergies: 'kuře, penicilin', rabies: { until: '2027-12-01' },
+        v: 1, name: 'Rex', line: 'Labrador · samec', birth: '2020-05-01', chip: '999 000 000 000 001', allergies: 'kuře, penicilin', conditions: [{ name: 'Artróza', since: '3/2022', note: 'Nepodávat NSAID bez porady s veterinářem.' }, { name: 'Epilepsie' }], rabies: { until: '2027-12-01' },
         vaccines: [{ name: 'Psinka, parvoviróza, hepatitida', until: '2027-01-10' }, { name: 'Borelióza', until: null }],
         meds: [{ name: 'Prednison', dose: '5 mg', when: '8:00, 20:00', until: '2027-11-20' }, { name: 'Ledviny', when: 'každý den v 8:00' }],
         vet: { name: 'MVDr. Nováková', phone: '123 456 789' }, owner_phone: '123 456 789', made: '2026-11-03'

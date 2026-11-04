@@ -52,6 +52,12 @@
 .allergy { padding: 16px; border-radius: 20px; background: var(--red-soft); color: var(--red-ink); display: flex; flex-direction: column; gap: 2px; }
 .allergy .label { font-size: 13px; line-height: 16px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; }
 .allergy .what { font-size: 17px; line-height: 24px; font-weight: 600; overflow-wrap: anywhere; }
+.conditions { margin-top: 10px; padding: 16px; border-radius: 20px; background: var(--amber-soft); color: var(--amber-ink); display: flex; flex-direction: column; gap: 8px; }
+.conditions .label { font-size: 13px; line-height: 16px; font-weight: 600; letter-spacing: 1.4px; text-transform: uppercase; }
+.cond-list { display: flex; flex-direction: column; gap: 10px; }
+.cond .what { display: block; font-size: 17px; line-height: 24px; font-weight: 600; overflow-wrap: anywhere; }
+.cond .since { font-size: 15px; font-weight: 500; }
+.cond .note { display: block; font-size: 15px; line-height: 21px; overflow-wrap: anywhere; }
 
 .group { border-radius: 20px; background: var(--surface); overflow: hidden; }
 .row { min-height: 52px; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
