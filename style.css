@@ -632,17 +632,6 @@ h2.section-title {
 }
 
 .status { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.free {
-  min-height: 44px;
-  padding: 0 18px;
-  border-radius: 22px;
-  background: var(--amber);
-  color: #0E1512;
-  display: inline-flex;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 600;
-}
 .hero-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
 
 /* Scéna s telefonem */
