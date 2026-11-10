@@ -1,4 +1,4 @@
-/* Chlupáči – karta mazlíčka podle odkazu (karta.html). Bez knihoven a bez cookies; všechno se vykresluje přes textContent / atributy, takže text ze serveru nikdy neskončí jako HTML.
+/* Moji chlupáči – karta mazlíčka podle odkazu (karta.html). Bez knihoven a bez cookies; všechno se vykresluje přes textContent / atributy, takže text ze serveru nikdy neskončí jako HTML.
    Odkaz má tvar karta.html#<token>. Token je za #, prohlížeč ho žádnému serveru neposílá (ani GitHub Pages ho neuvidí); stránka ho pošle jen v těle POST naší Edge Function card-share
    a nic si nepamatuje (žádné úložiště, žádné cookies). Neplatný, prošlý i odvolaný odkaz ukáže totéž: „Odkaz už neplatí“.
    ?demo=1 vykreslí ukázkovou kartu, ?demo=neplati, ?demo=omezeno a ?demo=chyba ostatní stavy, vše bez volání serveru.
@@ -156,7 +156,7 @@
     $('kontakty-h').hidden = contacts.hidden = !contacts.firstChild;
 
     var made = isoDay(c.made);
-    $('stav').textContent = (made ? 'Stav k ' + czDate(made) + '. ' : '') + 'Jde o záznamy majitele z aplikace Chlupáči, ne o veterinární dokument ani očkovací průkaz.';
+    $('stav').textContent = (made ? 'Stav k ' + czDate(made) + '. ' : '') + 'Jde o záznamy majitele z aplikace Moji chlupáči, ne o veterinární dokument ani očkovací průkaz.';
     show('karta');
   }
 

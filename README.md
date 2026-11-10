@@ -1,6 +1,6 @@
-# Chlupáči – web
+# Moji chlupáči – web
 
-Statický web aplikace Chlupáči (doména mojichlupaci.cz): úvod, zásady ochrany osobních údajů, podmínky používání a podpora. Čisté HTML a jeden CSS soubor, bez frameworku, formulářů, statistik, cookie lišty a externích požadavků. Písmo Geist je u nás ve `fonts/` (licence OFL). Funguje bez JavaScriptu; `toc.js` jen zvýrazňuje aktuální kapitolu v obsahu právních stránek a `uvod.js` na úvodu jemně objevuje sekce při rolování (při omezeném pohybu nic).
+Statický web aplikace Moji chlupáči (doména mojichlupaci.cz): úvod, zásady ochrany osobních údajů, podmínky používání a podpora. Čisté HTML a jeden CSS soubor, bez frameworku, formulářů, statistik, cookie lišty a externích požadavků. Písmo Geist je u nás ve `fonts/` (licence OFL). Funguje bez JavaScriptu; `toc.js` jen zvýrazňuje aktuální kapitolu v obsahu právních stránek a `uvod.js` na úvodu jemně objevuje sekce při rolování (při omezeném pohybu nic).
 
 ## Struktura
 
