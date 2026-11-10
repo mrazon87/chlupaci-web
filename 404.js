@@ -7,5 +7,5 @@
   if (!generic || !invite) return;
   generic.hidden = true;
   invite.hidden = false;
-  document.title = 'Pozvánka do domácnosti – Chlupáči';
+  document.title = 'Pozvánka do domácnosti – Moji chlupáči';
 })();

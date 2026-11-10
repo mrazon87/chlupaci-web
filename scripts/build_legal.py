@@ -20,12 +20,12 @@ PAGES = [
     {
         "md": "zasady-ochrany-udaju.md",
         "out": "zasady.html",
-        "description": "Jaké údaje Chlupáči zpracovávají, proč, komu je předávají, jak dlouho je uchovávají a jak je můžete spravovat nebo smazat.",
+        "description": "Jaké údaje aplikace Moji chlupáči zpracovává, proč, komu je předávají, jak dlouho je uchovává a jak je můžete spravovat nebo smazat.",
     },
     {
         "md": "podminky-pouziti.md",
         "out": "podminky.html",
-        "description": "Podmínky použití aplikace Chlupáči: zkušební doba, verze zdarma a Premium, účet a domácnost, vaše data a odpovědnost.",
+        "description": "Podmínky použití aplikace Moji chlupáči: zkušební doba, verze zdarma a Premium, účet a domácnost, vaše data a odpovědnost.",
     },
 ]
 
@@ -159,7 +159,7 @@ def convert(md_text):
 
 
 def split_title(title):
-    """„Zásady ochrany osobních údajů – Chlupáči“ -> zobrazený nadpis ve dvou řádcích."""
+    """„Zásady ochrany osobních údajů – Moji chlupáči“ -> zobrazený nadpis ve dvou řádcích."""
     shown = title.split(" – ")[0].strip()
     words = shown.split()
     k = max(1, len(words) // 2)
