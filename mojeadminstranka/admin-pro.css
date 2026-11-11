@@ -1,0 +1,151 @@
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/geist-latin-ext-400.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/geist-latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/geist-latin-ext-600.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/geist-latin-600.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url("../fonts/bricolage-grotesque-latin-ext-600-800.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url("../fonts/bricolage-grotesque-latin-600-800.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Moji chlupáči: správcovský přehled v profesionálním tmavém designu (vrstva nad admin.css). Skleněné karty, polární záře, Bricolage Grotesque pro nadpisy a čísla. Žádná síť, žádné knihovny. */
+.admin{
+  --bg:#070F11; --surface:rgba(18,39,42,.62); --on-card:rgba(255,255,255,.05); --ink:#EEF6F5; --on-ink:#0A191B;
+  --muted:#9DB5B3; --faint:#8AA5A3; --quiet:#6F8A88; --line:rgba(255,255,255,.08); --tab-on:rgba(93,184,192,.14);
+  --accent:#5DB8C0; --accent-fill:#2A8D95; --accent-soft:rgba(93,184,192,.14); --accent-ink:#8ED2D8; --mint:#7FD0D6; --mint-text:#B6E4E8;
+  --amber:#F2B66B; --amber-ink:#F7CE8F; --amber-soft:rgba(242,182,107,.14); --red:#FF7B6B; --red-ink:#FFB4A8; --red-soft:rgba(255,123,107,.14);
+  --ok:#6FE3A6; --ok-ink:#9AF0C3; --track:rgba(255,255,255,.08); --c-a:#5DB8C0; --c-b:#F2B66B; --deep:#0E3338; --pet-a:#5DB8C0; --cat:#F2B66B;
+  --pink:#FF8FA3; --glass-line:rgba(255,255,255,.12); --glow:rgba(93,184,192,.3);
+  --display:'Bricolage Grotesque','Geist',system-ui,sans-serif; --font:'Geist',system-ui,-apple-system,sans-serif;
+  background:var(--bg); color:var(--ink); font-family:var(--font); color-scheme:dark; position:relative;
+}
+@media (prefers-color-scheme:light){.admin{
+  --bg:#F2F6F5; --surface:rgba(255,255,255,.78); --on-card:rgba(10,25,27,.05); --ink:#0A191B; --on-ink:#FFFFFF;
+  --muted:#4A6264; --faint:#4F6769; --quiet:#6F8587; --line:rgba(10,25,27,.09); --tab-on:rgba(30,97,104,.1);
+  --accent:#1E6168; --accent-fill:#297F86; --accent-soft:rgba(30,97,104,.1); --accent-ink:#1E6168; --mint:#5DB8C0; --mint-text:#CBEFF2;
+  --amber:#B8700F; --amber-ink:#7A4600; --amber-soft:rgba(184,112,15,.12); --red:#C53A28; --red-ink:#8E2A13; --red-soft:rgba(197,58,40,.1);
+  --ok:#16703F; --ok-ink:#12633A; --track:rgba(10,25,27,.08); --c-a:#297F86; --c-b:#B8700F; --deep:#0E3338; --pet-a:#297F86; --cat:#B8700F;
+  --pink:#B3243F; --glass-line:rgba(10,25,27,.1); --glow:rgba(41,127,134,.22); color-scheme:light}}
+
+/* pozadí: polární záře a zrno */
+.admin::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(45% 40% at 12% 8%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 70%),radial-gradient(40% 36% at 90% 14%,color-mix(in srgb,var(--amber) 20%,transparent),transparent 70%),radial-gradient(38% 34% at 62% 100%,color-mix(in srgb,var(--pink) 16%,transparent),transparent 72%);
+  animation:aurora 24s ease-in-out infinite alternate}
+@keyframes aurora{to{transform:translate3d(2.5%,2%,0) scale(1.06)}}
+.admin::after{content:"";position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+.admin main,.admin .shell,.admin .login-screen{position:relative;z-index:1}
+
+/* typografie */
+.admin h1,.admin h2,.admin .hero-num,.admin .kpi b,.admin .cap-v b{font-family:var(--display)}
+.admin h1{font-size:clamp(28px,3.4vw,40px);line-height:1;letter-spacing:-.04em;font-weight:800}
+.admin h2{font-size:18px;line-height:22px;font-weight:800;letter-spacing:-.02em}
+.admin h3{font-family:var(--font);letter-spacing:.02em;font-size:13px;color:var(--faint)}
+.admin .muted,.admin .sub{color:var(--muted)}
+
+/* tlačítka */
+.admin .btn-dark,.admin .btn-soft{border:1px solid var(--glass-line);transition:transform .35s cubic-bezier(.32,.72,0,1),box-shadow .35s,background .3s}
+.admin .btn-dark{background:linear-gradient(135deg,var(--accent-fill),color-mix(in srgb,var(--accent) 70%,#fff 0%));color:#fff;border-color:transparent;box-shadow:0 14px 34px -14px var(--glow)}
+.admin .btn-dark:hover{transform:translateY(-2px);box-shadow:0 20px 44px -14px var(--accent)}
+.admin .btn-dark:active,.admin .btn-soft:active{transform:scale(.97)}
+.admin .btn-soft{background:var(--surface);color:var(--ink)}
+.admin .btn-soft:hover{transform:translateY(-2px);background:var(--tab-on)}
+.admin .nest{background:rgba(255,255,255,.22)}
+
+/* postranní panel: skleněná karta, živý ukazatel, aktivní sekce */
+.admin .side-logo img{filter:drop-shadow(0 14px 22px rgba(0,0,0,.4))}
+.admin .side-title #updated::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:live 2.4s ease-out infinite;vertical-align:1px}
+@keyframes live{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+@media (min-width:1024px){
+  .admin .side{padding:20px 14px 14px;border:1px solid var(--glass-line);border-radius:28px;background:var(--surface);box-shadow:0 30px 70px -40px rgba(0,0,0,.6)}
+  .admin .side-nav a{position:relative;transition:background .25s,color .25s}
+  .admin .side-nav a.on{background:var(--tab-on);color:var(--ink)}
+  .admin .side-nav a.on::before{content:"";position:absolute;left:-14px;top:10px;bottom:10px;width:3px;border-radius:3px;background:linear-gradient(var(--accent),var(--amber))}
+  .admin .side-nav a:hover{color:var(--ink)}
+}
+
+/* karty */
+.admin .card{--x:50%;--y:0%;position:relative;border:1px solid var(--glass-line);border-radius:28px;padding:22px;
+  background:radial-gradient(420px circle at var(--x) var(--y),color-mix(in srgb,var(--accent) 16%,transparent),transparent 62%),var(--surface);
+  box-shadow:0 30px 60px -44px rgba(0,0,0,.7);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .3s}
+.admin .card:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--accent) 45%,var(--glass-line))}
+.admin .cic{border-radius:14px;background:linear-gradient(135deg,var(--accent-fill),var(--accent));color:#fff;box-shadow:0 10px 22px -10px var(--glow)}
+.admin .card-head .note{font-weight:600;color:var(--faint)}
+.admin .card.d12 .cic,.admin .card.m12 .cic{background:linear-gradient(135deg,var(--accent-fill),var(--accent))}
+
+/* hero: tmavá karta se zářivým pozadím a barevným přechodem v číslech */
+.admin .card.dark-hero{padding:0;overflow:hidden;border-color:color-mix(in srgb,var(--accent) 40%,var(--glass-line));
+  background:radial-gradient(60% 90% at 10% 0%,color-mix(in srgb,var(--accent) 55%,transparent),transparent 70%),radial-gradient(50% 80% at 100% 100%,color-mix(in srgb,var(--amber) 28%,transparent),transparent 70%),linear-gradient(160deg,#103A40,#0A2226)}
+.admin .card.dark-hero:hover{transform:none}
+.admin .hero-num{font-size:clamp(30px,3.5vw,56px);white-space:nowrap;font-weight:800;letter-spacing:-.055em;line-height:1;background:linear-gradient(100deg,#fff 20%,var(--mint) 80%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.admin .dark-hero .eyebrow{font-weight:600;letter-spacing:.02em}
+.admin .hero-block+.hero-block{box-shadow:inset 0 1px 0 rgba(255,255,255,.1)}
+@media (min-width:1024px){.admin .hero-block+.hero-block{box-shadow:inset 1px 0 0 rgba(255,255,255,.1)}}
+.admin .trend{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+
+/* grafy: záře čar, jemnější mřížka */
+.admin .ln,.admin .spark .ln{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--c-a) 60%,transparent))}
+.admin .ln.b{filter:drop-shadow(0 0 6px color-mix(in srgb,var(--c-b) 60%,transparent))}
+.admin .tip{background:rgba(7,15,17,.92);border:1px solid var(--glass-line);color:#EEF6F5;border-radius:14px;box-shadow:0 20px 40px -16px rgba(0,0,0,.7)}
+
+/* štítky, chyby, upozornění */
+.admin .flag{background:var(--amber-soft);color:var(--amber-ink);border:1px solid color-mix(in srgb,var(--amber) 35%,transparent)}
+.admin .error{background:var(--red-soft);border:1px solid color-mix(in srgb,var(--red) 35%,transparent)}
+.admin .notice{background:var(--accent-soft);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.admin .svc{background:var(--on-card);border:1px solid var(--line)}
+.admin .mini dd{font-family:var(--display);letter-spacing:-.02em}
+.admin .hbars .fill,.admin .fill{background:linear-gradient(90deg,var(--accent-fill),var(--accent))}
+
+/* přihlášení */
+.admin .login-card{border:1px solid var(--glass-line);border-radius:32px;padding:32px;background:var(--surface);box-shadow:0 40px 90px -40px rgba(0,0,0,.8);backdrop-filter:blur(18px)}
+.admin .login-logo{filter:drop-shadow(0 18px 26px rgba(0,0,0,.45));animation:bobl 7s ease-in-out infinite}
+@keyframes bobl{50%{translate:0 -8px}}
+.admin .login-card input{border:1px solid var(--glass-line);background:var(--on-card);color:var(--ink);transition:border-color .25s,box-shadow .25s}
+.admin .login-card input:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+
+/* vstup karet: jemný fade-up (jen transform a opacity), vypnuto při omezeném pohybu */
+@media (prefers-reduced-motion:no-preference){
+  .admin .card{animation:risep .7s cubic-bezier(.16,1,.3,1) both}
+  .admin .bento>:nth-child(2){animation-delay:.05s}.admin .bento>:nth-child(3){animation-delay:.1s}.admin .bento>:nth-child(4){animation-delay:.15s}
+  .admin .bento>:nth-child(5){animation-delay:.2s}.admin .bento>:nth-child(n+6){animation-delay:.25s}
+  @keyframes risep{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+}
+@media (prefers-reduced-motion:reduce){.admin::before,.admin .login-logo,.admin .side-title #updated::before{animation:none}}
