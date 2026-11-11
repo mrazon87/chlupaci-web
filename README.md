@@ -1,6 +1,6 @@
 # Moji chlupáči – web
 
-Statický web aplikace Moji chlupáči (doména mojichlupaci.cz): úvod, funkce aplikace, čtyři tematické stránky pro majitele, zásady ochrany osobních údajů, podmínky používání, podpora a smazání účtu. Čisté HTML a jeden CSS soubor, bez frameworku, formulářů, statistik, cookie lišty a externích požadavků. Písmo Geist je u nás ve `fonts/` (licence OFL). Funguje bez JavaScriptu; `toc.js` jen zvýrazňuje aktuální kapitolu v obsahu právních stránek a `uvod.js` na úvodu jemně objevuje sekce při rolování (při omezeném pohybu nic).
+Statický web aplikace Moji chlupáči (doména mojichlupaci.cz): úvod, funkce aplikace, čtyři tematické stránky pro majitele, zásady ochrany osobních údajů, podmínky používání, podpora a smazání účtu. Čisté HTML a jeden CSS soubor, bez frameworku, formulářů, statistik, cookie lišty a externích požadavků. Písmo Geist je u nás ve `fonts/` (licence OFL). Funguje bez JavaScriptu; `toc.js` jen zvýrazňuje aktuální kapitolu v obsahu právních stránek a `landing.js` na úvodu řídí pohyb (sklon telefonu za kurzorem, záře, rozsvěcení textu při rolování; při omezeném pohybu a na dotykových zařízeních se pohyb za kurzorem nezapne). Úvod má vlastní `landing.css`, ostatní stránky `style.css`.
 
 ## Struktura
 
@@ -13,11 +13,12 @@ Statický web aplikace Moji chlupáči (doména mojichlupaci.cz): úvod, funkce 
 - `mojeadminstranka/` (`index.html`, `admin.js`, `admin.css`) – přehled pro správce (od 11. 11. 2026, nahrazuje místní stránku ze soukromého repa chlupaci-admin). Stránka je veřejná a prázdná; data vrací jen Edge Function `admin-stats`, a to jen přihlášení Supabase Auth s ověřeným TOTP (aal2) a s id na seznamu `ADMIN_USER_IDS`. Skrytá adresa není ochrana, ale ani se nevystavuje: `noindex`, není v `sitemap.xml` ani v `robots.txt` (ten by cestu prozradil) a nevede na ni odkaz. Mluví přímo s `/auth/v1` přes `fetch` s veřejným anon klíčem (žádné knihovny, žádné tajemství), tokeny jen v paměti skriptu (obnovení stránky, Odhlásit a 15 minut nečinnosti je zahodí), data jen přes `textContent`. CSP navíc povoluje `img-src data:` kvůli QR kódu při prvním zápisu TOTP. GitHub Pages neumí hlavičky a `frame-ancestors` v meta CSP nefunguje, proto stránka ve cizím rámu zůstane skrytá (`admin.css`) a skript se z rámu zkusí vymanit. `?demo=1` vykreslí ukázková data bez serveru. Postup nastavení je v repu aplikace (`docs/postupy.md`, Admin dashboard).
 - `zasady.html`, `podminky.html` – **generované**, needitujte je ručně
 - `llms.txt` – stručný popis webu a odkazy na stránky pro jazykové modely; `sitemap.xml`, `robots.txt` – pro vyhledávače (nová stránka přidat i do `sitemap.xml`)
+- `landing.css`, `landing.js` – nový úvod (tmavý design s 3D telefonem se zástupnou přihlašovací obrazovkou, deník, přehled funkcí MVP); skutečné obrazovky aplikace tam zatím nejsou. `uvod.js` už úvod nepoužívá
 - `style.css` – barvy podle aplikace, světlý a tmavý režim přes `prefers-color-scheme`
 - `scripts/build_legal.py` + `scripts/legal_template.html` – generátor právních stránek
 - `fonts/`, `img/` (ilustrace psa a kočky, OG obrázek), `favicon.png`, `apple-touch-icon.png`
 
-Každá stránka má v hlavičce přísnou Content-Security-Policy (jen vlastní soubory, žádné inline styly; jediný inline skript na úvodu je povolený otiskem). Při úpravě úvodního skriptu je potřeba přepočítat otisk `sha256` v CSP.
+Každá stránka má v hlavičce přísnou Content-Security-Policy (jen vlastní soubory, žádné inline styly; na úvodu už žádný inline skript není, `script-src 'self'`).
 
 ## Právní stránky
 
