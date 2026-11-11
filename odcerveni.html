@@ -117,10 +117,21 @@
 <a class="skip" href="#hlavni">Přeskočit na obsah</a>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <div class="grain" aria-hidden="true"></div>
-<header>
-  <div class="nav">
-    <a class="brand" href="index.html"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></i>Moji chlupáči</a>
-    <nav aria-label="Hlavní"><a href="funkce.html">Co umí</a><a href="funkce.html#cena">Verze</a><a href="podpora.html">Podpora</a><a class="cta" href="index.html#stahnout">Brzy v App Store</a></nav>
+<header class="gnav" id="gnav">
+  <div class="gnav-bar">
+    <a class="gnav-brand" href="index.html" aria-label="Moji chlupáči, úvod"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></i><span>Moji chlupáči</span></a>
+    <nav class="gnav-links" id="gnav-links" aria-label="Hlavní">
+      <a href="index.html">Přehled</a>
+      <a href="funkce.html">Co umí</a>
+      <a href="funkce.html#cena">Ceny</a>
+      <div class="gnav-dd">
+        <button type="button" aria-expanded="false" aria-controls="gnav-rady" aria-current="page">Rady pro majitele<svg class="gnav-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="gnav-panel" id="gnav-rady"><a href="ockovani.html"><strong>Očkování psa a kočky</strong><span>Jak si pohlídat termíny</span></a><a href="odcerveni.html" aria-current="page"><strong>Odčervení a klíšťata</strong><span>Pravidelná ochrana</span></a><a href="zdravotni-karta.html"><strong>Zdravotní karta v mobilu</strong><span>Co mít po ruce u veterináře</span></a><a href="pece-ve-vice-lidech.html"><strong>Péče ve více lidech</strong><span>Aby nikdo nekrmil dvakrát</span></a></div>
+      </div>
+      <a href="podpora.html">Podpora</a>
+    </nav>
+    <a class="gnav-cta" href="index.html#stahnout">Brzy v App Store</a>
+    <button class="gnav-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="gnav-links"><i></i><i></i></button>
   </div>
 </header>
 
@@ -209,5 +220,6 @@
     </nav>
   </div>
 </footer>
+<script src="nav.js" defer></script>
 </body>
 </html>
