@@ -1373,3 +1373,191 @@ h2.section-title {
 .c-bars i.h75 { height: 75%; }
 .bar i.w14 { width: 14%; }
 .bar i.w52 { width: 52%; }
+
+/* =====================================================================
+   Stránka Funkce, tematické stránky a odkazy z úvodu (body.landing)
+   ===================================================================== */
+
+.site-nav a[aria-current="page"] { color: var(--ink); }
+.all-link { margin-top: 24px; }
+.all-link .btn-link { padding-left: 0; }
+.btn-link .ic { width: 18px; height: 18px; margin-left: 6px; stroke-width: 2; }
+
+.topics { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.topics a {
+  min-height: 44px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1px var(--edge);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.topics a:hover { background: var(--warm); }
+.topics strong { font-size: 17px; line-height: 1.3; font-weight: 600; color: var(--link); text-decoration: underline; text-underline-offset: 4px; }
+.topics span { font-size: 15px; line-height: 1.45; color: var(--muted); }
+
+/* Úvod stránky Funkce */
+.fn-hero { margin-top: 12px; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.fn-hero .eyebrow { color: var(--amber-ink); }
+.fn-hero h1 {
+  font-size: clamp(40px, 10vw, 64px);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+.fn-hero h1 .hl {
+  display: inline-block;
+  color: var(--accent);
+  background: linear-gradient(transparent 60%, var(--hl) 60%, var(--hl) 90%, transparent 90%);
+  padding-inline: 0.04em;
+}
+.fn-hero .lead { max-width: 34em; font-size: 18px; color: var(--muted); }
+.fn-trust { display: flex; flex-wrap: wrap; gap: 10px; }
+.fn-trust li {
+  min-height: 40px;
+  padding: 0 16px 0 12px;
+  border-radius: 20px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1px var(--edge);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.fn-trust .ic { width: 18px; height: 18px; color: var(--accent); }
+
+/* Pět přínosů */
+.fn-benefits { margin-top: 56px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
+.fn-benefit { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; min-width: 0; max-width: 40em; }
+.fn-ic {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--warm);
+  color: var(--amber-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fn-benefit h2 { font-size: 30px; line-height: 1.1; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
+.fn-lead { font-size: 18px; color: var(--muted); }
+.fn-story {
+  padding: 14px 18px 16px;
+  border-radius: 20px;
+  background: var(--warm);
+  font-size: 16px;
+  color: var(--ink);
+}
+.fn-story-l {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--amber-ink);
+}
+.fn-where { display: flex; flex-direction: column; gap: 8px; }
+.fn-where li { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.45; color: var(--muted); }
+.fn-tag {
+  flex-shrink: 0;
+  padding: 1px 10px;
+  border-radius: 999px;
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.fn-tag-z { background: var(--accent-soft); color: var(--accent-ink); }
+.fn-tag-p { background: var(--warm); color: var(--amber-ink); }
+.fn-tag-f { background: var(--accent-fill); color: #FFFFFF; }
+
+/* Tabulka funkcí */
+.fn-intro { max-width: 46em; margin-bottom: 24px; font-size: 17px; color: var(--muted); }
+.fn-table-box {
+  border-radius: 24px;
+  background: var(--card);
+  box-shadow: inset 0 0 0 1px var(--edge);
+  overflow: hidden;
+}
+.fn-table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 15px; line-height: 1.35; }
+.fn-table thead th {
+  padding: 14px 2px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--ink);
+  box-shadow: inset 0 -1px 0 var(--line);
+}
+.fn-table thead th:first-child { width: 44%; padding-left: 14px; text-align: left; }
+.fn-table tbody th, .fn-table tbody td { padding: 10px 2px; box-shadow: inset 0 1px 0 var(--line); }
+.fn-table tbody th[scope="row"] { padding-left: 14px; padding-right: 8px; font-weight: 400; text-align: left; color: var(--ink); }
+.fn-table .fn-group th {
+  padding: 12px 14px;
+  background: var(--warm);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  text-align: left;
+  color: var(--amber-ink);
+  box-shadow: none;
+}
+.fn-table td { text-align: center; vertical-align: middle; }
+.fn-yes .ic { margin-inline: auto; width: 22px; height: 22px; color: var(--accent); stroke-width: 2.4; }
+.fn-no { color: var(--quiet); }
+.fn-val { font-size: 14px; line-height: 1.25; font-weight: 600; color: var(--muted); }
+.fn-note { max-width: 46em; margin-top: 16px; font-size: 15px; color: var(--muted); }
+
+/* Tematické stránky (ockovani, odcerveni, zdravotni-karta, pece-ve-vice-lidech) */
+.topic { margin-top: 12px; max-width: 44em; margin-inline: auto; padding-bottom: 8px; }
+.topic .eyebrow { color: var(--amber-ink); }
+.topic h1 { margin-top: 8px; font-size: clamp(34px, 8vw, 52px); line-height: 1.07; font-weight: 600; letter-spacing: -0.04em; text-wrap: balance; }
+.topic .lead { margin-top: 16px; font-size: 18px; color: var(--muted); }
+.topic .updated { margin-top: 8px; font-size: 15px; color: var(--muted); }
+.topic h2 { margin-top: 44px; margin-bottom: 10px; font-size: 26px; line-height: 1.15; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
+.topic p + p, .topic p + ul, .topic ul + p { margin-top: 12px; }
+.topic p, .topic li { font-size: 17px; }
+.topic ul.list { padding-left: 1.2em; list-style: disc; display: flex; flex-direction: column; gap: 6px; }
+.topic a { color: var(--link); text-underline-offset: 3px; }
+.topic .callout {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 20px;
+  background: var(--warm);
+  color: var(--ink);
+}
+.topic .callout strong { color: var(--amber-ink); }
+.topic .faq { margin-top: 12px; }
+.topic .faq p { padding: 0 20px 18px; font-size: 16px; color: var(--muted); }
+.topic .sources li { font-size: 16px; }
+.topic .related { margin-top: 44px; }
+
+@media (min-width: 700px) {
+  .fn-hero { margin-top: 32px; gap: 22px; }
+  .fn-hero .lead { font-size: 19px; }
+  .fn-benefits { margin-top: 88px; gap: 88px; }
+  .fn-benefit h2 { font-size: 40px; }
+  .fn-intro { margin-bottom: 32px; font-size: 18px; }
+  .fn-table { font-size: 16px; }
+  .fn-table thead th { padding: 18px 12px; font-size: 16px; }
+  .fn-table thead th:first-child { width: 46%; padding-left: 24px; }
+  .fn-table tbody th, .fn-table tbody td { padding: 13px 12px; }
+  .fn-table tbody th[scope="row"] { padding-left: 24px; padding-right: 16px; }
+  .fn-table .fn-group th { padding: 14px 24px; font-size: 16px; }
+  .fn-val { font-size: 15px; }
+  .topics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .topic { margin-top: 32px; }
+  .topic h2 { font-size: 30px; }
+}
+@media (min-width: 1100px) {
+  .fn-hero h1 { font-size: 72px; }
+}
