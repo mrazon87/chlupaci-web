@@ -323,3 +323,7 @@ footer.site-footer a{text-decoration:none}footer.site-footer a:hover{color:var(-
 }
 @media(max-width:420px){.gnav-cta{display:none}.gnav-burger{margin-left:auto}}
 html.nolock{overflow:hidden}
+
+.gnav-soon{cursor:default}.gnav-soon:hover{transform:none}
+.all-link{margin-top:22px;text-align:center}
+.btn-link{color:var(--accent);font-weight:600;text-underline-offset:4px}
