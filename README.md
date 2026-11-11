@@ -1,6 +1,6 @@
 # Moji chlupáči – web
 
-Statický web aplikace Moji chlupáči (doména mojichlupaci.cz): úvod, funkce aplikace, čtyři tematické stránky pro majitele, zásady ochrany osobních údajů, podmínky používání, podpora a smazání účtu. Čisté HTML a jeden CSS soubor, bez frameworku, formulářů, statistik, cookie lišty a externích požadavků. Písmo Geist je u nás ve `fonts/` (licence OFL). Funguje bez JavaScriptu; `toc.js` jen zvýrazňuje aktuální kapitolu v obsahu právních stránek a `landing.js` na úvodu řídí pohyb (sklon telefonu za kurzorem, záře, rozsvěcení textu při rolování; při omezeném pohybu a na dotykových zařízeních se pohyb za kurzorem nezapne). Úvod má vlastní `landing.css`, ostatní stránky `style.css`.
+Statický web aplikace Moji chlupáči (doména mojichlupaci.cz): úvod, funkce aplikace, čtyři tematické stránky pro majitele, zásady ochrany osobních údajů, podmínky používání, podpora a smazání účtu. Čisté HTML a jeden CSS soubor, bez frameworku, formulářů, statistik, cookie lišty a externích požadavků. Písma Geist a Bricolage Grotesque (nadpisy úvodu) jsou u nás ve `fonts/` (licence OFL, texty licencí tamtéž). Funguje bez JavaScriptu; `toc.js` jen zvýrazňuje aktuální kapitolu v obsahu právních stránek a `landing.js` na úvodu řídí pohyb (sklon telefonu za kurzorem, záře, rozsvěcení textu při rolování; při omezeném pohybu a na dotykových zařízeních se pohyb za kurzorem nezapne). Úvod má vlastní `landing.css`, ostatní stránky `style.css`.
 
 ## Struktura
 
