@@ -116,7 +116,7 @@ main,header,footer{position:relative;z-index:2}
 .soon{color:var(--mut);font-size:.95rem}
 
 /* 3D telefon */
-.stage{position:relative;display:grid;place-items:center;min-height:640px;perspective:1200px;--rx:0;--ry:0;--mx:0;--my:0}
+.stage{position:relative;display:grid;place-items:center;min-height:700px;padding-bottom:48px;perspective:1400px;--rx:0;--ry:0;--mx:0;--my:0}
 .tilt{position:relative;transform-style:preserve-3d;transform:rotateY(calc(var(--ry)*1deg)) rotateX(calc(var(--rx)*1deg));transition:transform .25s ease-out;animation:float 7s ease-in-out infinite}
 @keyframes float{50%{translate:0 -12px}}
 .phone{position:relative;width:min(310px,76vw);aspect-ratio:9/19;border-radius:50px;padding:11px;background:linear-gradient(150deg,#46777c,#10262a 40%,#0a181a);box-shadow:0 60px 120px -30px rgba(0,0,0,.7),0 0 0 1.5px rgba(255,255,255,.12) inset,0 0 120px var(--orb1)}
@@ -137,10 +137,10 @@ main,header,footer{position:relative;z-index:2}
 .chip{position:absolute;z-index:5;padding:10px 16px;border-radius:16px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(16px);font-weight:600;font-size:.88rem;white-space:nowrap;box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
   transform:translate3d(calc(var(--mx)*var(--d)*1px),calc(var(--my)*var(--d)*1px),0);transition:transform .3s ease-out}
 .chip b{color:var(--ok);margin-right:6px}
-.chip.c1{left:-26%;top:10%;--d:-30}.chip.c2{right:-22%;top:26%;--d:38}.chip.c3{right:-16%;bottom:4%;--d:-22}.chip.c4{left:-20%;top:50%;--d:24}
+.chip.c1{left:-26%;top:10%;--d:-30}.chip.c2{right:-22%;top:26%;--d:38}.chip.c3{right:-18%;bottom:-3%;--d:-22}.chip.c4{left:-20%;top:50%;--d:24}
 .chip.red b{color:#ff6b6b}
-.tag{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:.72rem;color:var(--mut);white-space:nowrap}
-@media(max-width:860px){.hero{grid-template-columns:1fr}.stage{min-height:600px}.chip.c4,.chip.c1{display:none}.chip.c2{right:-4%}.chip.c3{right:-2%;bottom:8%}}
+.tag{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);font-size:.72rem;color:var(--mut);white-space:nowrap}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.stage{min-height:660px}.chip.c4,.chip.c1{display:none}.chip.c2{right:-4%}.chip.c3{right:-2%;bottom:8%}}
 
 /* pásky */
 .tick{margin-top:64px;border-block:1px solid var(--line);overflow:hidden;padding-block:20px;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}

@@ -18,8 +18,9 @@
         cur.style.transform='translate3d('+px+'px,'+py+'px,0)';cur.classList.add('on');
         var r=stage.getBoundingClientRect(),dx=(px-(r.left+r.width/2))/(innerWidth/2),dy=(py-(r.top+r.height/2))/(innerHeight/2);
         dx=Math.max(-1,Math.min(1,dx));dy=Math.max(-1,Math.min(1,dy));
-        stage.style.setProperty('--ry',(dx*14).toFixed(2));stage.style.setProperty('--rx',(-dy*10).toFixed(2));stage.style.setProperty('--mx',dx.toFixed(3));stage.style.setProperty('--my',dy.toFixed(3));
+        stage.style.setProperty('--ry',(dx*5).toFixed(2));stage.style.setProperty('--rx',(-dy*3.5).toFixed(2));stage.style.setProperty('--mx',dx.toFixed(3));stage.style.setProperty('--my',dy.toFixed(3));
       })});
+    document.documentElement.addEventListener('mouseleave',function(){['--ry','--rx','--mx','--my'].forEach(function(k){stage.style.setProperty(k,'0')});cur.classList.remove('on')});
     /* kurzorová záře v kartách */
     [].forEach.call(document.querySelectorAll('.cell,.f'),function(c){c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--x',(e.clientX-r.left)+'px');c.style.setProperty('--y',(e.clientY-r.top)+'px')})});
     /* magnetická tlačítka */
