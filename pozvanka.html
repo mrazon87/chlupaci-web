@@ -9,22 +9,24 @@
 <title>Pozvánka do domácnosti – Moji chlupáči</title>
 <meta name="description" content="Pozvánka do domácnosti v aplikaci Moji chlupáči: jak se připojit, když se odkaz neotevřel v aplikaci.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#F3F5F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B1517" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F3F7F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#070F11" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://mojichlupaci.cz/pozvanka.html">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" href="fonts/geist-latin-600.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="landing.css">
+<link rel="stylesheet" href="pages.css">
 </head>
-<body>
+<body class="landing2">
 <a class="skip" href="#hlavni">Přeskočit na obsah</a>
-<header class="wrap site-header">
-  <a class="brand" href="index.html">Moji chlupáči</a>
-  <nav class="site-nav" aria-label="Hlavní">
-    <a href="funkce.html">Co umí</a>
-    <a href="podpora.html">Podpora</a>
-  </nav>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="grain" aria-hidden="true"></div>
+<header>
+  <div class="nav">
+    <a class="brand" href="index.html"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></i>Moji chlupáči</a>
+    <nav aria-label="Hlavní"><a href="funkce.html">Co umí</a><a href="index.html#cena">Verze</a><a href="podpora.html">Podpora</a><a class="cta" href="index.html#stahnout">Brzy v App Store</a></nav>
+  </div>
 </header>
 
 <main id="hlavni" class="wrap support" tabindex="-1">
@@ -52,6 +54,7 @@
     </section>
   </div>
 </main>
+
 
 <footer class="site-footer">
   <div class="wrap">
