@@ -861,7 +861,11 @@
           var t = r && r.totp;
           if (!r || typeof r.id !== 'string' || !t || typeof t.secret !== 'string') throw new Error('auth');
           factorId = r.id;
-          if (typeof t.qr_code === 'string' && /^data:image\/svg\+xml[;,]/.test(t.qr_code)) $('enroll-qr').src = t.qr_code;
+          if (typeof t.qr_code === 'string' && /^data:image\/svg\+xml[;,]/.test(t.qr_code)) {
+            // Supabase vrací SVG neescapované (obsahuje #, takže by se useklo); do <img> jde jen zakódované
+            var svg = t.qr_code.slice(t.qr_code.indexOf(',') + 1);
+            $('enroll-qr').src = 'data:image/svg+xml;charset=utf-8,' + (/^</.test(svg) ? encodeURIComponent(svg) : svg);
+          }
           $('enroll-secret').textContent = t.secret;
           $('enroll').hidden = false;
           $('otp').focus();
