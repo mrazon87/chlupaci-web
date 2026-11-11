@@ -383,3 +383,7 @@ html:not(.unframed) body { display: none; }
 .enroll { display: flex; flex-direction: column; gap: 10px; }
 .enroll img { width: 200px; height: 200px; border-radius: 12px; background: #fff; padding: 8px; }
 .enroll code { font: 600 14px/20px ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; padding: 8px 10px; border-radius: 10px; background: var(--bg); user-select: all; }
+
+.ext { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.svc { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 16px; background: var(--on-card); min-width: 0; }
+.svc h3 { margin: 0; font-size: 15px; line-height: 20px; font-weight: 600; }
