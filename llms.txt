@@ -5,6 +5,11 @@
 ## Stránky
 
 - [Úvod](https://mojichlupaci.cz/): co aplikace umí, verze zdarma a Premium
+- [Funkce](https://mojichlupaci.cz/funkce.html): přínosy a tabulka funkcí podle verze (zdarma, Premium, Family Premium), ceny
+- [Očkování psa a kočky](https://mojichlupaci.cz/ockovani.html): jak si pohlídat termíny očkování, co zapisovat, na co se ptát veterináře
+- [Odčervení a klíšťata](https://mojichlupaci.cz/odcerveni.html): jak nezapomenout na ochranu proti parazitům, co zapisovat
+- [Zdravotní karta v mobilu](https://mojichlupaci.cz/zdravotni-karta.html): co patří do zdravotní karty psa a kočky a co nosit k veterináři
+- [Péče ve více lidech](https://mojichlupaci.cz/pece-ve-vice-lidech.html): jak si rozdělit péči v rodině a předat ji hlídači
 - [Podpora](https://mojichlupaci.cz/podpora.html): časté otázky a kontakt, podpora@mojichlupaci.cz
 - [Zásady ochrany osobních údajů](https://mojichlupaci.cz/zasady.html): jaké údaje zpracováváme, komu je předáváme a jak dlouho je uchováváme
 - [Podmínky použití](https://mojichlupaci.cz/podminky.html): zkušební doba, verze zdarma a Premium, účet a domácnost
