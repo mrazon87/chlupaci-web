@@ -595,26 +595,31 @@
   }
 
   function externalCard(ext) {
-    var fb = (ext && ext.facebook) || {}, body;
-    if (fb.status === 'ok') {
-      var u = fb.usage || {}, top = Math.max(u.call_count || 0, u.total_cputime || 0, u.total_time || 0), warn = top >= 80;
-      body = [h('div', 'cap', [
-        ring(top, { center: nf1.format(top) + ' %', tick: true, cls: warn ? 'warn' : '', label: 'Facebook: využito ' + nf1.format(top) + ' % limitu aplikace, značka 80 %' }),
-        h('div', 'cap-t', [
-          h('h3', null, 'Facebook (Meta)' + (fb.name ? ' · ' + fb.name : '')),
-          h('p', 'cap-v', [h('b', null, nf1.format(top) + ' %'), ' limitu aplikace']),
-          warn ? h('span', 'flag', 'Nad 80 % limitu') : null,
-          mini([['Volání', u.call_count === null || u.call_count === undefined ? '–' : nf1.format(u.call_count) + ' %'], ['Procesor', u.total_cputime === null || u.total_cputime === undefined ? '–' : nf1.format(u.total_cputime) + ' %'], ['Čas', u.total_time === null || u.total_time === undefined ? '–' : nf1.format(u.total_time) + ' %']])
-        ])
-      ])];
-    } else if (fb.status === 'unavailable') {
-      body = [empty('Facebook se nepodařilo zeptat. Zkuste to za chvíli.', 'chart')];
-    } else {
-      body = [empty('Facebook není nastavený (chybí FACEBOOK_APP_ID a FACEBOOK_APP_SECRET ve funkci).', 'chart')];
+    ext = ext || {};
+    var CHIP = { unconfigured: 'Nenastaveno', unavailable: 'Nedostupné' };
+    function fmt(v, suffix) { return v === null || v === undefined || !isFinite(v) ? '–' : nf1.format(v) + (suffix || ''); }
+    function svc(name, d, rows, hint) {
+      var ok = d && d.status === 'ok', st = (d && d.status) || 'unconfigured';
+      return h('div', 'svc', [
+        h('h3', null, name),
+        ok ? mini(rows(d), true) : h('span', 'flag', CHIP[st] || CHIP.unconfigured),
+        hint ? note(hint) : null
+      ]);
     }
-    return card({ id: 'sec-externi', cls: 'd12 m12', icon: 'chart', title: 'Externí služby', note: 'limity z jiných služeb' }, body.concat([
-      note('Facebook se používá jen k přihlášení, takže využití limitu bývá blízko nuly. Stav kontroly aplikace a požadované kroky (Required actions) jsou jen v konzoli Meta.')
-    ]));
+    function usageRows(u) { u = u || {}; return [['Volání', fmt(u.call_count, ' %')], ['Procesor', fmt(u.total_cputime, ' %')], ['Čas', fmt(u.total_time, ' %')]]; }
+    var apple = ext.apple, rc = ext.revenuecat, sb = ext.supabase, fb = ext.facebook;
+    return card({ id: 'sec-externi', cls: 'd12 m12', icon: 'chart', title: 'Externí služby', note: 'limity a stav z jiných služeb' }, [
+      h('div', 'ext', [
+        svc('Facebook (Meta)' + (fb && fb.name ? ' · ' + fb.name : ''), fb, function (d) { return usageRows(d.usage); }, 'Využití limitu aplikace; jen přihlášení, proto blízko nuly. Required actions a App Review jsou jen v konzoli Meta.'),
+        svc('App Store Connect', apple, function (d) { return [['Stažení, 7 dní', int(d.downloads)], ['Jednotky, 7 dní', int(d.units)]]; }, 'Data o 1–2 dny zpožděná, malé počty Apple skrývá.' + (apple && apple.missing ? ' Dny bez dat: ' + apple.missing + '.' : '')),
+        svc('RevenueCat', rc, function (d) {
+          return (d.metrics || []).map(function (m) { return [m.name, fmt(m.value), m.unit]; });
+        }),
+        svc('Supabase', sb, function (d) { return [['REST', int(d.rest)], ['Auth', int(d.auth)], ['Úložiště', int(d.storage)], ['Realtime', int(d.realtime)]]; }, 'Počty požadavků za 7 dní. Přenos (egress) je jen v administraci Supabase.'),
+        svc('Google Cloud', ext.google, function () { return []; }, 'Zatím nepřipojeno (kvóta Places, přihlášení Google).'),
+        svc('TelemetryDeck', ext.telemetrydeck, function () { return []; }, 'Zatím nepřipojeno (počty událostí v aplikaci).')
+      ])
+    ]);
   }
 
   function breedsCard(s) {
@@ -726,7 +731,7 @@
     }
     var last = series[series.length - 1];
     return {
-      external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } } },
+      external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } }, apple: { status: 'ok', downloads: 41, units: 52, missing: 1, days: [] }, revenuecat: { status: 'ok', currency: 'CZK', metrics: [{ id: 'active_trials', name: 'Zkušební doby', value: 9, unit: '' }, { id: 'active_subscriptions', name: 'Předplatná', value: 31, unit: '' }, { id: 'mrr', name: 'MRR', value: 1480, unit: 'Kč' }] }, supabase: { status: 'ok', interval: '7day', rest: 18420, auth: 1310, storage: 940, realtime: 0 }, google: { status: 'unconfigured' }, telemetrydeck: { status: 'unconfigured' } },
       series: series,
       stats: {
         generated_at: '2026-11-27T09:02:00Z',
