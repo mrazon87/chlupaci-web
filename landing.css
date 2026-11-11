@@ -65,7 +65,7 @@
   --glass:rgba(255,255,255,.7); --glass-line:rgba(12,27,29,.12); --orb1:rgba(41,127,134,.30); --orb2:rgba(242,182,107,.42); --orb3:rgba(255,143,163,.32); color-scheme:light}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:clip}
-body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--body);padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--body);padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 a{color:inherit}p{margin:0}
 .wrap{max-width:1200px;margin-inline:auto}
 h1,h2,h3{font-family:var(--display);line-height:1;letter-spacing:-.03em;margin:0;text-wrap:balance}
@@ -203,9 +203,9 @@ footer{border-top:1px solid var(--line);padding-block:32px 52px;color:var(--mut)
 footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 .pop{position:absolute;z-index:9;pointer-events:none;width:22px;height:22px;fill:var(--warm);animation:fly 1s cubic-bezier(.2,.8,.2,1) forwards}
 @keyframes fly{from{opacity:1;transform:translate(0,0) scale(.4)}to{opacity:0;transform:translate(var(--x),var(--y)) scale(1.2) rotate(var(--r))}}
-.rv{transform:translateY(26px);filter:blur(6px);transition:transform 1s cubic-bezier(.16,1,.3,1),filter 1s}
-.rv.in{transform:none;filter:none}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.w>span,.lead,.row{transform:none;opacity:1}.rv{filter:none;transform:none}}
+.js .rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.js .rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.w>span,.lead,.row{transform:none;opacity:1}.js .rv{opacity:1;transform:none}.st{transition:none}}
 
 /* deník */
 .diary{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(24px,5vw,72px);align-items:center}
@@ -242,3 +242,39 @@ footer a{text-decoration:none}footer a:hover{color:var(--fg)}
 footer.site-footer{border-top:1px solid var(--line);padding-block:32px 52px;color:var(--mut);font-size:.92rem;position:relative;z-index:2}
 footer.site-footer ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px 28px}
 footer.site-footer a{text-decoration:none}footer.site-footer a:hover{color:var(--fg)}
+
+/* příběh: telefon zůstane na místě a při rolování se mění obsah (styl produktových stránek Apple) */
+.story{position:relative;height:440vh}
+.pin{position:sticky;top:0;height:100vh;height:100svh;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:center;padding-block:80px 24px}
+.stx{position:relative;min-height:260px}
+.st{position:absolute;inset:0 auto auto 0;max-width:30ch;opacity:0;transform:translateY(40px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.st.on{opacity:1;transform:none;pointer-events:auto}
+.st.past{transform:translateY(-40px)}
+.st h2{font-size:clamp(2.4rem,6vw,5rem);letter-spacing:-.05em;line-height:.95}
+.st p{margin-top:20px;color:var(--mut);font-size:clamp(1.05rem,1.8vw,1.3rem)}
+.sph{position:relative;display:grid;place-items:center;perspective:1400px}
+.sphone{position:relative;width:min(290px,64vw);aspect-ratio:9/19;border-radius:46px;padding:10px;background:linear-gradient(150deg,#46777c,#10262a 40%,#0a181a);box-shadow:0 50px 100px -30px rgba(0,0,0,.7),0 0 0 1.5px rgba(255,255,255,.12) inset,0 0 110px var(--orb1);transform:rotateY(calc((var(--p,0) - .5)*-26deg)) rotateX(4deg) scale(calc(.92 + var(--p,0)*.08));will-change:transform}
+.sscr{position:relative;height:100%;border-radius:37px;overflow:hidden;background:#F3F5F4;color:#0C1B1D;padding:52px 18px 18px}
+.sscr:before{content:"";position:absolute;top:10px;left:50%;width:84px;height:24px;border-radius:99px;background:#050b0c;transform:translateX(-50%);z-index:2}
+.sp{position:absolute;inset:52px 18px 18px;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(24px) scale(.98);transition:opacity .6s,transform .6s cubic-bezier(.16,1,.3,1)}
+.sp.on{opacity:1;transform:none}
+.sp h4{font:800 1.5rem/1 var(--display);letter-spacing:-.04em;margin:0 0 4px}
+.sr{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;background:#fff;box-shadow:0 1px 0 #e3ecea}
+.sc{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #b7c9c8}
+.sl{flex:1;display:grid;gap:6px}
+.sk{display:block;height:9px;border-radius:99px;background:#d9e5e3}
+.sk.sm{height:7px;background:#e6efed}
+.w3{width:30%}.w4{width:40%}.w5{width:50%}.w6{width:62%}.w7{width:74%}.w8{width:86%}
+.sring{flex:none;align-self:center;width:96px;height:96px;margin:6px auto;border-radius:50%;background:conic-gradient(#297F86 66%,#dbe6e5 0);-webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);mask:radial-gradient(circle,transparent 58%,#000 60%)}
+.sbar{height:12px;border-radius:99px;background:#dbe6e5;overflow:hidden}
+.sbar i{display:block;height:100%;width:72%;background:linear-gradient(90deg,#297F86,#5DB8C0);border-radius:99px}
+.sbar i.h40{width:40%}
+.sos2{padding:16px;border-radius:18px;background:linear-gradient(135deg,#ef4b52,#c92a3a);color:#fff;font-weight:600;text-align:center}
+.scap{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);font-size:.72rem;color:var(--mut);white-space:nowrap}
+.sprog{position:absolute;right:max(0px,2vw);top:50%;width:3px;height:120px;margin-top:-60px;border-radius:3px;background:var(--line);overflow:hidden}
+.sprog i{display:block;width:100%;height:calc(var(--p,0)*100%);background:linear-gradient(var(--accent),var(--warm))}
+@media(max-width:860px){.story{height:400vh}.pin{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:8px;padding-block:76px 16px}.sph{order:-1}.sphone{width:min(190px,42vw)}.stx{min-height:190px}.st{max-width:none}.st h2{font-size:clamp(2rem,9vw,3rem)}.sprog{display:none}.scap{display:none}}
+.st:not(.on){transition-duration:.25s}
+.st.on{transition-delay:.18s}
+.sp:not(.on){transition-duration:.25s}
+.sp.on{transition-delay:.18s}

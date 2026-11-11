@@ -36,4 +36,18 @@
   /* vstupy sekcí */
   if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
     [].forEach.call(document.querySelectorAll('.rv'),function(el){io.observe(el)})}else{[].forEach.call(document.querySelectorAll('.rv'),function(el){el.classList.add('in')})}
+
+  /* příběh: telefon je přilepený a obsah se mění podle pozice rolování (styl Apple) */
+  document.documentElement.classList.add('js');
+  var story=document.getElementById('pribeh');
+  if(story){
+    var texts=[].slice.call(story.querySelectorAll('.st')),panels=[].slice.call(story.querySelectorAll('.sp')),N=texts.length,cur2=-1;
+    function upd(){
+      var r=story.getBoundingClientRect(),span=r.height-innerHeight,p=span>0?Math.max(0,Math.min(1,-r.top/span)):0,i=Math.min(N-1,Math.floor(p*N));
+      story.style.setProperty('--p',p.toFixed(4));
+      if(i!==cur2){cur2=i;texts.forEach(function(t,k){t.classList.toggle('on',k===i);t.classList.toggle('past',k<i)});panels.forEach(function(s,k){s.classList.toggle('on',k===i)})}
+    }
+    var t2=false;function onS(){if(!t2){t2=true;requestAnimationFrame(function(){t2=false;upd()})}}
+    addEventListener('scroll',onS,{passive:true});addEventListener('resize',onS);upd();
+  }
 })();
