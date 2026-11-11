@@ -58,10 +58,10 @@
   --display:'Bricolage Grotesque','Geist',system-ui,-apple-system,sans-serif; --body:'Geist',system-ui,-apple-system,sans-serif; color-scheme:dark;
 }
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
-  --bg:#F3F7F6; --bg2:#E3EEED; --card:#FFFFFF; --line:#CBDFDE; --fg:#0A191B; --mut:#4A6264; --accent:#1E6168; --warm:#C97D17; --pink:#D6405F; --ok:#1F8A52;
+  --bg:#F3F7F6; --bg2:#E3EEED; --card:#FFFFFF; --line:#CBDFDE; --fg:#0A191B; --mut:#4A6264; --accent:#1E6168; --warm:#8A5000; --pink:#B3243F; --ok:#16703F;
   --glass:rgba(255,255,255,.7); --glass-line:rgba(12,27,29,.12); --orb1:rgba(41,127,134,.30); --orb2:rgba(242,182,107,.42); --orb3:rgba(255,143,163,.32); color-scheme:light}}
 :root[data-theme="light"]{
-  --bg:#F3F7F6; --bg2:#E3EEED; --card:#FFFFFF; --line:#CBDFDE; --fg:#0A191B; --mut:#4A6264; --accent:#1E6168; --warm:#C97D17; --pink:#D6405F; --ok:#1F8A52;
+  --bg:#F3F7F6; --bg2:#E3EEED; --card:#FFFFFF; --line:#CBDFDE; --fg:#0A191B; --mut:#4A6264; --accent:#1E6168; --warm:#8A5000; --pink:#B3243F; --ok:#16703F;
   --glass:rgba(255,255,255,.7); --glass-line:rgba(12,27,29,.12); --orb1:rgba(41,127,134,.30); --orb2:rgba(242,182,107,.42); --orb3:rgba(255,143,163,.32); color-scheme:light}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:clip}
