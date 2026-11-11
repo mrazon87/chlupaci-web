@@ -225,6 +225,11 @@
   }
 
   $('znovu').addEventListener('click', load);
-  window.addEventListener('hashchange', load);
+  // a new link pasted into the same tab: read the new token and clear the address again, otherwise the old card would load
+  window.addEventListener('hashchange', function () {
+    var h = location.hash.slice(1);
+    if (h) { savedToken = h; if (window.history && history.replaceState) history.replaceState(null, '', location.pathname + location.search); }
+    load();
+  });
   load();
 })();
