@@ -866,8 +866,10 @@
           var t = r && r.totp;
           if (!r || typeof r.id !== 'string' || !t || typeof t.secret !== 'string') throw new Error('auth');
           factorId = r.id;
-          if (typeof t.qr_code === 'string' && /^data:image\/svg\+xml[;,]/.test(t.qr_code)) {
-            // Supabase vrací SVG neescapované (obsahuje #, takže by se useklo); do <img> jde jen zakódované
+          // QR kód se kreslí tady z adresy otpauth (qr.js, bez sítě); QR od Supabase se neukázal, proto jen záloha
+          var qr = qrDataUri(typeof t.uri === 'string' ? t.uri : '');
+          if (qr) $('enroll-qr').src = qr;
+          else if (typeof t.qr_code === 'string' && /^data:image\/svg\+xml[;,]/.test(t.qr_code)) {
             var svg = t.qr_code.slice(t.qr_code.indexOf(',') + 1);
             $('enroll-qr').src = 'data:image/svg+xml;charset=utf-8,' + (/^</.test(svg) ? encodeURIComponent(svg) : svg);
           }
@@ -876,6 +878,17 @@
           $('otp').focus();
         });
     });
+  }
+
+  /* QR kód z textu (otpauth://totp/...) jako data URI s SVG: bílé pozadí, tichá zóna 4 moduly, jedna cesta pro všechny tmavé moduly */
+  function qrDataUri(text) {
+    if (!/^otpauth:\/\/totp\//.test(text) || !window.QR) return '';
+    try {
+      var m = window.QR.create(text, { errorCorrectionLevel: 'M' }).modules, n = m.size, q = 4, d = '';
+      for (var y = 0; y < n; y++) for (var x = 0; x < n; x++) if (m.get(y, x)) d += 'M' + (x + q) + ' ' + (y + q) + 'h1v1h-1z';
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + (n + 2 * q) + ' ' + (n + 2 * q) + '" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/><path d="' + d + '" fill="#000"/></svg>';
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    } catch (e) { return ''; }
   }
 
   function load() {
