@@ -124,7 +124,7 @@ main,header,footer{position:relative;z-index:2}
   background:radial-gradient(120% 70% at 50% 0%,#2b8c94 0%,#175157 45%,#0b2124 100%)}
 .screen:before{content:"";position:absolute;top:11px;left:50%;width:92px;height:26px;border-radius:99px;background:#050b0c;transform:translateX(-50%);z-index:3}
 .glare{position:absolute;inset:0;z-index:4;pointer-events:none;border-radius:40px;background:radial-gradient(60% 40% at calc(50% + var(--ry)*3%) calc(20% + var(--rx)*-3%),rgba(255,255,255,.28),transparent 70%);mix-blend-mode:soft-light}
-.screen img{width:78%;margin-top:6px;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent);filter:drop-shadow(0 14px 18px rgba(0,0,0,.4))}
+.screen img{flex:none;width:78%;height:auto;aspect-ratio:618/484;object-fit:contain;margin-top:6px;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent);filter:drop-shadow(0 14px 18px rgba(0,0,0,.4))}
 .screen h4{font:800 1.5rem/1 var(--display);margin:14px 0 4px;letter-spacing:-.03em}
 .screen small{font-size:.8rem;opacity:.8}
 .auth{margin-top:auto;width:100%;display:grid;gap:8px}
