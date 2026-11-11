@@ -594,6 +594,29 @@
     ]);
   }
 
+  function externalCard(ext) {
+    var fb = (ext && ext.facebook) || {}, body;
+    if (fb.status === 'ok') {
+      var u = fb.usage || {}, top = Math.max(u.call_count || 0, u.total_cputime || 0, u.total_time || 0), warn = top >= 80;
+      body = [h('div', 'cap', [
+        ring(top, { center: nf1.format(top) + ' %', tick: true, cls: warn ? 'warn' : '', label: 'Facebook: využito ' + nf1.format(top) + ' % limitu aplikace, značka 80 %' }),
+        h('div', 'cap-t', [
+          h('h3', null, 'Facebook (Meta)' + (fb.name ? ' · ' + fb.name : '')),
+          h('p', 'cap-v', [h('b', null, nf1.format(top) + ' %'), ' limitu aplikace']),
+          warn ? h('span', 'flag', 'Nad 80 % limitu') : null,
+          mini([['Volání', u.call_count === null || u.call_count === undefined ? '–' : nf1.format(u.call_count) + ' %'], ['Procesor', u.total_cputime === null || u.total_cputime === undefined ? '–' : nf1.format(u.total_cputime) + ' %'], ['Čas', u.total_time === null || u.total_time === undefined ? '–' : nf1.format(u.total_time) + ' %']])
+        ])
+      ])];
+    } else if (fb.status === 'unavailable') {
+      body = [empty('Facebook se nepodařilo zeptat. Zkuste to za chvíli.', 'chart')];
+    } else {
+      body = [empty('Facebook není nastavený (chybí FACEBOOK_APP_ID a FACEBOOK_APP_SECRET ve funkci).', 'chart')];
+    }
+    return card({ id: 'sec-externi', cls: 'd12 m12', icon: 'chart', title: 'Externí služby', note: 'limity z jiných služeb' }, body.concat([
+      note('Facebook se používá jen k přihlášení, takže využití limitu bývá blízko nuly. Stav kontroly aplikace a požadované kroky (Required actions) jsou jen v konzoli Meta.')
+    ]));
+  }
+
   function breedsCard(s) {
     var p = s.pets || {}, top = p.breeds_top || [];
     var list = top.map(function (b) { return [b.breed, b.count]; });
@@ -679,7 +702,7 @@
     var s = data.stats || {}, series = data.series || [];
     var box = $('panels');
     box.textContent = '';
-    [heroCard(s, series), growthCard(s, series), petsCard(s), revenueCard(s, series), trialCard(s), devicesCard(s), capacityCard(s, series), breedsCard(s), recordsCard(s), householdsCard(s), stateCard(s, ms), supportCard()]
+    [heroCard(s, series), growthCard(s, series), petsCard(s), revenueCard(s, series), trialCard(s), devicesCard(s), capacityCard(s, series), externalCard(data.external), breedsCard(s), recordsCard(s), householdsCard(s), stateCard(s, ms), supportCard()]
       .forEach(function (p) { box.appendChild(p); });
     $('updated').textContent = 'Stav dat k ' + dateTime(s.generated_at);
     $('loaded').textContent = 'Načteno v ' + new Date().toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' });
@@ -703,6 +726,7 @@
     }
     var last = series[series.length - 1];
     return {
+      external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } } },
       series: series,
       stats: {
         generated_at: '2026-11-27T09:02:00Z',
