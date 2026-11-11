@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-/x7W7R75k8Roq0WaVRQX9blP4OufE5xbAdzklGxsgpw='; style-src 'self'; font-src 'self'; img-src 'self' data:; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Moji chlupáči: méně starostí, více radosti</title>
+<title>Moji chlupáči – aplikace pro psa a kočku: očkování, odčervení, krmení</title>
 <meta name="description" content="Aplikace Moji chlupáči za vás pohlídá krmení, léky, očkování i veterináře. Vy máte víc času a radosti se svým chlupáčem. Brzy v App Store pro iPhone.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#FBF6EE" media="(prefers-color-scheme: light)">
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="cs_CZ">
 <meta property="og:site_name" content="Moji chlupáči">
-<meta property="og:title" content="Moji chlupáči: méně starostí, více radosti">
+<meta property="og:title" content="Moji chlupáči – aplikace pro psa a kočku: očkování, odčervení, krmení">
 <meta property="og:description" content="Aplikace Moji chlupáči za vás pohlídá krmení, léky, očkování i veterináře. Vy máte víc času a radosti se svým chlupáčem. Brzy v App Store pro iPhone.">
 <meta property="og:url" content="https://mojichlupaci.cz/">
 <meta property="og:image" content="https://mojichlupaci.cz/img/og.png">
@@ -29,6 +29,77 @@
 <link rel="stylesheet" href="style.css">
 <script>document.documentElement.classList.add('js');</script>
 <script src="uvod.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://mojichlupaci.cz/#organization",
+      "name": "Moji chlupáči",
+      "url": "https://mojichlupaci.cz/",
+      "logo": "https://mojichlupaci.cz/apple-touch-icon.png",
+      "email": "podpora@mojichlupaci.cz"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://mojichlupaci.cz/#website",
+      "url": "https://mojichlupaci.cz/",
+      "name": "Moji chlupáči",
+      "inLanguage": "cs",
+      "publisher": {
+        "@id": "https://mojichlupaci.cz/#organization"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://mojichlupaci.cz/#aplikace",
+      "name": "Moji chlupáči",
+      "description": "Aplikace pro psa a kočku: připomínky krmení, léků, očkování a prevence, zdravotní karta pro veterináře a sdílení péče v domácnosti.",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "iOS",
+      "inLanguage": "cs",
+      "url": "https://mojichlupaci.cz/",
+      "image": "https://mojichlupaci.cz/img/og.png",
+      "publisher": {
+        "@id": "https://mojichlupaci.cz/#organization"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Verze zdarma",
+          "price": "0",
+          "priceCurrency": "CZK"
+        },
+        {
+          "@type": "Offer",
+          "name": "Premium, měsíčně",
+          "price": "49",
+          "priceCurrency": "CZK"
+        },
+        {
+          "@type": "Offer",
+          "name": "Premium, ročně",
+          "price": "499",
+          "priceCurrency": "CZK"
+        },
+        {
+          "@type": "Offer",
+          "name": "Family Premium, měsíčně",
+          "price": "79",
+          "priceCurrency": "CZK"
+        },
+        {
+          "@type": "Offer",
+          "name": "Family Premium, ročně",
+          "price": "799",
+          "priceCurrency": "CZK"
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body class="landing">
 <svg class="sprite" aria-hidden="true" focusable="false">
@@ -76,7 +147,8 @@
   <!-- 1 · Hero -->
   <section class="wrap hero" aria-labelledby="titulek">
     <div class="hero-text">
-      <h1 id="titulek">Méně starostí, <span class="hl">více radosti.</span></h1>
+      <h1 id="titulek">Aplikace pro psa <span class="hl">a kočku</span></h1>
+      <p class="tagline">Méně starostí, více radosti.</p>
       <p class="lead">Aplikace Moji chlupáči za vás pohlídá krmení, léky, očkování i veterináře. Vy máte víc času a radosti se svým chlupáčem.</p>
       <ul class="perks">
         <li><span class="perk-ic" aria-hidden="true"><svg class="ic"><use href="#i-bell"/></svg></span><span><strong>Hlavu máte volnou.</strong> Připomeneme krmení, s Premium i léky, odčervení a očkování.</span></li>
@@ -492,6 +564,7 @@
         <li><a href="zasady.html">Zásady ochrany osobních údajů</a></li>
         <li><a href="podminky.html">Podmínky použití</a></li>
         <li><a href="podpora.html">Podpora</a></li>
+        <li><a href="smazani-uctu.html">Smazání účtu a údajů</a></li>
         <li><a href="mailto:podpora@mojichlupaci.cz">podpora@mojichlupaci.cz</a></li>
         <li><span class="copy">© 2026 Moji chlupáči</span></li>
       </ul>

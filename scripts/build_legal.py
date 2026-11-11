@@ -2,7 +2,7 @@
 """Vygeneruje zasady.html a podminky.html ze zdrojových .md souborů aplikace.
 
 Použití:
-    python3 scripts/build_legal.py /cesta/k/chlupaci/docs
+    python3 scripts/build_legal.py /cesta/k/chlupaci/docs/texty
 
 Jen standardní knihovna. Šablona: scripts/legal_template.html. Výstup se zapisuje
 do kořene webu (o úroveň výš než scripts/).
@@ -20,7 +20,7 @@ PAGES = [
     {
         "md": "zasady-ochrany-udaju.md",
         "out": "zasady.html",
-        "description": "Jaké údaje aplikace Moji chlupáči zpracovává, proč, komu je předávají, jak dlouho je uchovává a jak je můžete spravovat nebo smazat.",
+        "description": "Jaké údaje aplikace Moji chlupáči zpracovává, proč, komu je předává, jak dlouho je uchovávají a jak je můžete spravovat nebo smazat.",
     },
     {
         "md": "podminky-pouziti.md",
@@ -169,7 +169,7 @@ def split_title(title):
 
 def main():
     if len(sys.argv) != 2:
-        sys.exit("Použití: python3 scripts/build_legal.py /cesta/k/chlupaci/docs")
+        sys.exit("Použití: python3 scripts/build_legal.py /cesta/k/chlupaci/docs/texty")
     docs = Path(sys.argv[1])
     template = TEMPLATE.read_text(encoding="utf-8")
     for page in PAGES:

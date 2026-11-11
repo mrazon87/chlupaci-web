@@ -1,0 +1,11 @@
+# Moji chlupáči
+
+> Aplikace pro psa a kočku pro iPhone: připomínky krmení, léků, očkování a prevence, zdravotní karta pro veterináře a sdílení péče v domácnosti. Aplikace zatím není v App Store (brzy). Web mojichlupaci.cz je statický, bez cookies a bez statistik. Aplikace nenahrazuje veterináře.
+
+## Stránky
+
+- [Úvod](https://mojichlupaci.cz/): co aplikace umí, verze zdarma a Premium
+- [Podpora](https://mojichlupaci.cz/podpora.html): časté otázky a kontakt, podpora@mojichlupaci.cz
+- [Zásady ochrany osobních údajů](https://mojichlupaci.cz/zasady.html): jaké údaje zpracováváme, komu je předáváme a jak dlouho je uchováváme
+- [Podmínky použití](https://mojichlupaci.cz/podminky.html): zkušební doba, verze zdarma a Premium, účet a domácnost
+- [Smazání účtu a údajů](https://mojichlupaci.cz/smazani-uctu.html): postup v aplikaci, co se smaže a jak požádat o smazání e-mailem
