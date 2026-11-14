@@ -1,4 +1,4 @@
-/* Moji chlupáči: web v designu Návrh 2 (stejné tokeny jako aplikace: prototyp/src/design-v2.css).
+/* Moji chlupáči: web v designu Návrh 2.
    Písmo Plus Jakarta Sans (SIL OFL) je u nás ve fonts/, žádné externí požadavky. Světlý i tmavý režim podle systému (prefers-color-scheme),
    případně vynucený přes data-theme na <html>. */
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/plus-jakarta-sans-400.woff2") format("woff2")}
