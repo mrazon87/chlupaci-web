@@ -279,6 +279,7 @@ details p{font-size:16.5px;line-height:1.65;color:var(--sub);font-weight:500;mar
 .foot{background:#0B1011;color:#C4C6CC;padding:40px 0;font-size:16px}
 .fg{display:flex;flex-direction:column;gap:28px}
 .foot .logo{color:#fff}
+.foot .sig{margin-top:8px;font-size:16px;font-weight:600;color:#C4C6CC}
 .foot .lg-t{stroke:rgba(255,255,255,.2)}.foot .lg-a,.foot .lg-d{stroke:#5DB8C0}.foot .lg-d{fill:#5DB8C0}
 .fl{display:flex;flex-direction:column;gap:0;font-weight:600}
 .fl a,.fr a{display:inline-flex;align-items:center;min-height:44px}
