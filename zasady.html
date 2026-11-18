@@ -78,13 +78,13 @@
     <section>
       <h2 id="kratce">2. Krátce</h2>
       <ul>
-      <li>Aplikaci lze používat jen s účtem, přihlášení je povinné. Přihlásíte se přes Apple, Google, Facebook, nebo vlastním e-mailem a heslem.</li>
+      <li>Aplikaci lze používat jen s účtem, přihlášení je povinné. Přihlásíte se přes Apple, Google, nebo vlastním e-mailem a heslem.</li>
       <li>Data o mazlíčcích máte v telefonu a v naší záloze a synchronizaci na serveru (Supabase, EU), abyste o ně nepřišli při ztrátě telefonu a mohli péči sdílet v domácnosti.</li>
-      <li>Přes Apple neznáme vaše jméno ani e-mail, pokud nám je Apple nepředá. Při přihlášení e-mailem uložíme vaši e-mailovou adresu a heslo (jen jako nevratný otisk, ne v čitelné podobě). Při přihlášení přes Google nebo Facebook od nich dostaneme e-mail, jméno a identifikátor účtu; aplikace nemá žádné jejich knihovny a nic vás tím nesleduje (podrobnosti v části 3).</li>
+      <li>Přes Apple neznáme vaše jméno ani e-mail, pokud nám je Apple nepředá. Při přihlášení e-mailem uložíme vaši e-mailovou adresu a heslo (jen jako nevratný otisk, ne v čitelné podobě). Při přihlášení přes Google od něj dostaneme e-mail, jméno a identifikátor účtu; aplikace nemá žádné jeho knihovny a nic vás tím nesleduje (podrobnosti v části 3).</li>
       <li>Videa u potíže mazlíčka zůstávají jen v telefonu, který je natočil, na server ani do zálohy nejdou. Při ztrátě telefonu zmizí, proto je nabízíme uložit do Fotek. Veterináři se video pošle přímo z telefonu, nebo dočasným odkazem v PDF souhrnu: video se na server nahraje jen na 14 dní a pak se samo smaže.</li>
       <li>Kartu mazlíčka můžete (s Premium) sdílet odkazem pro hlídače, veterináře nebo rodinu mimo domácnost. Odkaz otevře jen to, co jste do karty dali, jen ke čtení, bez aplikace, a platí 24 hodin, 7 nebo 14 dní, nebo dokud ho neodvoláte. Kdo odkaz má, kartu uvidí, proto ho posílejte jen komu věříte.</li>
       <li>Po odhlášení zůstanou data v telefonu a ukážou se znovu, až se přihlásíte stejným účtem.</li>
-      <li>Prvních 30 dní máte všechny funkce, potom vám zůstane verze zdarma, ve které chodí oznámení jen o krmení; oznámení o lécích, očkování, prevenci, veterináři a platbách patří do Premium. Nic se nemaže a data zůstanou vidět i ke stažení. Placené funkce odemyká předplatné Premium, které se kupuje a ruší přes Apple.</li>
+      <li>Prvních 30 dní máte všechny funkce, potom vám zůstane verze zdarma, ve které chodí oznámení o krmení, o docházejícím krmivu a o očkování; oznámení o lécích, prevenci, veterináři a platbách patří do Premium. Nic se nemaže a data zůstanou vidět i ke stažení. Placené funkce odemyká předplatné Premium, které se kupuje a ruší přes Apple.</li>
       <li>Data o mazlíčcích ani o vás neprodáváme, nepoužíváme k reklamě a v aplikaci nejsou reklamy.</li>
       <li>Posíláme anonymní statistiky, které části aplikace se používají. Vypnete je v Profil → Soukromí.</li>
       </ul>
@@ -105,6 +105,12 @@
       <td data-label="Kde jsou">V telefonu a v záloze a při sdílení domácnosti na serveru (Supabase, EU)</td>
       <td data-label="Proč">Aby aplikace mohla hlídat péči, připomínat a vést historii</td>
       <td data-label="Právní základ">Plnění smlouvy (poskytnutí aplikace), čl. 6 odst. 1 písm. b) GDPR</td>
+      </tr>
+      <tr>
+      <td data-label="Údaje">Vaše profilová fotka (volitelná, jen když ji sami přidáte): čtvercový výřez zmenšený v telefonu na 256 px, bez údajů o místě a čase pořízení; originál se neukládá</td>
+      <td data-label="Kde jsou">Server (Supabase, EU), soukromé úložiště; vidí ji jen členové vaší domácnosti. Smaže se tlačítkem Odebrat fotku, odchodem z domácnosti a smazáním účtu</td>
+      <td data-label="Proč">Aby vás ostatní členové domácnosti poznali u členů a splněných úkolů</td>
+      <td data-label="Právní základ">Plnění smlouvy</td>
       </tr>
       <tr>
       <td data-label="Údaje">Videa u potíže mazlíčka (krátká, do 30 s, zmenšená v telefonu). Jen v telefonu, který video natočil, nesynchronizují se a nejdou do zálohy; ostatním členům domácnosti se ukáže jen řádek „Video (v telefonu Jana)“ s tím, kdo a kdy video natočil</td>
@@ -131,7 +137,7 @@
       <td data-label="Právní základ">Plnění smlouvy</td>
       </tr>
       <tr>
-      <td data-label="Údaje">Při přihlášení přes Google nebo Facebook: e-mail, jméno a identifikátor vašeho účtu u nich (poskytovatel nám může předat i odkaz na profilovou fotku; aplikace ji nepoužívá)</td>
+      <td data-label="Údaje">Při přihlášení přes Google: e-mail, jméno a identifikátor vašeho účtu u Googlu (Google nám může předat i odkaz na profilovou fotku; aplikace ji nepoužívá)</td>
       <td data-label="Kde jsou">Server (Supabase, EU)</td>
       <td data-label="Proč">Přihlášení a přiřazení dat a domácnosti</td>
       <td data-label="Právní základ">Plnění smlouvy</td>
@@ -170,13 +176,13 @@
       </table>
       </div>
       <p>Platbu provádí Apple; číslo karty ani fakturační údaje neuvidíme.</p>
-      <p><strong>Přihlášení přes Google nebo Facebook.</strong> Otevře se systémové přihlašovací okno telefonu (stejné jako při přihlášení na webu), kde se přihlásíte u Googlu nebo Facebooku; heslo k jejich účtu nikdy neuvidíme. Aplikace neobsahuje žádné knihovny (SDK) Googlu ani Facebooku, nepoužívá jejich sledovací ani reklamní nástroje a Googlu ani Facebooku neposílá žádné údaje o vás, mazlíčcích ani o používání aplikace. Poskytovatel sám ví, že jste se přihlásili do aplikace Moji chlupáči, a řídí se vlastními zásadami. Od něj dostaneme e-mail, jméno a identifikátor účtu a ukládáme je na serveru (Supabase, EU) jen kvůli přihlášení.</p>
+      <p><strong>Přihlášení přes Google.</strong> Otevře se systémové přihlašovací okno telefonu (stejné jako při přihlášení na webu), kde se přihlásíte u Googlu; heslo k vašemu účtu u Googlu nikdy neuvidíme. Aplikace neobsahuje žádné knihovny (SDK) Googlu, nepoužívá jeho sledovací ani reklamní nástroje a Googlu neposílá žádné údaje o vás, mazlíčcích ani o používání aplikace. Google sám ví, že jste se přihlásili do aplikace Moji chlupáči, a řídí se vlastními zásadami. Od něj dostaneme e-mail, jméno a identifikátor účtu a ukládáme je na serveru (Supabase, EU) jen kvůli přihlášení.</p>
       <p><strong>Odkaz na kartu mazlíčka.</strong> Když v aplikaci vytvoříte odkaz, telefon sestaví jen přehled, který vidíte na obrazovce Sdílet kartu odkazem, a pošle ho na náš server (Supabase, EU). Server ho uloží jako neměnný snímek (pozdější změny v aplikaci se do odkazu nepřenášejí), vytvoří náhodný odkaz a drží z něj jen otisk, takže ho z databáze nikdo nedokáže obnovit. Odkaz vám vrátí jednou a telefon si ho pamatuje, abyste ho mohli poslat znovu. Telefon majitele a fotka se přidají jen na vaše zapnutí; fotka se předem zmenší a zbaví polohy. Odkaz smí vytvořit jen člen domácnosti s předplatným Premium, odvolat ho smí kterýkoli člen domácnosti; seznam aktivních odkazů vidí členové domácnosti. Odkaz funguje na stránce karta.html na našem webu. Token je v adrese za znakem # a prohlížeč ho na žádný server neposílá, takže ho nevidí ani GitHub; stránka si ho přečte sama a zeptá se našeho serveru. Stránka se nezapisuje do vyhledávačů a nenačítá nic od třetích stran. Při otevření odkazu server nejvýš hodinu drží jen nevratný otisk adresy volajícího (s tajným klíčem serveru), aby šlo omezit počet pokusů o hádání odkazu; adresu samotnou neukládáme.</p>
       <p>Statistiky nikdy neobsahují jména, čísla čipů, texty, částky, fotky ani polohu. Uživatele v nich zastupuje náhodné číslo instalace, které vzniká v telefonu, nesynchronizuje se a před odesláním se ještě hashuje. Z dat statistik vás nedokážeme poznat. Aplikace navíc jednou denně pošle na náš server (Supabase, EU) anonymní záznam instalace. Slouží jen k tomu, abychom v provozním přehledu viděli, na jaká zařízení se zaměřit: obsahuje náhodné číslo instalace, iOS/Android, hlavní verzi systému, hrubou velikost displeje (malý, běžný, velký, tablet), verzi a číslo sestavení aplikace a den prvního a posledního hlášení. Neobsahuje účet, domácnost, model zařízení, sériové číslo ani jiné údaje o vás a IP adresu do záznamu neukládáme (poskytovatel serveru Supabase ji krátce drží ve svých provozních záznamech kvůli bezpečnosti, my k ní přístup nepoužíváme). Číslo instalace je stejné jako ve statistikách, ale na náš server se posílá v čitelné podobě (TelemetryDeck dostává jeho otisk); je to náhodné číslo, které nelze spojit s účtem. Při vypnutých statistikách se záznam neposílá. Záznam instalace se na serveru automaticky nemaže, uchováváme ho, dokud aplikaci provozujeme; protože není spojený s účtem, nemůžeme ho k vaší osobě dohledat ani na žádost. Anonymní statistiky se posílají i na přihlašovacích obrazovkách před registrací (jen že se obrazovka zobrazila a krok proběhl, nikdy e-mail), pokud je dřív nevypnete v Profil → Soukromí; obsahují také hrubý stav předplatného (zkušební doba / Premium / verze zdarma) a den zkušební doby v intervalu.</p>
     </section>
     <section>
       <h2 id="co-zustava-jen-v-telefonu">4. Co zůstává jen v telefonu</h2>
-      <p>Videa u potíže mazlíčka (zůstávají v úložišti aplikace v telefonu, který je natočil; při ztrátě telefonu nebo odinstalování aplikace zmizí, pokud si je neuložíte do Fotek nebo neodešlete), připomínky (oznámení se plánují v telefonu), naskenovaný čárový kód čipu (fotoaparát se použije jen ke čtení kódu, snímek se neukládá), fotka stránky pasu pro předvyplnění údajů (text přečte telefon sám, fotka se po přečtení smaže a nikam se neposílá), poloha pro hledání veterinářů v okolí (zpracuje se jen v telefonu, nikam se neposílá a neukládá se; seznam ordinací je součástí aplikace), data pro widget na ploše. Po odhlášení zůstávají data v telefonu a ukážou se znovu, až se přihlásíte stejným účtem.</p>
+      <p>Videa u potíže mazlíčka (zůstávají v úložišti aplikace v telefonu, který je natočil; při ztrátě telefonu nebo odinstalování aplikace zmizí, pokud si je neuložíte do Fotek nebo neodešlete), připomínky (oznámení se plánují v telefonu), naskenovaný čárový kód čipu (fotoaparát se použije jen ke čtení kódu, snímek se neukládá), fotka stránky pasu pro předvyplnění údajů (text přečte telefon sám, fotka se po přečtení smaže a nikam se neposílá), poloha pro hledání veterinářů v okolí (na náš server se neposílá a neukládá se; seznam ordinací je součástí aplikace a vzdálenosti počítá telefon; mapu zobrazují Apple Mapy, takže Apple při zobrazení mapy zpracovává polohu a oblast mapy podle svých zásad), data pro widget na ploše. Po odhlášení zůstávají data v telefonu a ukážou se znovu, až se přihlásíte stejným účtem.</p>
     </section>
     <section>
       <h2 id="komu-udaje-predavame">5. Komu údaje předáváme</h2>
@@ -184,12 +190,12 @@
       <ul>
       <li><strong>Supabase</strong> (server a úložiště, region EU): účet (včetně e-mailu při přihlášení e-mailem), záloha, synchronizace domácnosti, fotky a dokumenty; videa jen dočasně na 14 dní, když vytvoříte PDF souhrn pro veterináře; snímek karty jen po dobu platnosti odkazu, když ho vytvoříte.</li>
       <li><strong>TelemetryDeck GmbH</strong> (Německo): anonymní statistiky.</li>
-      <li><strong>Apple</strong>: přihlášení přes Apple (volitelně místo e-mailu), oznámení, nákup předplatného.</li>
-      <li><strong>Google a Meta Platforms (Facebook)</strong>: přihlášení přes Google nebo Facebook (volitelně místo e-mailu). Dostanou jen to, že se přihlašujete do aplikace Moji chlupáči, jinak od nás nic; jsou správci údajů o svém účtu a řídí se vlastními zásadami.</li>
+      <li><strong>Apple</strong>: přihlášení přes Apple (volitelně místo e-mailu), oznámení, nákup předplatného, mapa ordinací v okolí (Apple Mapy; Apple je správcem údajů o poloze a mapě podle svých zásad, my k nim přístup nemáme).</li>
+      <li><strong>Google</strong>: přihlášení přes Google (volitelně místo e-mailu). Dostane jen to, že se přihlašujete do aplikace Moji chlupáči, jinak od nás nic; je správcem údajů o svém účtu a řídí se vlastními zásadami.</li>
       <li><strong>RevenueCat, Inc.</strong> (USA): ověření nákupů v App Store a stav předplatného, spojené s náhodným identifikátorem nákupů (RevenueCat nedostane váš e-mail ani ID účtu, s účtem ho spojuje jen náš server).</li>
       <li><strong>GitHub</strong> (USA): provoz webu mojichlupaci.cz (GitHub Pages), včetně stránky karta.html, která ukazuje sdílenou kartu. Obsah karty ani odkaz (token je za znakem #) GitHub nedostane; stránka si kartu stahuje z našeho serveru.</li>
       </ul>
-      <p>Mimo EU předáváme údaje jen službám Apple, Google a Facebook při přihlášení přes ně (řídí se jejich zásadami) a společnostem RevenueCat a GitHub, a to na základě standardních smluvních doložek EU, případně rámce EU–USA pro ochranu osobních údajů. Nikomu je neprodáváme. Členové vaší domácnosti vidí všechna data domácnosti; koho pozvete, rozhodujete vy.</p>
+      <p>Mimo EU předáváme údaje jen službám Apple a Google při přihlášení přes ně (řídí se jejich zásadami) a společnostem RevenueCat a GitHub, a to na základě standardních smluvních doložek EU, případně rámce EU–USA pro ochranu osobních údajů. Nikomu je neprodáváme. Členové vaší domácnosti vidí všechna data domácnosti; koho pozvete, rozhodujete vy.</p>
     </section>
     <section>
       <h2 id="jak-dlouho-udaje-uchovavame">6. Jak dlouho údaje uchováváme</h2>
