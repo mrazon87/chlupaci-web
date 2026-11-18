@@ -41,7 +41,6 @@ ul{list-style:none;padding:0}
 .w{max-width:1264px;margin:0 auto;padding:0 24px;position:relative}
 .trk{stroke:var(--track)}.dots{stroke:var(--acc-soft)}.arc{stroke:var(--acc)}
 .av{display:block;border-radius:50%;background:#fff;width:64px;height:64px;flex:none;object-fit:cover}.av.sm{width:34px;height:34px}
-mark.ph{background:#FFE08A;color:#4A3200;padding:0 6px;border-radius:6px;font-weight:700}
 
 /* tlačítka */
 .nav .nav-btn{white-space:nowrap;padding:0 16px}
