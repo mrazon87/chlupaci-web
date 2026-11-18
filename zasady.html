@@ -87,6 +87,7 @@
       <li>Prvních 30 dní máte všechny funkce, potom vám zůstane verze zdarma, ve které chodí oznámení o krmení, o docházejícím krmivu a o očkování; oznámení o lécích, prevenci, veterináři a platbách patří do Premium. Nic se nemaže a data zůstanou vidět i ke stažení. Placené funkce odemyká předplatné Premium, které se kupuje a ruší přes Apple.</li>
       <li>Data o mazlíčcích ani o vás neprodáváme, nepoužíváme k reklamě a v aplikaci nejsou reklamy.</li>
       <li>Posíláme anonymní statistiky, které části aplikace se používají. Vypnete je v Profil → Soukromí.</li>
+      <li>Když pošlete hlášení chyby nebo nápad, uložíme jeho text, hrubé zařízení a verzi aplikace a snímek, který sami vyberete. Hlášení se neukládá s vaším účtem.</li>
       </ul>
     </section>
     <section>
@@ -149,13 +150,13 @@
       <td data-label="Právní základ">Plnění smlouvy</td>
       </tr>
       <tr>
-      <td data-label="Údaje">Otisk e-mailu (jednosměrný otisk SHA-256, ze kterého e-mail nejde zpětně zjistit) a datum, kdy jsme ho poprvé viděli</td>
+      <td data-label="Údaje">Otisk e-mailu (jednosměrný otisk HMAC-SHA256 s tajným klíčem serveru, ze kterého e-mail nejde zpětně zjistit) a datum, kdy jsme ho poprvé viděli</td>
       <td data-label="Kde jsou">Server (Supabase, EU)</td>
       <td data-label="Proč">Aby šlo 30 dní zdarma využít jednou, i když někdo účet smaže a založí znovu</td>
       <td data-label="Právní základ">Oprávněný zájem, čl. 6 odst. 1 písm. f) GDPR</td>
       </tr>
       <tr>
-      <td data-label="Údaje">Jméno člena domácnosti (dobrovolné, nejvýš 40 znaků) a kdo úkol odškrtl a kdy</td>
+      <td data-label="Údaje">Jméno člena domácnosti (dobrovolné, nejvýš 40 znaků), kdo úkol odškrtl a kdy a kdo záznam smazal a kdy</td>
       <td data-label="Kde jsou">Telefony členů a server</td>
       <td data-label="Proč">Aby domácnost viděla, kdo krmil nebo podal lék</td>
       <td data-label="Právní základ">Plnění smlouvy</td>
@@ -165,6 +166,18 @@
       <td data-label="Kde jsou">TelemetryDeck (Německo)</td>
       <td data-label="Proč">Zjistit, co se používá a kde to drhne, a aplikaci zlepšovat</td>
       <td data-label="Právní základ">Oprávněný zájem, čl. 6 odst. 1 písm. f) GDPR; kdykoli vypnete</td>
+      </tr>
+      <tr>
+      <td data-label="Údaje">Hlášení chyby nebo nápadu (jen když ho sami odešlete): druh (chyba, nápad), text (10 až 1000 znaků), hrubé zařízení (iPhone, iPad nebo Android a hlavní verze systému), verze a číslo sestavení aplikace a volitelně snímek obrazovky, který sami vyberete. Neukládá se účet, domácnost, e-mail, jméno ani poloha, takže hlášení nejde spojit s vaším účtem; do textu a na snímek proto nedávejte osobní údaje. Odpověď neposíláme, kdo ji chce, napíše na podpora@mojichlupaci.cz</td>
+      <td data-label="Kde jsou">Server (Supabase, EU), čte je jen provozovatel</td>
+      <td data-label="Proč">Aby šlo chybu opravit a nápad zvážit</td>
+      <td data-label="Právní základ">Oprávněný zájem, čl. 6 odst. 1 písm. f) GDPR</td>
+      </tr>
+      <tr>
+      <td data-label="Údaje">Záznam instalace (denně, jen při zapnutých statistikách): náhodné číslo instalace, iOS nebo Android, hlavní verze systému, hrubá velikost displeje, verze a číslo sestavení aplikace, den prvního a posledního hlášení. Bez účtu, domácnosti, modelu a sériového čísla; podrobně níže</td>
+      <td data-label="Kde jsou">Server (Supabase, EU)</td>
+      <td data-label="Proč">Aby provozní přehled ukázal, na jaká zařízení se zaměřit</td>
+      <td data-label="Právní základ">Oprávněný zájem, čl. 6 odst. 1 písm. f) GDPR; vypnete statistikami</td>
       </tr>
       <tr>
       <td data-label="Údaje">Předplatné Premium: náhodný identifikátor nákupů, druh předplatného, platnost, historie nákupů a obnovení (ne platební karta)</td>
@@ -188,7 +201,7 @@
       <h2 id="komu-udaje-predavame">5. Komu údaje předáváme</h2>
       <p>Jen zpracovatelům, kteří nám pomáhají aplikaci provozovat, a jen v rozsahu, který potřebují:</p>
       <ul>
-      <li><strong>Supabase</strong> (server a úložiště, region EU): účet (včetně e-mailu při přihlášení e-mailem), záloha, synchronizace domácnosti, fotky a dokumenty; videa jen dočasně na 14 dní, když vytvoříte PDF souhrn pro veterináře; snímek karty jen po dobu platnosti odkazu, když ho vytvoříte.</li>
+      <li><strong>Supabase</strong> (server a úložiště, region EU): účet (včetně e-mailu při přihlášení e-mailem), záloha, synchronizace domácnosti, fotky a dokumenty, hlášení chyb a anonymní záznam instalace; videa jen dočasně na 14 dní, když vytvoříte PDF souhrn pro veterináře; snímek karty jen po dobu platnosti odkazu, když ho vytvoříte.</li>
       <li><strong>TelemetryDeck GmbH</strong> (Německo): anonymní statistiky.</li>
       <li><strong>Apple</strong>: přihlášení přes Apple (volitelně místo e-mailu), oznámení, nákup předplatného, mapa ordinací v okolí (Apple Mapy; Apple je správcem údajů o poloze a mapě podle svých zásad, my k nim přístup nemáme).</li>
       <li><strong>Google</strong>: přihlášení přes Google (volitelně místo e-mailu). Dostane jen to, že se přihlašujete do aplikace Moji chlupáči, jinak od nás nic; je správcem údajů o svém účtu a řídí se vlastními zásadami.</li>
@@ -205,6 +218,8 @@
       <li>Po smazání účtu (Profil → Můj účet → Smazat účet a zálohu v cloudu) smažeme účet, zálohu a domácnost, ve které nezůstal žádný další člen, včetně fotek a dokumentů. Domácnost s dalšími členy zůstane jim. Z telefonu se smaže i databáze tohoto účtu; fotky, dokumenty a videa se smažou také, pokud v telefonu nezůstal žádný jiný účet (jinak zůstanou na disku jako nepřístupné soubory, dokud nesmažete poslední účet v telefonu).</li>
       <li>Otisk e-mailu pro zkušební dobu smazání účtu přežije a mažeme ho 13 měsíců od chvíle, kdy jsme ho poprvé viděli. Kdo se vrátí později, má znovu 30 dní zdarma.</li>
       <li>Statistiky jsou anonymní; TelemetryDeck je uchovává podle svých pravidel.</li>
+      <li>Hlášení chyby nebo nápadu (včetně snímku) uchováváme, dokud chybu nevyřešíme nebo nápad nevyřídíme, nejdéle 12 měsíců od odeslání; pak je smažeme. Protože hlášení není spojené s účtem, smazáním účtu nezmizí a nemůžeme ho k vaší osobě dohledat; pošlete-li nám e-mail s žádostí o smazání, popište hlášení (přibližný čas a text) a smažeme ho.</li>
+      <li>Anonymní záznam instalace se na serveru automaticky nemaže a uchováváme ho, dokud provozujeme přehled zařízení (popis výše).</li>
       <li>Údaje o nákupech předplatného uchovávají Apple a RevenueCat po dobu nutnou pro účetnictví a vyřízení reklamací podle svých pravidel.</li>
       </ul>
       <p>Správcovský přehled provozu (administrace) pracuje výhradně s agregovanými údaji, například s počty uživatelů, domácností, mazlíčků a záznamů a s odhadem příjmů z předplatného; nezobrazuje ani neukládá e-maily, jména ani jiné údaje, podle kterých by šlo konkrétního člověka poznat, a skupiny s méně než třemi položkami slučuje.</p>
