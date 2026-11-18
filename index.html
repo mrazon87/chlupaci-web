@@ -8,8 +8,8 @@
 <title>Moji chlupáči – aplikace pro psa a kočku: očkování, odčervení, krmení</title>
 <meta name="description" content="Aplikace Moji chlupáči za vás pohlídá krmení, léky, očkování i veterináře. Vy máte víc času a radosti se svým chlupáčem. Brzy v App Store pro iPhone.">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1A1C1E" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F7F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1011" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://mojichlupaci.cz/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="cs_CZ">
@@ -24,10 +24,9 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preload" href="fonts/plus-jakarta-sans-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="img/alik-micka-hero.webp" as="image" type="image/webp">
-<link rel="stylesheet" href="landing.css">
-<script src="landing.js" defer></script>
+<link rel="preload" href="fonts/plus-jakarta-sans-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="uvod2.css">
+<script src="uvod2.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,9 +45,7 @@
       "url": "https://mojichlupaci.cz/",
       "name": "Moji chlupáči",
       "inLanguage": "cs",
-      "publisher": {
-        "@id": "https://mojichlupaci.cz/#organization"
-      }
+      "publisher": { "@id": "https://mojichlupaci.cz/#organization" }
     },
     {
       "@type": "SoftwareApplication",
@@ -60,194 +57,297 @@
       "inLanguage": "cs",
       "url": "https://mojichlupaci.cz/",
       "image": "https://mojichlupaci.cz/img/og.png",
-      "publisher": {
-        "@id": "https://mojichlupaci.cz/#organization"
-      },
+      "publisher": { "@id": "https://mojichlupaci.cz/#organization" },
       "offers": [
-        {
-          "@type": "Offer",
-          "name": "Verze zdarma",
-          "price": "0",
-          "priceCurrency": "CZK"
-        },
-        {
-          "@type": "Offer",
-          "name": "Premium, měsíčně",
-          "price": "49",
-          "priceCurrency": "CZK"
-        },
-        {
-          "@type": "Offer",
-          "name": "Premium, ročně",
-          "price": "499",
-          "priceCurrency": "CZK"
-        },
-        {
-          "@type": "Offer",
-          "name": "Family Premium, měsíčně",
-          "price": "79",
-          "priceCurrency": "CZK"
-        },
-        {
-          "@type": "Offer",
-          "name": "Family Premium, ročně",
-          "price": "799",
-          "priceCurrency": "CZK"
-        }
+        { "@type": "Offer", "name": "Verze zdarma", "price": "0", "priceCurrency": "CZK" },
+        { "@type": "Offer", "name": "Premium, měsíčně", "price": "69", "priceCurrency": "CZK" },
+        { "@type": "Offer", "name": "Premium, ročně", "price": "499", "priceCurrency": "CZK" }
       ]
     }
   ]
 }
 </script>
 </head>
-<body class="landing2">
+<body>
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6 3h3l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v3a3 3 0 0 1-3 3A15 15 0 0 1 3 6a3 3 0 0 1 3-3z"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-40 12 12)"/><path d="M9.2 9.2l5.6 5.6"/></symbol>
+  <symbol id="i-bowl" viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M8 11c0-2 1.6-3.5 4-3.5s4 1.5 4 3.5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M9.5 14.5c.6.8 1.5 1.2 2.6 1.2 1.4 0 2.4-.7 2.4-1.8 0-2.5-5-1.2-5-3.7 0-1 .9-1.8 2.3-1.8 1 0 1.8.4 2.4 1"/></symbol>
+  <symbol id="i-vet" viewBox="0 0 24 24"><path d="M6 3v6a4 4 0 0 0 8 0V3M5 3h2M13 3h2"/><path d="M10 13v2a4.5 4.5 0 0 0 9 0v-1"/><circle cx="19" cy="12" r="2"/></symbol>
+  <symbol id="i-issue" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 9a5 5 0 0 1 8 0M12 9l1.5-2"/></symbol>
+  <symbol id="i-shot" viewBox="0 0 24 24"><path d="M14 4l6 6M17 7l-9 9-3 1 1-3 9-9M9 12l3 3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6z"/><path d="M9 12l2.2 2.2L15 10.5"/></symbol>
+  <symbol id="i-eu" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 6v.1M12 18v.1M6 12h.1M18 12h.1M7.8 7.8l.1.1M16.2 16.2l.1.1M7.8 16.2l.1-.1M16.2 7.8l.1-.1"/></symbol>
+  <symbol id="i-offline" viewBox="0 0 24 24"><path d="M4 9a12 12 0 0 1 16 0M7 12.5a8 8 0 0 1 10 0M10 16a4 4 0 0 1 4 0"/><path d="M4 4l16 16"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 6h16v10H9l-5 4z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M4.5 8l7.5 5.5L19.5 8"/></symbol>
+</svg>
 <a class="skip" href="#top">Přeskočit na obsah</a>
-<header class="gnav" id="gnav">
-  <div class="gnav-bar">
-    <a class="gnav-brand" href="index.html" aria-label="Moji chlupáči, úvod"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></i><span>Moji chlupáči</span></a>
-    <nav class="gnav-links" id="gnav-links" aria-label="Hlavní">
-      <a href="index.html" aria-current="page">Přehled</a>
-      <a href="funkce.html">Co umí</a>
-      <a href="funkce.html#cena">Ceny</a>
-      <div class="gnav-dd">
-        <button type="button" aria-expanded="false" aria-controls="gnav-rady">Rady pro majitele<svg class="gnav-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-        <div class="gnav-panel" id="gnav-rady"><a href="ockovani.html"><strong>Očkování psa a kočky</strong><span>Jak si pohlídat termíny</span></a><a href="odcerveni.html"><strong>Odčervení a klíšťata</strong><span>Pravidelná ochrana</span></a><a href="zdravotni-karta.html"><strong>Zdravotní karta v mobilu</strong><span>Co mít po ruce u veterináře</span></a><a href="pece-ve-vice-lidech.html"><strong>Péče ve více lidech</strong><span>Aby nikdo nekrmil dvakrát</span></a></div>
+
+<header class="hero" id="hero"><div class="w">
+  <nav class="nav" aria-label="Hlavní">
+    <a class="logo" href="index.html" aria-label="Moji chlupáči, úvod"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="13" fill="none" class="lg-t" stroke-width="5"/><circle cx="17" cy="17" r="13" fill="none" class="lg-a" stroke-width="5" stroke-linecap="round" stroke-dasharray="54 82" transform="rotate(-150 17 17)"/><circle cx="17" cy="17" r="4" class="lg-d"/></svg><span>Moji chlupáči</span></a>
+    <div class="ln"><a href="#den">Jeden den</a><a href="#umi">Co umí</a><a href="#verze">Verze</a><a href="#otazky">Otázky</a></div>
+    <a class="btn nav-btn" href="#otazky">Brzy v App Store</a>
+  </nav>
+  <div class="hg">
+    <div class="hcopy">
+      <p class="eb">Aplikace pro majitele psů a koček</p>
+      <h1>Méně starostí,<br><i>více radosti.</i></h1>
+      <p class="lead">Moji chlupáči za vás pohlídají krmení, léky, očkování i veterináře. Vy máte víc času a radosti se svým chlupáčem.</p>
+      <div class="cta"><span class="btn lg is-static">Brzy v App Store pro iPhone</span><a class="btn lg gh" href="#den">Projít si jeden den <svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+      <p class="soon"><i></i>Teď aplikaci ladíme s pejskaři a kočkaři v praxi</p>
+    </div>
+    <div class="stage">
+      <div class="ring" role="img" aria-label="Ukázka obrazovky Dnes: kruh dne s úkoly od rána do večera. Za chvíli je na řadě Kapky do uší pro psa, tlačítko Podáno.">
+        <svg class="rs rs-base" viewBox="0 0 560 560" aria-hidden="true"><circle cx="280" cy="280" r="232" fill="none" class="trk" stroke-width="20" stroke-dasharray="1178 281" transform="rotate(120 280 280)" stroke-linecap="round"/><circle cx="280" cy="280" r="170" fill="none" class="dots" stroke-width="1.5" stroke-dasharray="2 8"/></svg>
+        <svg class="rs arcw" viewBox="0 0 560 560" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8ED2D8"/><stop offset="1" stop-color="#297F86"/></linearGradient><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter></defs><path d="M164.0 480.9A232 232 0 0 1 193.1 64.9" fill="none" stroke="rgba(93,184,192,.5)" stroke-width="40" stroke-linecap="round" filter="url(#b)"/><path d="M164.0 480.9A232 232 0 0 1 193.1 64.9" fill="none" stroke="url(#g)" stroke-width="20" stroke-linecap="round"/></svg>
+        <span class="nd on n1"><svg class="ic" aria-hidden="true"><use href="#i-bowl"/></svg></span><span class="nd on n2"><svg class="ic" aria-hidden="true"><use href="#i-pill"/></svg></span><span class="nd n3"><svg class="ic" aria-hidden="true"><use href="#i-vet"/></svg></span><span class="nd n4"><svg class="ic" aria-hidden="true"><use href="#i-bowl"/></svg></span><span class="nd n5"><svg class="ic" aria-hidden="true"><use href="#i-pill"/></svg></span>
+        <span class="hl h7">7</span><span class="hl h14">14</span><span class="hl h21">21</span>
+        <div class="ctr"><span class="duo"><img class="av" src="img/uvod-dog.webp" alt="" width="64" height="64"><img class="av" src="img/uvod-cat.webp" alt="" width="64" height="64"></span><small>Dnes v 8:00 · za 19 min</small><b>Kapky do uší</b><em>3 kapky · v kapsičce paštiky</em><span class="go"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Podáno</span></div>
       </div>
-      <a href="podpora.html">Podpora</a>
-    </nav>
-    <span class="gnav-cta gnav-soon">Brzy v App Store</span>
-    <button class="gnav-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="gnav-links"><i></i><i></i></button>
+      <div class="chips" aria-hidden="true">
+        <div class="chip c1"><img class="av sm" src="img/uvod-cat.webp" alt="" width="34" height="34"><span><b>Nakrmeno</b><em>Jana · 7:32</em></span><svg class="ic" width="16" height="16"><use href="#i-check"/></svg></div>
+        <div class="chip c2"><svg class="ic" width="18" height="18"><use href="#i-shot"/></svg><span><b>Vzteklina platí ještě 14 dní</b><em>ozveme se včas</em></span></div>
+        <div class="chip c3"><svg class="ic" width="18" height="18"><use href="#i-phone"/></svg><span><b>Pohotovost nonstop</b><em>1,8 km · otevřeno</em></span></div>
+      </div>
+      <p class="cap">Ilustrační náhled, aplikace ještě není veřejná</p>
+    </div>
   </div>
-</header>
+  <ul class="trust">
+    <li><svg class="ic" width="17" height="17" aria-hidden="true"><use href="#i-x"/></svg>Bez reklam</li>
+    <li><svg class="ic" width="17" height="17" aria-hidden="true"><use href="#i-shield"/></svg>Data jsou vaše</li>
+    <li><svg class="ic" width="17" height="17" aria-hidden="true"><use href="#i-eu"/></svg>Server v EU</li>
+    <li><svg class="ic" width="17" height="17" aria-hidden="true"><use href="#i-offline"/></svg>Funguje i bez signálu</li>
+    <li><svg class="ic" width="17" height="17" aria-hidden="true"><use href="#i-chat"/></svg>Česky</li>
+    <li><svg class="ic" width="17" height="17" aria-hidden="true"><use href="#i-heart"/></svg>Zdarma napořád pro 1 mazlíčka</li>
+  </ul>
+</div></header>
+
 <main id="top">
-<section class="wrap hero">
-  <div>
-    <h1 aria-label="Méně starostí, více radosti.">
-      <span class="w i0"><span>Méně</span></span> <span class="w i1"><span>starostí,</span></span><br>
-      <span class="w i2"><span class="shimmer">více</span></span> <span class="w i3"><span class="shimmer">radosti.</span></span>
-    </h1>
-    <p class="lead">Aplikace pro vaše chlupáče, psy i kočky. Pohlídá krmení, léky, očkování i veterináře, ať máte víc času na mazlení.</p>
-    <div class="row" id="stahnout">
-      <a class="btn" data-mag href="podpora.html#napiste">Dejte mi vědět, až vyjde<i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
-      <span class="soon">Brzy v App Store pro iPhone</span>
-    </div>
-  </div>
-  <div class="stage" id="stage">
-    <div class="tilt" id="tilt">
-      <div class="chip c1"><b>✓</b>Nakrmeno · Jana · 7:32</div>
-      <div class="chip c2"><b>✓</b>Očkování platí do 3. 2027</div>
-      <div class="chip c3 red"><b>●</b>Pohotovost nejblíž</div>
-      <div class="chip c4"><b>✓</b>Kapky do uší · podáno</div>
-      <img class="hero-img" alt="Pes a kočka, maskoti aplikace" src="img/alik-micka-hero.webp" width="560" height="525">
-    </div>
-    <span class="tag">Ilustrační náhled, aplikace ještě není veřejná</span>
-  </div>
-</section>
+<section class="facts-s" aria-label="Pět čísel"><div class="w"><ul class="facts">
+  <li class="fa rv"><b data-n="1">1<small>klepnutí</small></b><span>a úkol je odškrtnutý: v oznámení, ve widgetu i v aplikaci</span></li>
+  <li class="fa rv d1"><b data-n="14">14<small>dní</small></b><span>předem se ozveme, že končí očkování, i ve verzi zdarma</span></li>
+  <li class="fa rv d2"><b data-n="5">5<small>lidí</small></b><span>sdílí jedno Premium, platí jen jeden z domácnosti</span></li>
+  <li class="fa rv d3"><b data-n="0">0<small>reklam</small></b><span>data o vás ani o mazlíčcích neprodáváme</span></li>
+  <li class="fa rv d4"><b data-n="90">90<small>dní</small></b><span>předem dáme vědět, kdyby služba končila; export je zdarma napořád</span></li>
+</ul></div></section>
 
-<div class="tick" aria-label="Otázky, které aplikace řeší"><div>
-  <span>Kdy jsme odčervovali?</span><span>Nakrmil už ho někdo?</span><span>Kdy končí očkování?</span><span>Kolik nás chlupáč stojí?</span><span>Kam v neděli ve 22:00?</span>
-</div></div>
-<section class="story" id="pribeh" aria-label="Co aplikace umí">
-  <div class="pin wrap">
-    <div class="stx"><div class="st on" data-i="0"><h2>Ráno jeden pohled.</h2><p>Víte, co dnes čeká. Oznámení o krmení přijde samo, i když je aplikace zavřená, a odškrtnete ho jedním klepnutím.</p></div><div class="st" data-i="1"><h2>Krmení bez dohadování.</h2><p>Každý dá stejnou porci a krmivo koupíte dřív, než dojde. Aplikace spočítá, na kolik dní zásoba vydrží.</p></div><div class="st" data-i="2"><h2>Zdraví na jedné stránce.</h2><p>Očkování, léky, váha i potíže. Pošlete kartu veterináři předem nebo ji ukažte v ordinaci.</p></div><div class="st" data-i="3"><h2>V nouzi nic nehledáte.</h2><p>Pohotovost nejblíž, telefon na veterináře a karta pro pohotovost. Na jedno klepnutí.</p></div></div>
+<section class="day" id="den"><div class="w">
+  <div class="sh"><p class="eb">Jeden den s Mojimi chlupáči</p><h2>Znáte to? Od rána do noci za vás myslíme na to, na co nemáte hlavu.</h2></div>
+  <div class="tlw">
+    <article class="mo rv">
+      <div class="mt"><b>7:30</b><i></i></div>
+      <div class="mb"><h3>„Nakrmil už ho někdo?“</h3><p>Na Dnes uvidíte „Nakrmeno · Jana · 7:32“. Nikdo nekrmí dvakrát a nikdo nezapomene. Celá domácnost je v obraze.</p></div>
+      <div class="mu" aria-hidden="true"><div class="ui">
+        <div class="row"><img class="av sm" src="img/uvod-dog.webp" alt="" width="34" height="34"><span><b>Krmení · Rex</b><em>Nakrmeno · Jana · 7:32</em></span><u class="okdot"><svg class="ic" width="15" height="15"><use href="#i-check"/></svg></u></div>
+        <div class="row"><img class="av sm" src="img/uvod-cat.webp" alt="" width="34" height="34"><span><b>Krmení · Micka</b><em>60 g · čeká</em></span><span class="mini">Nakrmeno</span></div>
+      </div></div>
+    </article>
+    <article class="mo rv">
+      <div class="mt"><b>8:00</b><i></i></div>
+      <div class="mb"><h3>„Kdy jsme vlastně odčervovali?“</h3><p>Aplikace si to pamatuje za vás: kdy jste podali a kdo to byl. Příští termín uvidíte v aplikaci a s Premium vám ho včas připomeneme.</p></div>
+      <div class="mu" aria-hidden="true"><div class="ui">
+        <div class="row"><span class="ib"><svg class="ic" width="18" height="18"><use href="#i-pill"/></svg></span><span><b>Odčervení · Rex</b><em>naposledy 12. 8. · podala Jana</em></span></div>
+        <div class="bar"><i class="w82"></i></div><small>další za 16 dní · připomeneme</small>
+      </div></div>
+    </article>
+    <article class="mo rv">
+      <div class="mt"><b>14:00</b><i></i></div>
+      <div class="mb"><h3>„Kdy končí očkování? A kolik nás pes vlastně stojí?“</h3><p>Platnost očkování hlídáme a ozveme se 14 dní předem, i ve verzi zdarma. Náklady uvidíte za měsíc i za rok a plánované platby vás nezaskočí.</p></div>
+      <div class="mu" aria-hidden="true"><div class="ui two">
+        <div class="st"><b>2 540 Kč</b><em>tento měsíc</em><div class="seg"><i class="s1"></i><i class="s2"></i><i class="s3"></i></div></div>
+        <div class="st"><b>14 dní</b><em>do konce očkování</em><svg width="54" height="54" viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="none" class="trk" stroke-width="6"/><circle cx="27" cy="27" r="22" fill="none" stroke="#C27A1E" stroke-width="6" stroke-linecap="round" stroke-dasharray="20 138" transform="rotate(-90 27 27)"/></svg></div>
+      </div></div>
+    </article>
+    <article class="mo n rv">
+      <div class="mt"><b>22:00</b><i></i></div>
+      <div class="mb"><h3>„Neděle večer, pes snědl čokoládu. Kam teď?“</h3><p>Co dělat v nouzi máte na jedno klepnutí: pohotovost nejblíž, telefon na vašeho veterináře a karta pro pohotovost.</p></div>
+      <div class="mu" aria-hidden="true"><div class="ui dark">
+        <small>Neděle 22:00 · Spěchá to</small>
+        <span class="call"><svg class="ic" width="20" height="20"><use href="#i-phone"/></svg>Zavolat pohotovost</span>
+        <div class="row"><span class="ib"><svg class="ic" width="18" height="18"><use href="#i-doc"/></svg></span><span><b>Karta pro pohotovost</b><em>alergie, léky, váha · PDF</em></span></div>
+      </div></div>
+    </article>
   </div>
-</section>
+</div></section>
 
-<section class="s wrap" id="kroky">
-  <h2 class="rv">Tři kroky a máte klid</h2>
+<section id="proc"><div class="w">
+  <div class="sh rv"><p class="eb">Proč aplikace, a ne hlava a lednička</p><h2>Péči o mazlíčka dnes držíte na pěti místech. Tady je na jednom.</h2></div>
+  <div class="vs">
+    <div class="vc old rv"><h3>Bez aplikace</h3><ul>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-x"/></svg>Očkovací průkaz v šuplíku, termín v hlavě</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-x"/></svg>„Krmil jsi?“ v rodinném chatu, někdy dvakrát, někdy vůbec</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-x"/></svg>Lék na lednici, dávku si pamatuje jen jeden z vás</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-x"/></svg>Účtenky od veterináře nikde, kolik pes stojí, nevíte</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-x"/></svg>V noci hledáte pohotovost v prohlížeči</li>
+    </ul></div>
+    <div class="vc new rv d1"><h3><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-check"/></svg>S Mojimi chlupáči</h3><ul>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Platnost očkování hlídáme a ozveme se 14 dní předem</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Na Dnes je vidět, kdo krmil a kdy. Nikdo nekrmí dvakrát</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Lék přijde jako oznámení a odškrtnete ho jedním klepnutím</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Náklady za měsíc i rok, plánované platby vás nezaskočí</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Pohotovost nejblíž a telefon na veterináře na jedno klepnutí</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<section class="s0" id="kroky"><div class="w">
+  <div class="sh rv"><p class="eb">Jak to funguje</p><h2>Tři kroky a máte klid.</h2></div>
   <div class="steps">
-    <div class="step rv"><div class="n">1</div><h3>Přidáte chlupáče</h3><p>Průvodce se zeptá na jméno, fotku a na to, co chcete hlídat. Údaje načtete i z fotky pasu.</p></div>
-    <div class="step rv"><div class="n">2</div><h3>Aplikace připomene</h3><p>Ozveme se včas, i když máte aplikaci zavřenou, a na hotové věci už nepípáme.</p></div>
-    <div class="step rv"><div class="n">3</div><h3>Odškrtnete klepnutím</h3><p>„Podáno“ nebo „Nakrmeno“ přímo v oznámení, ve widgetu na ploše nebo v aplikaci.</p></div>
+    <div class="sp rv"><span class="num"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" class="trk" stroke-width="6"/><circle cx="32" cy="32" r="28" fill="none" class="arc" stroke-width="6" stroke-linecap="round" stroke-dasharray="58 176" transform="rotate(-90 32 32)"/></svg>1</span><h3>Přidáte mazlíčka</h3><p>Průvodce se zeptá na jméno, fotku a na to, co chcete hlídat. Údaje načtete i z fotky pasu.</p></div>
+    <div class="sp rv d1"><span class="num"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" class="trk" stroke-width="6"/><circle cx="32" cy="32" r="28" fill="none" class="arc" stroke-width="6" stroke-linecap="round" stroke-dasharray="116 176" transform="rotate(-90 32 32)"/></svg>2</span><h3>Aplikace připomene</h3><p>Ozveme se včas, i když máte aplikaci zavřenou, a na hotové věci už nepípáme. Všechny úkoly máte v aplikaci vždy po ruce.</p></div>
+    <div class="sp rv d2"><span class="num"><svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28" fill="none" class="trk" stroke-width="6"/><circle cx="32" cy="32" r="28" fill="none" class="arc" stroke-width="6" stroke-linecap="round" stroke-dasharray="174 176" transform="rotate(-90 32 32)"/></svg>3</span><h3>Odškrtnete jedním klepnutím</h3><p>„Podáno“ nebo „Nakrmeno“ přímo v oznámení, ve widgetu na ploše nebo v aplikaci.</p></div>
   </div>
-</section>
+</div></section>
 
-<section class="s wrap" id="funkce">
-  <h2 class="rv">Všechno o péči na jednom místě</h2>
-  <p class="lede rv">Od ranního krmení po noční pohotovost.</p>
+<section class="s0" id="umi"><div class="w">
+  <div class="sh"><p class="eb">Co aplikace umí</p><h2>Všechno o péči na jednom místě.</h2></div>
   <div class="bento">
-    <article class="cell w4 rv"><span class="pill">V nouzi</span><h3>Co dělat v nouzi: na jedno klepnutí</h3><p>Když jde o čas, nehledáte. Pohotovost nejblíž, telefon na vašeho veterináře a karta pro pohotovost v PDF.</p><div class="sosbtn"><span>Pohotovost nejblíž</span><span aria-hidden="true">›</span></div></article>
-    <article class="cell rv"><h3>Domácnost</h3><p>Pozvěte rodinu QR kódem. Všichni vidí, kdo co splnil.</p><div class="mini"><div class="ok"><span>Nakrmeno · Jana</span><b>7:32</b></div><div class="ok"><span>Podáno · Tomáš</span><b>20:01</b></div></div></article>
-    <article class="cell rv"><h3>Krmení a zásoby</h3><p>Víte, na jak dlouho krmivo vystačí. Nic nedojde nečekaně.</p><div class="mini"><div><span>Orijen Adult</span><b>na 4 dny</b></div><div><span>Kočkolit</span><b>na 12 dní</b></div></div></article>
-    <article class="cell rv"><h3>Zdravotní karta pro veterináře</h3><p>Očkování, prevence, léky, váha i potíže na jedné stránce. Pošlete ji předem nebo ukažte v ordinaci.</p><div class="mini"><div><span>Očkování</span><b>vzteklina do 3. 2027</b></div><div><span>Prevence</span><b>odčervení 1. 11.</b></div></div></article>
-    <article class="cell rv"><h3>Dnes a Co přijde</h3><p>Ráno otevřete jednu obrazovku a víte, co dnes čeká. Pod ní je, co přijde.</p><div class="mini"><div><span>Veterinář · Kontrola uší</span><b>st 4. 11.</b></div><div><span>Dojde krmivo · Orijen</span><b>čt 5. 11.</b></div></div></article>
+    <div class="tl rv big"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-grid"/></svg></span><h3>Dnes a Co přijde</h3><p>Ráno otevřete jednu obrazovku a víte, co dnes čeká. Pod ní je, co přijde: veterinář, odčervení i to, že dochází krmivo.</p>
+      <div class="wg" aria-hidden="true"><svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="36" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="9"/><circle cx="46" cy="46" r="36" fill="none" stroke="#8ED2D8" stroke-width="9" stroke-linecap="round" stroke-dasharray="150 227" transform="rotate(-90 46 46)"/></svg><span><b>2 z 5</b><em>Další: lék v 8:00</em></span></div></div>
+    <div class="tl rv sos"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-phone"/></svg></span><h3>Co dělat v nouzi</h3><p>Když jde o čas, nehledáte. Pohotovost nejblíž, telefon na vašeho veterináře a karta pro pohotovost v PDF.</p></div>
+    <div class="tl rv"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-bowl"/></svg></span><h3>Krmení a zásoby</h3><p>Víte, kolik dát do misky a na jak dlouho krmivo vystačí. Po nákupu jen klepnete na „Koupeno“.</p></div>
+    <div class="tl rv d1"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-doc"/></svg></span><h3>Zdravotní karta pro veterináře</h3><p>Očkování, prevence, léky, váha, alergie i potíže na jedné stránce. Pošlete ji předem, nebo ukážete v ordinaci.</p></div>
+    <div class="tl rv d2"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-issue"/></svg></span><h3>Potíže, váha a deník</h3><p>Zapíšete, jak se mazlíček má, a graf ukáže, jestli je mu líp. K tomu váha s historií a deník s fotkami.</p></div>
+    <div class="tl rv wide"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-grid"/></svg></span><h3>Widget na ploše</h3><p>Co dnes čeká, vidíte i bez otevření aplikace. Odškrtnete přímo z plochy a je tam i tlačítko „Co dělat?“.</p></div>
+    <div class="tl rv wide d1"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-home"/></svg></span><h3>Domácnost</h3><p>S Premium pozvete partnera nebo rodinu QR kódem. Všichni vidí, kdo co splnil. Platí jen jeden z vás.</p></div>
   </div>
-</section>
+  <p class="more rv"><a href="funkce.html">Všechny funkce a verze <svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+</div></section>
 
-<section class="s wrap" id="denik">
-  <div class="diary">
-    <div>
-      <h2 class="rv">Deník vašeho chlupáče</h2>
-      <p class="lede rv">Fotky, hezké chvíle, potíže i váha. Všechno se zapisuje samo nebo jedním klepnutím, takže za rok víte, co se kdy stalo a jestli je mu líp. Příště u veterináře nehledáte v paměti.</p>
-    </div>
-    <div class="book rv" aria-label="Ukázka stránek deníku">
-      <article class="page"><div class="ph"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></div><time>12. 10.</time><p>Večer se hodně škrábala, ucho červené.</p><span class="t">Potíž</span></article>
-      <article class="page"><div class="ph"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></div><time>20. 10.</time><p>První procházka po nemoci. Konečně zase honila míček.</p><span class="t">Hezká chvíle</span></article>
-      <article class="page"><div class="ph"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18" cy="10" r="2"/><path d="M7.5 17c0-3 2.2-5.5 4.5-5.5s4.5 2.5 4.5 5.5c0 1.8-1.6 2.5-4.5 2.5S7.5 18.8 7.5 17z"/></svg></div><time>1. 11.</time><p>Odčervení hotovo, váha 38 kg.</p><span class="t">Váha</span></article>
-    </div>
+<section class="s0" id="pripominky"><div class="w"><div class="notif">
+  <div class="rv"><p class="eb">Připomínky, které neobtěžují</p>
+    <div class="sh"><h2>Ozveme se včas. A na hotové věci už nepípáme.</h2><p>Oznámení přijde, i když máte aplikaci zavřenou a i bez internetu. „Podáno“ nebo „Nakrmeno“ klepnete přímo v něm. Když úkol splní někdo z rodiny, vám už nic nezazvoní.</p></div>
+    <p class="not"><b>Zdarma:</b> krmení, očkování a docházející krmivo. <b>S Premium:</b> léky, odčervení, návštěvy veterináře a platby.</p></div>
+  <div class="lock rv d1" aria-hidden="true"><time>8:00</time><small>úterý 17. listopadu</small>
+    <div class="nt"><u>Moji chlupáči · teď</u><b>Kapky do uší · Rex</b><em>3 kapky, v kapsičce paštiky</em><div class="ac"><span>Podáno</span><span>Za hodinu</span><span>Vynechat</span></div></div>
+    <div class="nt"><u>Moji chlupáči · 7:30</u><b>Krmení · Rex, Micka</b><em>Rex 90 g · Micka 60 g Granule</em><div class="ac"><span>Nakrmeno</span><span>Za hodinu</span></div></div>
+    <div class="nt"><u>Moji chlupáči · 6:45</u><b>Dnes vás čekají 3 věci</b><em>První v 7:30 krmení.</em></div></div>
+</div></div></section>
+
+<section class="s0" id="pro-koho"><div class="w">
+  <div class="sh rv"><p class="eb">Pro koho</p><h2>Pro každého, kdo se o mazlíčka stará.</h2></div>
+  <div class="who">
+    <div class="wh rv"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-home"/></svg></span><h3>Rodina s dětmi</h3><p>Každý vidí, kdo už krmil a kdo podal lék. S Premium sdílí domácnost až 5 lidí a platí jen jeden z nich.</p></div>
+    <div class="wh rv d1"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-heart"/></svg></span><h3>Senioři</h3><p>Velké písmo, velká tlačítka a jednoduché obrazovky. Aplikace se přizpůsobí velikosti písma nastavené v iPhonu.</p></div>
+    <div class="wh rv d2"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-doc"/></svg></span><h3>Hlídání u babičky</h3><p>Rodina i hlídač vědí, kdo už nakrmil a kdy je další lék. Plán péče na jednu stránku vytisknete a necháte u hlídání.</p></div>
   </div>
-</section>
+</div></section>
 
-<section class="s wrap" id="vse">
-  <h2 class="rv">Všechno, co potřebujete, na jednom místě</h2>
-  <p class="lede rv">Hlavní funkce, se kterými aplikace vychází.</p>
-  <div class="feat">
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg></span><div><h3>Dnes</h3><p>Ráno jedna obrazovka: co dnes čeká a kdo už co udělal.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3.5l-7 7a4.2 4.2 0 0 0 6 6l7-7a4.2 4.2 0 0 0-6-6z"/><path d="M7 7l6 6"/></svg></span><div><h3>Léky a prevence</h3><p>Dávky, odčervení a prevence s připomínkou včas.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span><div><h3>Očkování</h3><p>Platnost hlídáme za vás a ozveme se předem.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></span><div><h3>Krmení a zásoby</h3><p>Kolik dát do misky a na jak dlouho krmivo vystačí.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span><div><h3>Váha a potíže</h3><p>Graf ukáže, jestli je mazlíčkovi líp. Váha s historií.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg></span><div><h3>Deník</h3><p>Fotky, hezké chvíle a poznámky, které za rok oceníte.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></span><div><h3>Zdravotní karta</h3><p>Jedna stránka pro veterináře, v PDF nebo odkazem jen ke čtení.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><div><h3>Domácnost</h3><p>Rodina i hlídač vidí, kdo už nakrmil a podal lék.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg></span><div><h3>Co dělat v nouzi</h3><p>Pohotovost nejblíž, telefon na veterináře, Záchranka a pomoc na konci cesty.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><h3>Veterináři v okolí</h3><p>Mapa s ordinacemi, hodinami a navigací; pohotovosti označené.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></span><div><h3>Náklady</h3><p>Kolik chlupáč stojí za měsíc i rok a co vás čeká.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></span><div><h3>Historie a hledání</h3><p>Všechny záznamy na jednom místě, s filtry a hledáním.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M10.5 18h3"/></svg></span><div><h3>Widgety na ploše</h3><p>Odškrtnete úkol přímo z plochy iPhonu.</p></div></article>
-    <article class="f rv"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3M21 14v.5M14 20.5h3M20.5 17.5v3"/></svg></span><div><h3>Sdílení odkazem</h3><p>Kartu pošlete hlídači nebo veterináři jen ke čtení.</p></div></article>
+<section class="prem" id="premium"><div class="w">
+  <div class="sh rv"><p class="eb">Proč si lidé berou Premium</p><h2>Šest důvodů, kdy se vyplatí.</h2><p>Verze zdarma stačí na jednoho mazlíčka a základní hlídání. Premium je pro chvíle, kdy je péče složitější, nebo se o ni dělíte.</p></div>
+  <div class="why">
+    <div class="wy rv"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-pill"/></svg></span><span class="tg">Premium</span><h3>Léky bez výpadku</h3><p>Oznámení v čas dávky a připomenutí, když dávka uteče. U dlouhodobé léčby vidíte, jak ji držíte.</p><q>Dal už mu někdo ten prášek?</q></div>
+    <div class="wy rv d1"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-home"/></svg></span><span class="tg">Premium</span><h3>Celá rodina v jedné aplikaci</h3><p>Domácnost 2 až 5 lidí. Každý vidí, kdo co splnil, a platí jen jeden z vás.</p><q>Nakrmil už ho někdo?</q></div>
+    <div class="wy rv d2"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-grid"/></svg></span><span class="tg">Premium</span><h3>Víc mazlíčků</h3><p>Pes i kočka, nebo celá smečka. Každý má svůj kruh dne, společné úkoly odškrtnete najednou.</p><q>Kdo z nich má dnes co?</q></div>
+    <div class="wy rv"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-coin"/></svg></span><span class="tg">Premium</span><h3>Náklady pod kontrolou</h3><p>Výdaje za měsíc i rok, plánované platby a připomenutí pojistky nebo očkování předem.</p><q>Kolik nás vlastně stojí?</q></div>
+    <div class="wy rv d1"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-doc"/></svg></span><span class="tg">Premium</span><h3>Zdravotní karta v PDF</h3><p>Očkování, léky, váha, alergie a potíže na jedné stránce. Pošlete ji veterináři před návštěvou.</p><q>Co všechno mu mám říct?</q></div>
+    <div class="wy rv d2"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-vet"/></svg></span><span class="tg">Premium</span><h3>Návštěvy veterináře</h3><p>Připomenutí termínu, body, na které se chcete zeptat, a souhrn posledních týdnů pro lékaře.</p><q>Na co jsem se chtěl zeptat?</q></div>
   </div>
-</section>
+  <div class="math" id="cena">
+    <div class="mc rv"><h3>Jedno Premium pro celou domácnost</h3><p class="big"><b><small>necelých</small> 42 <small>Kč měsíčně</small></b></p><p>při roční platbě 499 Kč. Měsíčně 69 Kč, ročně ušetříte 329 Kč. Platí jeden člen a Premium mají všichni v domácnosti.</p><div class="ppl" aria-hidden="true"><i>O</i><i>J</i><i>P</i><i>+</i><i>+</i></div></div>
+    <div class="mc2 rv d1"><h3>Nic neriskujete</h3><ul>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Verze zdarma zůstává napořád, nic se nesmaže</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Předplatné zrušíte kdykoli v Nastavení Apple ID</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Export všech dat je zdarma i bez Premium</li>
+      <li><svg class="ic" width="16" height="16" aria-hidden="true"><use href="#i-check"/></svg>Žádné reklamy v žádné verzi</li>
+    </ul></div>
+  </div>
+  <table class="cmp rv" role="table">
+    <caption class="sr-only">Co je ve verzi zdarma a co v Premium</caption>
+    <thead role="rowgroup"><tr role="row"><th scope="col" role="columnheader"><span class="sr-only">Funkce</span></th><th scope="col" role="columnheader">Zdarma</th><th scope="col" role="columnheader">Premium</th></tr></thead>
+    <tbody role="rowgroup">
+      <tr role="row"><th scope="row" role="rowheader">Mazlíčci</th><td role="cell" data-l="Zdarma">1</td><td role="cell" data-l="Premium">neomezeně</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Domácnost</th><td role="cell" data-l="Zdarma">jen vy</td><td role="cell" data-l="Premium">2 až 5 lidí, platí jeden</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Oznámení</th><td role="cell" data-l="Zdarma">krmení, očkování, docházející krmivo</td><td role="cell" data-l="Premium">navíc léky, prevence, veterinář, platby</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Dnes, kalendář, widget</th><td role="cell" data-l="Zdarma">všechny úkoly</td><td role="cell" data-l="Premium">všechny úkoly</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Co dělat v nouzi</th><td role="cell" data-l="Zdarma">ano</td><td role="cell" data-l="Premium">ano</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Náklady a plánované platby</th><td role="cell" data-l="Zdarma" class="no">ne</td><td role="cell" data-l="Premium">ano</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Zdravotní karta a souhrn pro veterináře v PDF</th><td role="cell" data-l="Zdarma" class="no">ne (karta pro pohotovost ano)</td><td role="cell" data-l="Premium">ano</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Dokumenty</th><td role="cell" data-l="Zdarma">5 na mazlíčka</td><td role="cell" data-l="Premium">víc než 5</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Grafy</th><td role="cell" data-l="Zdarma">poslední měsíc</td><td role="cell" data-l="Premium">delší období</td></tr>
+      <tr role="row"><th scope="row" role="rowheader">Export všech dat</th><td role="cell" data-l="Zdarma">ano</td><td role="cell" data-l="Premium">ano</td></tr>
+    </tbody>
+  </table>
+</div></section>
 
-<section class="s wrap">
-  <p class="manifest" id="manifest">Chceme, abyste nemuseli na všechno myslet. A měli víc času a radosti se svými chlupáči.</p>
-</section>
+<section class="data" id="data"><div class="w">
+  <div class="sh"><p class="eb">Na čem stavíme</p><h2>Vaše data, vaše pravidla.</h2><p>Aplikace, které svěříte zdraví svého mazlíčka, vám musí říct, co s daty dělá. Tady je to celé.</p></div>
+  <div class="pr">
+    <div class="pc rv"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-shield"/></svg></span><h3>Data jsou vaše</h3><p>Export všech dat je zdarma napořád, i s fotkami. Kdyby služba končila, dáme vědět nejméně 90 dní předem.</p></div>
+    <div class="pc rv d1"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-eu"/></svg></span><h3>Server v EU</h3><p>Záloha a sdílení domácnosti běží na serveru v Evropské unii.</p></div>
+    <div class="pc rv d2"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-x"/></svg></span><h3>Bez reklam</h3><p>Data o vás ani o mazlíčcích neprodáváme a nepoužíváme k reklamě.</p></div>
+    <div class="pc rv d3"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-offline"/></svg></span><h3>I bez signálu</h3><p>Data máte v telefonu, připomínky přijdou i bez internetu.</p></div>
+    <div class="pc rv d4"><span class="ti"><svg class="ic" width="22" height="22" aria-hidden="true"><use href="#i-chat"/></svg></span><h3>Česky</h3><p>Aplikace i podpora mluví česky.</p></div>
+  </div>
+</div></section>
 
-<section class="s wrap" id="cena">
-  <h2 class="rv">Začněte zdarma, Premium až budete chtít</h2>
+<section id="verze"><div class="w">
+  <div class="sh rv"><p class="eb">Zdarma, nebo Premium</p><h2>Začněte zdarma. Premium, až budete chtít.</h2></div>
   <div class="plans">
-    <article class="plan rv"><h3>Zdarma</h3><div class="price">0 Kč</div><p>Napořád pro 1 mazlíčka: oznámení o krmení, Co dělat v nouzi, 5 dokumentů a grafy za poslední měsíc.</p></article>
-    <article class="plan hot rv"><h3>Premium</h3><div class="price">49 Kč <small>měsíčně</small></div><p>nebo 499 Kč ročně</p><span class="save">Ročně ušetříte 89 Kč</span><p>Oznámení o lécích, očkování a veterináři, víc mazlíčků, náklady a zdravotní karta v PDF.</p></article>
-    <article class="plan rv"><h3>Family Premium</h3><div class="price">79 Kč <small>měsíčně</small></div><p>nebo 799 Kč ročně</p><span class="save">Ročně ušetříte 149 Kč</span><p>Všechno z Premium a sdílení domácnosti až pro 5 lidí.</p></article>
+    <div class="pl rv"><p class="pn">Zdarma</p><h3>0 Kč</h3><p class="pe">napořád pro 1 mazlíčka</p><ul>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Oznámení o krmení, očkování a docházejícím krmivu</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Dnes, kalendář a widget se všemi úkoly</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Co dělat v nouzi</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Zásoby, deník, váha a export dat</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>5 dokumentů a grafy za poslední měsíc</li>
+    </ul></div>
+    <div class="pl hot rv d1"><p class="pn">Premium</p><h3>69 Kč měsíčně</h3><p class="pe">nebo 499 Kč ročně · ušetříte 329 Kč</p><ul>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Sdílení s rodinou, 2 až 5 lidí, platí jeden</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Oznámení o lécích, prevenci, veterináři a platbách</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Víc mazlíčků</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Náklady a plánované platby</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Souhrn pro veterináře a zdravotní karta v PDF</li>
+      <li><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Delší grafy a víc dokumentů</li>
+    </ul></div>
   </div>
-  <p class="all-link rv"><a class="btn-link" href="funkce.html#cena">Podrobné srovnání verzí</a></p>
-</section>
+  <p class="note">Bez reklam. Export všech dat je zdarma napořád, i ve verzi zdarma. Předplatné se platí z Apple účtu a zrušíte ho kdykoli v Nastavení Apple ID.</p>
+</div></section>
 
-<section class="wrap final" id="podpora">
-  <h2 class="rv">Vaši chlupáči si zaslouží klid. A vy taky.</h2>
-  <div class="row"><a class="btn" data-mag href="podpora.html#napiste">Dejte mi vědět, až vyjde<i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a></div>
-</section>
+<section class="s0 nedela" id="nedela"><div class="w"><p class="not rv"><b>Co aplikace nedělá:</b> neradí léčbu a nehodnotí příznaky, to dělá veterinář. Pomáhá vám nezapomenout, mít vše po ruce a vědět, komu zavolat.</p></div></section>
+
+<section id="otazky"><div class="w">
+  <div class="sh rv"><p class="eb">Na co se často ptáte</p><h2>Krátké odpovědi.</h2></div>
+  <div class="fq rv">
+    <details open><summary><span>Kdy bude aplikace ke stažení?</span><i><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-plus"/></svg></i></summary><p>Už brzy v App Store pro iPhone. Teď ji ladíme a zkoušíme s pejskaři a kočkaři v praxi.</p></details>
+    <details><summary><span>Co se stane, když Premium zruším?</span><i><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-plus"/></svg></i></summary><p>Nic se nesmaže. Zůstane vám verze zdarma: 1 mazlíček, všechny úkoly na Dnes, v kalendáři i ve widgetu, Co dělat v nouzi a export dat. Oznámení pak chodí jen o krmení, očkování a docházejícím krmivu.</p></details>
+    <details><summary><span>Co je zdarma a co je v Premium?</span><i><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-plus"/></svg></i></summary><p>Zdarma máte pro 1 mazlíčka Dnes, kalendář a widget se všemi úkoly, oznámení o krmení, očkování a o docházejícím krmivu, Co dělat v nouzi, zásoby, deník, váhu a export dat. Premium přidá oznámení o lécích, prevenci, veterináři a platbách, víc mazlíčků, náklady, zdravotní kartu v PDF a sdílení s rodinou.</p></details>
+    <details><summary><span>Můžu aplikaci sdílet s partnerem nebo rodinou?</span><i><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-plus"/></svg></i></summary><p>Ano, s Premium. Domácnost má 2 až 5 lidí, další pozvete QR kódem nebo kódem pozvánky. Premium platí jen jeden člen a mají ho všichni v domácnosti.</p></details>
+    <details><summary><span>Kde jsou moje data?</span><i><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-plus"/></svg></i></summary><p>V telefonu. Záloha a sdílení domácnosti běží na serveru v Evropské unii. Všechna data si kdykoli vyexportujete, zdarma a napořád.</p></details>
+    <details><summary><span>Bude i pro Android?</span><i><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-plus"/></svg></i></summary><p>Začínáme s iPhonem. Na Android myslíme, termín ale zatím nemáme.</p></details>
+  </div>
+</div></section>
+
+<section class="end" id="konec" aria-label="Závěr"><div class="w">
+  <blockquote>„Chceme, abyste nemuseli na všechno myslet. A měli víc času na to, aby byl váš chlupáč šťastný.“</blockquote>
+  <div class="cta"><span class="btn lg is-static">Brzy v App Store pro iPhone</span><a class="btn lg gh" href="mailto:podpora@mojichlupaci.cz">Napište nám · podpora@mojichlupaci.cz</a></div>
+</div></section>
 </main>
-<footer class="site-footer">
-  <div class="wrap">
-    <nav aria-label="Patička">
-      <ul>
-        <li><a href="funkce.html">Co umí</a></li>
-        <li><a href="ockovani.html">Očkování psa a kočky</a></li>
-        <li><a href="odcerveni.html">Odčervení a klíšťata</a></li>
-        <li><a href="zdravotni-karta.html">Zdravotní karta v mobilu</a></li>
-        <li><a href="pece-ve-vice-lidech.html">Péče ve více lidech</a></li>
-        <li><a href="zasady.html">Zásady ochrany osobních údajů</a></li>
-        <li><a href="podminky.html">Podmínky použití</a></li>
-        <li><a href="podpora.html">Podpora</a></li>
-        <li><a href="smazani-uctu.html">Smazání účtu a údajů</a></li>
-        <li><a href="mailto:podpora@mojichlupaci.cz">podpora@mojichlupaci.cz</a></li>
-        <li><span class="copy">© 2026 Moji chlupáči</span></li>
-      </ul>
-    </nav>
-  </div>
-</footer>
 
-<script src="nav.js" defer></script>
+<footer class="foot"><div class="w"><div class="fg">
+  <div class="fl1"><a class="logo" href="index.html"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="13" fill="none" class="lg-t" stroke-width="5"/><circle cx="17" cy="17" r="13" fill="none" class="lg-a" stroke-width="5" stroke-linecap="round" stroke-dasharray="54 82" transform="rotate(-150 17 17)"/><circle cx="17" cy="17" r="4" class="lg-d"/></svg><span>Moji chlupáči</span></a>
+    <p class="sig">Po boku na každém kroku</p>
+    <p class="op">Provozovatel: Ondřej Mrázek<br>© 2026 Moji chlupáči · Aplikace nenahrazuje veterináře.</p></div>
+  <nav class="fl" aria-label="Patička"><a href="zasady.html">Zásady ochrany osobních údajů</a><a href="podminky.html">Podmínky použití</a><a href="podpora.html">Podpora</a><a href="funkce.html">Funkce</a><a href="mailto:podpora@mojichlupaci.cz">podpora@mojichlupaci.cz</a></nav>
+</div>
+<nav class="fr" aria-label="Rady pro majitele"><span>Rady pro majitele:</span><a href="ockovani.html">Očkování psa a kočky</a><a href="odcerveni.html">Odčervení a klíšťata</a><a href="zdravotni-karta.html">Zdravotní karta v mobilu</a><a href="pece-ve-vice-lidech.html">Péče ve více lidech</a></nav>
+</div></footer>
+
+<div class="sticky" id="sticky" role="region" aria-label="Brzy v App Store" hidden>
+  <span class="st-t">Moji chlupáči · brzy v App Store</span>
+  <a class="btn" href="mailto:podpora@mojichlupaci.cz"><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-mail"/></svg>Napište nám</a>
+  <button class="st-x" type="button" aria-label="Zavřít lištu"><svg class="ic" width="18" height="18" aria-hidden="true"><use href="#i-close"/></svg></button>
+</div>
 </body>
 </html>
