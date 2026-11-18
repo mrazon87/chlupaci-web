@@ -47,7 +47,7 @@ main h1{font-size:clamp(2.4rem,6.4vw,4.6rem);font-weight:800;letter-spacing:-.03
 .fn-table tr:last-child th,.fn-table tr:last-child td{border-bottom:0}
 
 /* ceny */
-.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.prices{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
 .price{padding:30px;border-radius:28px;border:1px solid var(--glass-line);background:var(--glass);display:flex;flex-direction:column;gap:8px;min-width:0}
 .price:nth-child(2){background:var(--hot);color:#fff;border-color:transparent}
 .price h3{font-size:1.3rem}
