@@ -1,0 +1,14 @@
+{
+  "name": "Moji chlupáči",
+  "short_name": "Chlupáči",
+  "lang": "cs",
+  "description": "Aplikace pro péči o psa a kočku v iPhonu.",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#F4F7F3",
+  "background_color": "#F4F7F3",
+  "icons": [
+    { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
