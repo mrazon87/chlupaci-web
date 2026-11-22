@@ -8,13 +8,12 @@
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src https://wyqyqblpddsvfqhokhjb.supabase.co; manifest-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#F3F5F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B1517" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#111827">
 <link rel="icon" href="../favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
 <link rel="icon" type="image/png" sizes="48x48" href="../favicon.png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<link rel="manifest" href="../site.webmanifest"><link rel="preload" href="../fonts/geist-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="../site.webmanifest">
 <link rel="stylesheet" href="../style.css">
 <link rel="stylesheet" href="admin.css">
 <link rel="stylesheet" href="admin-pro.css">
@@ -75,44 +74,38 @@
     </div>
   </section>
 
-  <section id="dash" class="shell" hidden aria-label="Přehled">
-    <aside class="side">
-      <div class="side-logo"><img src="../img/pes-kocka.webp" width="619" height="484" alt="Moji chlupáči"></div>
-      <div class="side-title">
-        <h1>Přehled</h1>
-        <p id="updated" class="muted" aria-live="polite"></p>
-        <p id="loaded" class="muted"></p>
+  <section id="dash" class="shell" hidden aria-label="Správce">
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-top">
+        <div class="sb-brand">Moji chlupáči<small>Správce · ostrý provoz</small></div>
+        <button type="button" class="sb-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Nabídka</button>
       </div>
-      <nav class="side-nav" aria-label="Sekce přehledu">
-        <a href="#sec-vcera"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Od včera</a>
-        <p class="navgroup">Před vydáním</p>
-        <a href="#sec-pripravenost"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg>Připravenost</a>
-        <p class="navgroup">Lidé</p>
-        <a href="#sec-uzivatele"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Uživatelé</a>
-        <a href="#sec-cesta"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg>Cesta uživatele</a>
-        <a href="#sec-zarizeni"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>Zařízení</a>
-        <a href="#sec-hlaseni"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>Hlášení<span class="navdot" id="nd-hlaseni" hidden></span><span class="sr-only" id="nd-hlaseni-t"></span></a>
-        <a href="#sec-podpora"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg>Podpora</a>
-        <p class="navgroup">Peníze</p>
-        <a href="#sec-vynos"><svg class="ic" aria-hidden="true"><use href="#i-money"/></svg>Výnos</a>
-        <a href="#sec-zkouska"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg>Zkušební doba</a>
-        <a href="#sec-platby"><svg class="ic" aria-hidden="true"><use href="#i-money"/></svg>Platby<span class="navdot" id="nd-platby" hidden></span><span class="sr-only" id="nd-platby-t"></span></a>
-        <p class="navgroup">Provoz</p>
-        <a href="#sec-zdravi"><svg class="ic" aria-hidden="true"><use href="#i-pulse"/></svg>Zdraví aplikace<span class="navdot" id="nd-zdravi" hidden></span><span class="sr-only" id="nd-zdravi-t"></span></a>
-        <a href="#sec-spravnost"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Správnost dat<span class="navdot" id="nd-spravnost" hidden></span><span class="sr-only" id="nd-spravnost-t"></span></a>
-        <a href="#sec-stav"><svg class="ic" aria-hidden="true"><use href="#i-pulse"/></svg>Stav systému</a>
-        <a href="#sec-kapacita"><svg class="ic" aria-hidden="true"><use href="#i-db"/></svg>Kapacita</a>
-        <a href="#sec-bezpecnost"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Bezpečnost</a>
-        <a href="#sec-externi"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Externí služby</a>
-        <p class="navgroup">Obsah</p>
-        <a href="#sec-data"><svg class="ic" aria-hidden="true"><use href="#i-paw"/></svg>Data</a>
-      </nav>
-      <div class="side-actions">
-        <button type="button" class="btn-dark" id="refresh"><span>Obnovit</span><span class="nest"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></span></button>
-        <button type="button" class="btn-soft" id="logout" hidden><span>Odhlásit</span><svg class="ic" aria-hidden="true"><use href="#i-logout"/></svg></button>
+      <div class="sb-menu" id="nav-menu">
+        <nav class="sb-nav" aria-label="Stránky správce">
+          <a href="#k-reseni" data-page="k-reseni">K řešení<span class="nb" id="nb-k-reseni" hidden></span><span class="sr-only" id="nb-k-reseni-t"></span></a>
+          <p class="sb-group">Stav</p>
+          <a href="#uzivatele" data-page="uzivatele">Uživatelé a cesta<span class="nb" id="nb-uzivatele" hidden></span><span class="sr-only" id="nb-uzivatele-t"></span></a>
+          <a href="#penize" data-page="penize">Peníze<span class="nb" id="nb-penize" hidden></span><span class="sr-only" id="nb-penize-t"></span></a>
+          <a href="#kvalita" data-page="kvalita">Kvalita aplikace<span class="nb" id="nb-kvalita" hidden></span><span class="sr-only" id="nb-kvalita-t"></span></a>
+          <a href="#data" data-page="data">Data a bezpečnost<span class="nb" id="nb-data" hidden></span><span class="sr-only" id="nb-data-t"></span></a>
+          <a href="#provoz" data-page="provoz">Provoz serveru<span class="nb" id="nb-provoz" hidden></span><span class="sr-only" id="nb-provoz-t"></span></a>
+          <p class="sb-group">Práce</p>
+          <a href="#hlaseni" data-page="hlaseni">Hlášení od lidí<span class="nb" id="nb-hlaseni" hidden></span><span class="sr-only" id="nb-hlaseni-t"></span></a>
+          <a href="#vydani" data-page="vydani">Vydání a testeři<span class="nb" id="nb-vydani" hidden></span><span class="sr-only" id="nb-vydani-t"></span></a>
+          <a href="#brzda" data-page="brzda">Nouzová brzda<span class="nb" id="nb-brzda" hidden></span><span class="sr-only" id="nb-brzda-t"></span></a>
+        </nav>
+        <div class="sb-actions">
+          <button type="button" class="btn-dark" id="refresh"><span>Obnovit</span><span class="nest"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></span></button>
+          <button type="button" class="btn-soft" id="logout" hidden><span>Odhlásit</span><svg class="ic" aria-hidden="true"><use href="#i-logout"/></svg></button>
+        </div>
       </div>
     </aside>
-    <div class="board">
+    <div class="page">
+      <header class="page-head">
+        <h1 id="page-title" tabindex="-1"></h1>
+        <p id="page-lead" class="page-lead"></p>
+        <p class="meta"><span id="updated" aria-live="polite"></span> <span id="loaded"></span></p>
+      </header>
       <p id="demo-note" class="notice" hidden>Ukázková data, nic se nenačítá ze serveru.</p>
       <p id="dash-error" class="error" role="alert" hidden></p>
       <div id="panels" class="bento"></div>
@@ -121,6 +114,5 @@
 </main>
 <script src="qr.js" defer></script>
 <script src="admin.js" defer></script>
-<script src="admin-fx.js" defer></script>
 </body>
 </html>
