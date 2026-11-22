@@ -1194,7 +1194,7 @@
     rows.push(trow(sc.invite_exhausted ? 'warn' : 'ok', 'Vyčerpané pokusy o kód pozvánky', 'poslední hodina, 10 pokusů na uživatele', int(sc.invite_exhausted)));
     rows.push(trow(sc.card_miss >= 10 ? 'warn' : 'ok', 'Neplatné otevření sdílené karty', 'aktuální okno 10 minut', int(sc.card_miss)));
     rows.push(trow('ok', 'Aktivní sdílené karty', null, int(sc.cards_active)));
-    rows.push(sc.admin_logins_7d === null ? trow('off', 'Přihlášení správce za 7 dní', 'nelze zjistit', '–') : trow('ok', 'Přihlášení správce za 7 dní', null, int(sc.admin_logins_7d)));
+    rows.push(sc.admin_logins_unmeasured ? trow('off', 'Přihlášení správce za 7 dní', 'Server záznamy o přihlášení neukládá.', 'neměří se') : sc.admin_logins_7d === null ? trow('off', 'Přihlášení správce za 7 dní', 'nelze zjistit', '–') : trow('ok', 'Přihlášení správce za 7 dní', null, int(sc.admin_logins_7d)));
     rows.push(trow('ok', 'Opakované zkušební doby za 30 dní', 'e-mail znám dřív než účet', int(sc.repeat_trials_30d)));
     return card(head, [h('ul', 'states', rows),
       note('Počítadla pokusů jsou krátkodobá (hodina, 10 minut), historie se nevede; smazané účty se nesledují, protože server o nich nic nezapisuje.')]);
