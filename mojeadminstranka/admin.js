@@ -2,7 +2,7 @@
    Stránka je veřejná a sama nic neobsahuje. Data chrání server: Edge Function admin-stats pustí jen přihlášení Supabase Auth s ověřeným druhým faktorem (aal2)
    a s id uživatele na seznamu ADMIN_USER_IDS. Tady se jen mluví s /auth/v1 přes fetch (heslo → TOTP → access_token). Anon klíč je veřejný (je i v aplikaci).
    Tokeny jen v paměti tohoto skriptu (žádné localStorage ani sessionStorage): obnovení stránky, Odhlásit a 15 minut nečinnosti je zahodí.
-   ?demo=1 vykreslí ukázková data bez volání serveru. CSP nepovoluje inline style, proto se rozměry nastavují přes CSSOM (el.style.x), ne přes atribut style. */
+   ?demo=1 vykreslí ukázková data bez volání serveru (&empty=1 stav „nic k řešení“, &brake=1 nastavená nouzová brzda). CSP nepovoluje inline style, proto se rozměry nastavují přes CSSOM (el.style.x), ne přes atribut style. */
 (function () {
   'use strict';
 
@@ -18,7 +18,10 @@
   var ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind5cXlxYmxwZGRzdmZxaG9raGpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNTk0ODEsImV4cCI6MjEwODkzNTQ4MX0.cNsbvhmmKUa4Yj0SzwxO8UGwXX3knlGVf8wEp3oAag8';
   var SVGNS = 'http://www.w3.org/2000/svg';
   var DAY = 86400000;
-  var demo = new URLSearchParams(location.search).get('demo') === '1';
+  var qs = new URLSearchParams(location.search);
+  var demo = qs.get('demo') === '1';
+  var demoEmpty = demo && qs.get('empty') === '1';   // ?demo=1&empty=1: stav „nic k řešení“
+  var demoBrake = demo && qs.get('brake') === '1';   // ?demo=1&brake=1: nouzová brzda nastavená
 
   var $ = function (id) { return document.getElementById(id); };
   var nf = new Intl.NumberFormat('cs-CZ');
@@ -921,7 +924,7 @@
 
   function igNav(ig) {
     var s = ig && Array.isArray(ig.checks) && ig.checks.length ? igSummary(ig.checks) : null;
-    setDot('spravnost', s && s.level !== 'ok' ? s.level : null, !s ? 'kontrola není zapnutá' : s.level === 'bad' ? 'chyba' : s.level === 'warn' ? 'varování' : 'vše v pořádku');
+    setDot('spravnost', s && s.level !== 'ok' ? s.level : null);
   }
 
   /* ---------- Rozšíření přehledu (#1076): Od včera, Hlášení, Zdraví aplikace, Cesta uživatele, Platby, Bezpečnost, Připravenost ----------
@@ -972,15 +975,12 @@
     ]));
   }
   var DOTS = ['hlaseni', 'zdravi', 'spravnost', 'platby'];
+  var DOT_PAGE = { hlaseni: 'hlaseni', zdravi: 'kvalita', spravnost: 'data', platby: 'penize' };
   var dotLevels = {};
-  /* Tečka u odkazu v postranní nabídce: červená = chyba, jantarová = pozor; bez tečky = v pořádku nebo bez údaje; text pro čtečky je vždy. */
-  function setDot(key, level, words) {
+  /* Dnešní „tečky“ z existujících dat (červená = chyba, jantarová = pozor) se počítají do odznaku stránky v nabídce, jako jedna položka. */
+  function setDot(key, level) {
     dotLevels[key] = level;
-    var dot = $('nd-' + key), txt = $('nd-' + key + '-t');
-    if (!dot || !txt) return;
-    dot.className = 'navdot' + (level ? ' ' + level : '');
-    dot.hidden = !level;
-    txt.textContent = ' (' + words + ')';
+    refreshBadges();
   }
 
   /* ---- Zdraví aplikace ---- */
@@ -1035,7 +1035,7 @@
     var st = { items: rp.items.slice(), has_more: rp.has_more, open: rp.open, total: rp.total };
     var noteEl = h('span', 'note'), list = h('ul', 'reps'), foot = h('div', 'rep-foot');
     head.extra = noteEl;
-    function dots() { setDot('hlaseni', st.open > 0 ? 'warn' : null, st.open > 0 ? st.open + ' nevyřízených' : 'vše vyřízeno'); }
+    function dots() { setDot('hlaseni', st.open > 0 ? 'warn' : null); }
     function fail(e) { if (e !== null) { $('dash-error').textContent = (e && e.message) || 'Požadavek se nepodařil.'; $('dash-error').hidden = false; } }
     function item(it) {
       var li = h('li', 'rep' + (it.resolved_at ? ' done' : ''));
@@ -1156,7 +1156,7 @@
   /* ---- Platby ---- */
   function paymentsCard(py) {
     var head = { id: 'sec-platby', cls: 'd4 m12', icon: 'money', title: 'Platby', note: 'stav předplatných' };
-    if (!py) { setDot('platby', null, 'bez údaje'); return card(head, [note(NO_DATA)]); }
+    if (!py) { setDot('platby', null); return card(head, [note(NO_DATA)]); }
     var rows = [], last = py.last_event_at || py.last_update_at;
     var ageMs = last ? Date.now() - new Date(last).getTime() : null;
     /* upozornění na mlčící webhook jen podle produkčních zpráv; sandbox se ukazuje zvlášť a nikdy nevaruje */
@@ -1181,7 +1181,7 @@
       var fc = FORECAST.active[fm - 1];
       rows.push(trow('off', 'Skutečnost proti forecastu', 'platících ' + int(py.paying) + ' · forecast střed ' + fc + ' (měsíc ' + fm + ')', fc > 0 ? signed(Math.round(100 * (py.paying / fc - 1)), int) + ' %' : '–'));
     }
-    setDot('platby', py.billing_retry || stale ? 'warn' : null, py.billing_retry ? 'platba se nedaří' : stale ? 'zpráva z RevenueCat je stará' : 'v pořádku');
+    setDot('platby', py.billing_retry || stale ? 'warn' : null);
     return card(head, [h('ul', 'states', rows),
       note('Počty z RevenueCat (jen produkční, sandbox zvlášť); forecast: střed z ziskovost-forecast-2026-11-20.html.')]);
   }
@@ -1290,6 +1290,379 @@
     ]);
   }
 
+  /* ---------- Stránky, nabídka, odznaky ---------- */
+
+  var PAGES = [
+    ['k-reseni', 'K řešení', 'Co dnes chce vaši pozornost, seřazené podle závažnosti.'],
+    ['uzivatele', 'Uživatelé a cesta', 'Kolik lidí přišlo, kam došli v aplikaci, na čem ji mají a co se změnilo od včera.'],
+    ['penize', 'Peníze', 'Předplatná, výnos, zkušební doba a stav plateb.'],
+    ['kvalita', 'Kvalita aplikace', 'Co se lidem nepovedlo: selhání hlášená aplikací, bez údajů o lidech.'],
+    ['data', 'Data a bezpečnost', 'Noční kontroly správnosti dat, bezpečnostní počítadla, kapacita a obsah dat.'],
+    ['provoz', 'Provoz serveru', 'Stav serveru a plánovaných úloh, fronty a externí služby.'],
+    ['hlaseni', 'Hlášení od lidí', 'Hlášení chyb a nápadů z aplikace; vyřízené můžete označit.'],
+    ['vydani', 'Vydání a testeři', 'Kontrolní seznam před vydáním dalšího buildu a stav měřených bodů.'],
+    ['brzda', 'Nouzová brzda', 'Co je teď nastaveno, koho by nastavení zasáhlo a postup zapnutí krok za krokem.']
+  ];
+  var PAGE_TITLE = {};
+  PAGES.forEach(function (p) { PAGE_TITLE[p[0]] = p[1]; });
+  var NO_HASH = { hlavni: true };   // odkaz „Přeskočit na obsah“ stránku nemění
+  var currentPage = 'k-reseni', pages = null, needFocus = true, visitSent = false;
+
+  function pageFromHash() {
+    var name = location.hash.replace(/^#/, '');
+    return PAGE_TITLE[name] ? name : 'k-reseni';
+  }
+
+  /* Odznak = otevřené položky z K řešení podle stránky (jen bad a watch) + dnešní tečky z existujících dat; červený = aspoň jedna bad, jantarový = jen watch. */
+  function badgeFor(page) {
+    var n = 0, bad = false;
+    var att = lastData && lastData.attention;
+    if (att && Array.isArray(att.items)) {
+      att.items.forEach(function (it) {
+        if (it.state !== 'open' || (it.severity !== 'bad' && it.severity !== 'watch')) return;
+        if (page === 'k-reseni' || it.page === page) { n++; if (it.severity === 'bad') bad = true; }
+      });
+    }
+    if (page !== 'k-reseni') {
+      DOTS.forEach(function (k) { if (DOT_PAGE[k] === page && dotLevels[k]) { n++; if (dotLevels[k] === 'bad') bad = true; } });
+    }
+    return { n: n, bad: bad };
+  }
+  function refreshBadges() {
+    PAGES.forEach(function (p) {
+      var el = $('nb-' + p[0]), txt = $('nb-' + p[0] + '-t');
+      if (!el || !txt) return;
+      var b = lastData ? badgeFor(p[0]) : { n: 0, bad: false };
+      el.hidden = !b.n;
+      el.className = 'nb ' + (b.bad ? 'bad' : 'watch');
+      el.textContent = b.n ? String(b.n) : '';
+      txt.textContent = b.n ? ' (' + b.n + ' ' + plural(b.n, 'otevřená položka', 'otevřené položky', 'otevřených položek') + (b.bad ? ', něco je špatně' : ', k hlídání') + ')' : '';
+    });
+  }
+
+  function closeMenu() {
+    $('sidebar').classList.remove('open');
+    $('nav-toggle').setAttribute('aria-expanded', 'false');
+  }
+  $('nav-toggle').addEventListener('click', function () {
+    var open = !$('sidebar').classList.contains('open');
+    $('sidebar').classList.toggle('open', open);
+    this.setAttribute('aria-expanded', String(open));
+  });
+
+  function showPage(name, focus) {
+    currentPage = name;
+    var def = PAGES.filter(function (p) { return p[0] === name; })[0];
+    $('page-title').textContent = def[1];
+    $('page-lead').textContent = def[2];
+    document.title = def[1] + ' · Správce · Moji chlupáči';
+    [].forEach.call(document.querySelectorAll('.sb-nav a'), function (a) {
+      if (a.dataset.page === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    var box = $('panels');
+    box.textContent = '';
+    ((pages && pages[name]) || []).forEach(function (el) { box.appendChild(el); });
+    closeMenu();
+    if (focus) { window.scrollTo(0, 0); $('page-title').focus({ preventScroll: true }); }
+  }
+  window.addEventListener('hashchange', function () {
+    var name = location.hash.replace(/^#/, '');
+    if (NO_HASH[name]) return;
+    showPage(pageFromHash(), !$('dash').hidden);
+  });
+  currentPage = pageFromHash();
+
+  /* Rozložení karty na stránce: d = počet z 12 sloupců na širokém displeji, m12 = celá šířka na středním. */
+  function lay(el, d, m12) {
+    el.className = el.className.replace(/\b(d\d+|m\d+)\b/g, '').replace(/\s+/g, ' ').trim() + ' d' + d + (m12 ? ' m12' : '');
+    return el;
+  }
+  function waiting() { return h('p', 'sub', 'Tato část čeká na nasazení serveru.'); }
+
+  /* ---------- Stránka K řešení (část odpovědi `attention`) ---------- */
+
+  var SEVERITY = [
+    ['bad', 'Špatné · řešit dnes', 'r'],
+    ['watch', 'Hlídat · tento týden', 'a'],
+    ['improve', 'Dá se zlepšit · postřehy', 't']
+  ];
+  var TILE_DEF = [
+    ['active_7d', 'Aktivní, 7 dní', false], ['new_7d', 'Nové účty, 7 dní', false], ['paying', 'Platící domácnosti', false],
+    ['mrr', 'Měsíční tržby (odhad)', false], ['failures', 'Selhání aplikace, 7 dní', true], ['integrity', 'Správnost dat', false]
+  ];
+  var attFilter = 'all', attRoot = null;
+
+  function wantsText(n) {
+    return n + ' ' + (n === 1 ? 'věc chce' : n >= 2 && n <= 4 ? 'věci chtějí' : 'věcí chce') + ' vaši pozornost dnes.';
+  }
+  function attVerdict(open) {
+    var bad = open.filter(function (i) { return i.severity === 'bad'; });
+    var watch = open.filter(function (i) { return i.severity === 'watch'; });
+    var improve = open.filter(function (i) { return i.severity === 'improve'; });
+    if (bad.length) return { cls: 'bad', text: 'Pozor: ' + bad[0].title.replace(/[.\s]+$/, '') + '.' };
+    if (watch.length) return { cls: 'watch', text: 'Aplikace běží. ' + wantsText(watch.length) };
+    if (improve.length) return { cls: 'ok', text: 'Aplikace běží. Nic nehoří, jsou jen nápady na zlepšení.' };
+    return { cls: 'ok', text: 'Vše v pořádku, nic k řešení.' };
+  }
+  function attCounts(open) {
+    var c = { bad: 0, watch: 0, improve: 0 };
+    open.forEach(function (i) { c[i.severity] = (c[i.severity] || 0) + 1; });
+    return 'Otevřeno: ' + c.bad + ' ' + plural(c.bad, 'špatná', 'špatné', 'špatných') + ', ' + c.watch + ' k hlídání, ' + c.improve + ' ' + plural(c.improve, 'nápad', 'nápady', 'nápadů') + '.';
+  }
+
+  function tileChange(t, worseWhenUp) {
+    if (num(t.prev) === null) return { text: 'bez srovnání', cls: 'fl' };
+    var d = t.value - t.prev, ref = t.prev_day ? 'proti ' + dayText(t.prev_day) : 'proti minulému týdnu';
+    if (d === 0) return { text: 'beze změny ' + ref, cls: 'fl' };
+    var good = worseWhenUp ? d < 0 : d > 0;
+    var amount = t.prev > 0 ? Math.max(1, Math.round(100 * Math.abs(d) / t.prev)) + ' %' : 'z ' + int(t.prev);
+    return { text: (d > 0 ? '▲ ' : '▼ ') + amount + ' ' + ref, cls: good ? 'up' : 'dn', words: good ? 'lepší' : 'horší' };
+  }
+  function tilesRow(att) {
+    var byKey = {};
+    (att.tiles || []).forEach(function (t) { byKey[t.key] = t; });
+    var cells = [];
+    TILE_DEF.forEach(function (d) {
+      var t = byKey[d[0]];
+      if (!t) return;
+      var big = d[0] === 'mrr' ? kc(t.value) : d[0] === 'integrity' ? int(t.value) + (num(t.total) === null ? '' : ' / ' + int(t.total)) : d[0] === 'failures' ? nf1.format(t.value) : int(t.value);
+      var ch = tileChange(t, d[2]);
+      cells.push(h('li', 'kt', [h('span', 'tl', d[1]), h('b', null, big), h('span', 'tc ' + ch.cls, [ch.text, ch.words ? h('span', 'sr-only', ' (' + ch.words + ')') : null])]));
+    });
+    return h('ul', 'tiles', cells);
+  }
+
+  function itemAction(it, action, btns) {
+    btns.forEach(function (b) { b.disabled = true; });
+    var p = demo ? Promise.resolve({ ok: true }) : api('POST', '', { op: 'item', key: it.key, fingerprint: it.fingerprint, action: action });
+    p.then(function (r) {
+      if (r && r.ok === false) throw new Error('Server změnu nepřijal.');
+      if (action === 'snooze_day' || action === 'snooze_week') { it.state = 'snoozed'; it.until = new Date(Date.now() + (action === 'snooze_day' ? 1 : 7) * DAY).toISOString(); }
+      else { it.state = action === 'resolve' ? 'resolved' : action === 'ignore' ? 'ignored' : 'open'; it.until = null; }
+      drawAttention();
+      refreshBadges();
+    }).catch(function (e) {
+      btns.forEach(function (b) { b.disabled = false; });
+      if (e !== null) { $('dash-error').textContent = (e && e.message) || 'Požadavek se nepodařil.'; $('dash-error').hidden = false; }
+    });
+  }
+
+  function attItem(it) {
+    var li = h('li', 'it ' + it.severity);
+    var btns = [];
+    function button(text, action, label) {
+      var b = h('button', 'btn-soft sm', text);
+      b.type = 'button';
+      b.setAttribute('aria-label', label + ': ' + it.title);
+      b.addEventListener('click', function () { itemAction(it, action, btns); });
+      btns.push(b);
+      return b;
+    }
+    li.appendChild(h('h3', 'it-t', it.title));
+    if (it.detail) li.appendChild(h('p', 'it-d', it.detail));
+    li.appendChild(h('p', 'ev', ['Podle: ', h('b', null, PAGE_TITLE[it.page] || it.page), it.evidence ? ' · ' + it.evidence : '']));
+    if (it.state === 'snoozed') li.appendChild(h('p', 'snz', 'odloženo do ' + (it.until ? dateTime(it.until) : '–')));
+    var acts = h('div', 'acts');
+    if (PAGE_TITLE[it.page]) {
+      var open = h('a', 'btn-dark sm', 'Otevřít');
+      open.href = '#' + it.page;
+      open.setAttribute('aria-label', 'Otevřít stránku ' + PAGE_TITLE[it.page] + ': ' + it.title);
+      acts.appendChild(open);
+    }
+    if (it.state === 'open') {
+      var opts = h('span', 'snz-opts', [button('o den', 'snooze_day', 'Odložit o den'), button('o týden', 'snooze_week', 'Odložit o týden')]);
+      opts.hidden = true;
+      var tog = h('button', 'btn-soft sm', 'Odložit');
+      tog.type = 'button';
+      tog.setAttribute('aria-expanded', 'false');
+      tog.setAttribute('aria-label', 'Odložit: ' + it.title);
+      tog.addEventListener('click', function () { opts.hidden = !opts.hidden; tog.setAttribute('aria-expanded', String(!opts.hidden)); });
+      acts.appendChild(tog);
+      acts.appendChild(button('Vyřešeno', 'resolve', 'Označit jako vyřešené'));
+      if (it.severity === 'improve') acts.appendChild(button('Nezajímá mě', 'ignore', 'Už se nezobrazovat'));
+      acts.appendChild(opts);
+    } else if (it.state === 'snoozed') {
+      acts.appendChild(button('Vrátit', 'reopen', 'Vrátit mezi otevřené'));
+    }
+    li.appendChild(acts);
+    return li;
+  }
+
+  function changesPanel(att) {
+    var v = att.visit || {}, list = Array.isArray(att.changes) ? att.changes : [];
+    var right = h('span', 'note', v.first ? 'První návštěva, není s čím srovnat' : (v.last ? dateTime(v.last) : '–') + ' → teď');
+    var body = list.length ? h('ul', 'log', list.map(function (c) {
+      return h('li', c.bad ? 'bad' : null, [h('time', null, dateTime(c.at)), c.bad ? h('span', 'pill r', 'pozor') : null, h('span', 'ch-t', c.text)]);
+    })) : h('p', 'sub', 'Nic nového.');
+    return card({ cls: 'att-card', icon: 'calendar', title: 'Co se změnilo od vaší poslední návštěvy', extra: right }, [body]);
+  }
+  function releasePanel(att) {
+    var checks = att.release && Array.isArray(att.release.checks) ? att.release.checks : [];
+    var words = { ok: 'v pořádku', watch: 'pozor', bad: 'chyba' };
+    var link = h('a', 'note', 'Vydání a testeři');
+    link.href = '#vydani';
+    var body = checks.length ? h('ul', 'rel', checks.map(function (c) {
+      return h('li', null, [h('span', null, c.label), h('span', 'pill ' + (c.status === 'ok' ? 'g' : c.status === 'bad' ? 'r' : 'a'), [h('span', 'sr-only', (words[c.status] || c.status) + ': '), c.value])]);
+    })) : h('p', 'sub', 'Žádné kontroly.');
+    return card({ cls: 'att-card', icon: 'list', title: 'Lze vydat další build?', extra: link }, [body]);
+  }
+
+  function drawAttention() {
+    var att = lastData && lastData.attention;
+    if (!attRoot || !att) return;
+    attRoot.textContent = '';
+    var items = Array.isArray(att.items) ? att.items : [];
+    var open = items.filter(function (i) { return i.state === 'open'; });
+    var snoozed = items.filter(function (i) { return i.state === 'snoozed'; });
+    var v = attVerdict(open);
+    attRoot.appendChild(h('div', 'verdict-bar ' + v.cls, [h('span', 'vdot'), h('div', null, [h('p', 'v-t', v.text), h('p', 'v-s', attCounts(open))])]));
+    attRoot.appendChild(tilesRow(att));
+
+    var shown = attFilter === 'snoozed' ? snoozed : attFilter === 'new' ? open.filter(function (i) { return i.is_new; }) : open;
+    var filters = h('div', 'filters');
+    filters.setAttribute('role', 'group');
+    filters.setAttribute('aria-label', 'Které položky ukázat');
+    [['all', 'Vše'], ['new', 'Jen nové od poslední návštěvy'], ['snoozed', 'Odložené (' + snoozed.length + ')']].forEach(function (f) {
+      var b = h('button', null, f[1]);
+      b.type = 'button';
+      b.setAttribute('aria-pressed', String(attFilter === f[0]));
+      b.addEventListener('click', function () { attFilter = f[0]; drawAttention(); });
+      filters.appendChild(b);
+    });
+    attRoot.appendChild(filters);
+
+    var cols = SEVERITY.map(function (sv) {
+      var list = shown.filter(function (i) { return i.severity === sv[0]; });
+      return h('section', 'att-col', [
+        h('h2', 'att-h ' + sv[2], [h('span', 'adot ' + sv[2]), sv[1], h('span', 'sr-only', ' (' + list.length + ')')]),
+        list.length ? h('ul', 'its', list.map(attItem)) : h('p', 'sub', attFilter === 'snoozed' ? 'Nic odloženého.' : attFilter === 'new' ? 'Nic nového.' : 'Nic.')
+      ]);
+    });
+    attRoot.appendChild(h('div', 'att-cols', cols));
+    attRoot.appendChild(h('div', 'att-two', [changesPanel(att), releasePanel(att)]));
+  }
+
+  function attentionPage(data) {
+    attRoot = h('div', 'att');
+    if (!data.attention || !Array.isArray(data.attention.items)) {
+      attRoot.appendChild(card({ cls: 'd12 m12', icon: 'list', title: 'K řešení' }, [waiting()]));
+      return attRoot;
+    }
+    drawAttention();
+    return attRoot;
+  }
+
+  /* ---------- Kvalita aplikace: tabulky ze zdraví aplikace ---------- */
+
+  function healthCols(hl) {
+    var cols = hl.builds.map(function (b) { return { label: 'build ' + b.build, active: b.active, kinds: b.kinds }; });
+    if (hl.older && hl.older.active > 0) cols.push({ label: 'starší buildy', active: hl.older.active, kinds: hl.older.kinds });
+    return cols;
+  }
+  function failuresByBuildCard(hl) {
+    var head = { cls: 'd6 m6', icon: 'pulse', title: 'Selhání podle buildu', note: 'nejčastější druh' };
+    if (!hl || !hl.builds.length) return card(head, [empty('Zatím bez dat.', 'pulse')]);
+    var rows = healthCols(hl).map(function (c) {
+      var top = null;
+      HEALTH_COLS.forEach(function (k) { var n = kindInstalls(c.kinds, k[0]); if (n > 0 && (!top || n > top.n)) top = { n: n, name: k[1], key: k[0] }; });
+      var cell = top ? healthCell(top.n, c.active) : { text: '–', cls: '' };
+      return [c.label, { text: int(c.active), cls: 'few' }, top ? top.name : 'nic', { text: cell.text, cls: cell.cls }];
+    });
+    return card(head, [table(['Build', 'Aktivních', 'Nejčastější druh', 'Podíl'], rows, 'htab'),
+      note('Podíl aktivních instalací buildu, na kterých se nejčastější druh selhání stal; do 20 aktivních instalací jen počet.')]);
+  }
+  function failureKindsCard(hl) {
+    var head = { cls: 'd6 m6', icon: 'chart', title: 'Co selhává' };
+    if (!hl || !hl.builds.length) return card(head, [empty('Zatím bez dat.', 'chart')]);
+    head.note = 'posledních ' + hl.days + ' dní';
+    var cols = healthCols(hl);
+    var list = HEALTH_COLS.map(function (k) {
+      var ev = 0, inst = 0;
+      cols.forEach(function (c) { (c.kinds || []).forEach(function (x) { if (x.kind === k[0]) { ev += x.events || 0; inst += x.installs || 0; } }); });
+      return [k[1], ev, inst];
+    }).filter(function (r) { return r[1] > 0 || r[2] > 0; }).sort(function (a, b) { return b[1] - a[1]; });
+    if (!list.length) return card(head, [empty('Za posledních ' + hl.days + ' dní se nic nehlásilo.', 'chart')]);
+    return card(head, [hbars(list.map(function (r) { return [r[0], r[1], int(r[1]) + ' · ' + int(r[2]) + ' zař.']; }), list[0][1]),
+      note('Počet hlášených selhání a zařízení, na kterých nastala, součet přes buildy. Vývoj po dnech server zatím nevrací.')]);
+  }
+
+  /* ---------- Nouzová brzda (jen čtení; nastavuje se příkazem, ne tlačítkem) ---------- */
+
+  function code(text) { return h('pre', 'code', h('code', null, text)); }
+
+  function brakeStatusCard(st) {
+    var head = { id: 'sec-brzda', cls: 'd6 m12', icon: 'shield', title: 'Co je nastaveno teď' };
+    if (st === undefined || st === null || typeof st !== 'object') return card(head, [waiting()]);
+    var min = num(st.min_build), block = num(st.block_build), msg = typeof st.message === 'string' && st.message ? st.message : null, maint = st.maintenance === true;
+    var rows = [];
+    if (min !== null) rows.push(trow('warn', 'Měkký stupeň: build nižší než ' + min, 'Aplikace funguje dál, ale nic se neukládá na server a ukazuje se pruh „Aktualizujte aplikaci“.', 'build < ' + min));
+    if (block !== null) rows.push(trow('bad', 'Tvrdý stupeň: build nižší než ' + block, 'Aplikace ukáže jen obrazovku „Aktualizujte aplikaci“; naplánované připomínky dál chodí.', 'build < ' + block));
+    if (msg) rows.push(trow('warn', 'Servisní zpráva', '„' + msg + '“ (jantarový pruh v aplikaci)', 'zapnuta'));
+    if (maint) rows.push(trow('warn', 'Údržba', 'Ukládání na server stojí (nejdéle 3 dny od poslední odpovědi serveru); aplikace ukazuje pruh „Probíhá údržba“.', 'zapnuta'));
+    if (!rows.length) return card(head, [h('span', 'verdict ok', 'Vše běží bez omezení'), note('Není nastavený žádný stupeň, žádná servisní zpráva ani údržba.')]);
+    return card(head, [h('span', 'verdict warn', 'Brzda je nastavená'), h('ul', 'states', rows)]);
+  }
+  function brakeBuildsCard(st, hl) {
+    var head = { cls: 'd6 m12', icon: 'phone', title: 'Koho by nastavení zasáhlo' };
+    if (!hl || !hl.builds.length) return card(head, [empty('Zatím bez dat o buildech: přibude s buildem 41.', 'phone')]);
+    var min = st ? num(st.min_build) : null, block = st ? num(st.block_build) : null;
+    var minListed = Math.min.apply(null, hl.builds.map(function (b) { return Number(b.build); }).filter(isFinite).concat([Infinity]));
+    var total = 0, hit = 0;
+    function level(b) { return block !== null && b < block ? 'tvrdý stupeň' : min !== null && b < min ? 'měkký stupeň' : 'bez omezení'; }
+    var rows = hl.builds.map(function (b) {
+      var n = Number(b.build), lv = isFinite(n) ? level(n) : 'neznámý build';
+      total += b.active;
+      if (lv === 'tvrdý stupeň' || lv === 'měkký stupeň') hit += b.active;
+      return ['build ' + b.build, { text: int(b.active), cls: 'few' }, { text: lv, cls: lv === 'bez omezení' ? 'few' : lv === 'tvrdý stupeň' ? 'bad' : 'warn' }];
+    });
+    if (hl.older && hl.older.active > 0) {
+      total += hl.older.active;
+      var lvO = block !== null && block > minListed ? 'tvrdý stupeň' : min !== null && min > minListed ? 'měkký stupeň' : 'bez omezení';
+      if (lvO !== 'bez omezení') hit += hl.older.active;
+      rows.push(['starší buildy (odhad)', { text: int(hl.older.active), cls: 'few' }, { text: lvO + ' (odhad)', cls: 'few' }]);
+    }
+    var set = min !== null || block !== null;
+    return card(head, [
+      table(['Build', 'Aktivních', 'Stav'], rows, 'htab'),
+      note(set
+        ? 'Podle hlášení za posledních ' + hl.days + ' dní by nastavení zasáhlo asi ' + int(hit) + ' z ' + int(total) + ' aktivních instalací. Skupina „starší“ je jen odhad (nevíme přesná čísla jejich buildů); přesné počty za 30 dní vrátí server hned po nastavení.'
+        : 'Tolik aktivních instalací je teď na kterém buildu (posledních ' + hl.days + ' dní, celkem ' + int(total) + '). Stupně nejsou nastavené, takže se nic nezasahuje; skupina „starší“ je jen odhad.')
+    ]);
+  }
+  function brakeHowtoCard() {
+    var steps = h('ol', 'how-steps', [
+      h('li', null, [h('b', null, 'Nejdřív ověřte, že je nová verze v App Storu schválená a dostupná. '), 'Brzdu nezvedejte dřív: lidé by dostali výzvu k aktualizaci, kterou nemají kam stáhnout. Brzda funguje až v buildu 41 (starší buildy ji neumí), proto je použitelné jen ', h('b', null, 'min_build 42 a víc'), ' (zasáhne i build 41).']),
+      h('li', null, ['Na svém počítači otevřete terminál a načtěte klíče (ze složky mimo repozitář):', code('cd app && set -a && . ~/.config/chlupaci/supabase.env && set +a')]),
+      h('li', null, ['Vyberte jednu variantu. Každé volání ', h('b', null, 'nahradí všechny čtyři hodnoty'), ' (null = nenastaveno). Poslední číslo je dvojí zadání: musí se rovnat min_build, číslo tedy napište dvakrát.',
+        h('p', 'cmd-l', 'Měkký stupeň (build 41 a nižší) se zprávou:'), code('supabase db query --linked "select public.admin_app_status_set(42, null, \'Doporučujeme aktualizovat aplikaci.\', false, 42)"'),
+        h('p', 'cmd-l', 'Tvrdý stupeň (build 41 a nižší blokovat):'), code('supabase db query --linked "select public.admin_app_status_set(42, 42, null, false, 42)"'),
+        h('p', 'cmd-l', 'Jen servisní zpráva, bez omezení:'), code('supabase db query --linked "select public.admin_app_status_set(null, null, \'Ve čtvrtek 8:00 až 9:00 se bude vylepšovat server.\', false, null)"'),
+        h('p', 'cmd-l', 'Údržba (ukládání na server stojí):'), code('supabase db query --linked "select public.admin_app_status_set(null, null, \'Probíhá krátká údržba.\', true, null)"')]),
+      h('li', null, ['Funkce vrátí počty zasažených: ', h('b', null, 'active_total'), ' (instalace aktivní za 30 dní), ', h('b', null, 'affected_min'), ' (pod min_build) a ', h('b', null, 'affected_block'), ' (pod block_build). Hned zkontrolujte, koho nastavení zasáhlo.']),
+      h('li', null, ['Ověřte, co server teď říká:', code('supabase db query --linked "select public.app_status()"')]),
+      h('li', null, [h('b', null, 'VRÁTIT VŠE'), ' (žádný stupeň, žádná zpráva, žádná údržba):', code('supabase db query --linked "select public.admin_app_status_set(null, null, null, false, null)"'), 'Zpráva a údržba zmizí z telefonů nejpozději za 6 hodin (do dalšího dotazu aplikace).'])
+    ]);
+    return card({ cls: 'd12 m12', icon: 'list', title: 'Jak brzdu zapnout, krok za krokem', note: 'jen postup, tady se nic nenastavuje' }, [
+      steps,
+      h('h3', null, 'Pojistky'),
+      h('ul', 'bul', [
+        h('li', null, 'block_build potřebuje min_build a nesmí být větší než on.'),
+        h('li', null, 'Číslo buildu (dvojí zadání) musí souhlasit, jinak funkce odmítne.'),
+        h('li', null, 'Číslo buildu nesmí být větší než nejvyšší build, který se za 30 dní někdy ohlásil. Do prvních hlášení buildu 41 jde brzdu nastavit jen s šestým parametrem p_force => true, například select public.admin_app_status_set(42, null, null, false, 42, true).'),
+        h('li', null, 'Nastavení, které by zasáhlo všechny aktivní instalace, také vyžaduje p_force.'),
+        h('li', null, 'Počty a strop jdou anonymně zaplevelit (hlášení instalací volá kdokoli s veřejným klíčem), proto jsou jen pomoc; hlavní pojistkou je dvojí zadání.'),
+        h('li', null, 'Tabulku server_config nikdy neměňte přímo, obejde pojistky.')
+      ]),
+      h('h3', null, 'Kdy co'),
+      h('ul', 'bul', [
+        h('li', null, 'Servisní zpráva: informace bez omezení (výpadek, novinka).'),
+        h('li', null, 'Údržba: server se mění a starší i nové buildy by si mohly ublížit; krátce, vrátit hned po skončení.'),
+        h('li', null, 'Měkký stupeň (min_build): vadný build nebo změna serveru, kterou starší build neumí, ale data neničí.'),
+        h('li', null, 'Tvrdý stupeň (block_build): starší build by mohl poškodit data nebo bezpečnost; jen na krátko.')
+      ])
+    ]);
+  }
+
   /* ---------- Vykreslení ---------- */
 
   var lastData = null, lastMs = null;
@@ -1328,18 +1701,33 @@
   function render(data, ms) {
     lastData = data; lastMs = ms;
     var s = data.stats || {}, series = data.series || [];
-    var box = $('panels');
-    box.textContent = '';
-    DOTS.forEach(function (k) { setDot(k, null, 'bez údaje'); });
-    [sinceCard(data), reportsCard(data.reports, ctx), healthCard(data.health), funnelCard(data.funnel), paymentsCard(data.payments), readinessCard(data.readiness, data, ctx), securityCard(data.security),
-      heroCard(s, series), growthCard(s, series), petsCard(s), revenueCard(s, series), trialCard(s), devicesCard(s), capacityCard(s, series), externalCard(data.external), breedsCard(s), recordsCard(s), householdsCard(s), stateCard(s, ms)]
-      .concat(integrityCards(data.integrity), [supportCard()])
-      .forEach(function (p) { box.appendChild(p); });
-    var hw = healthWorst(data.health);
-    setDot('zdravi', hw.level === 'ok' ? null : hw.level, hw.level === 'ok' ? (data.health ? 'v pořádku' : 'bez údaje') : hw.text);
+    DOTS.forEach(function (k) { dotLevels[k] = null; });
+    var hl = data.health;
+    var ig = integrityCards(data.integrity);
+    pages = {
+      'k-reseni': [attentionPage(data)],
+      'uzivatele': [lay(sinceCard(data), 12, true), lay(heroCard(s, series), 12, true), lay(growthCard(s, series), 12, true), lay(funnelCard(data.funnel), 12, true), lay(devicesCard(s), 12, true), supportCard()],
+      'penize': [lay(revenueCard(s, series), 5), lay(trialCard(s), 7, true), lay(paymentsCard(data.payments), 12, true)],
+      'kvalita': [lay(healthCard(hl), 12, true), failuresByBuildCard(hl), failureKindsCard(hl)],
+      'data': ig.map(function (c, i) { return lay(c, ig.length === 1 ? 12 : i < 3 ? 4 : 6, i === 0); }).concat([lay(securityCard(data.security), 12, true), lay(capacityCard(s, series), 12, true),
+        lay(householdsCard(s), 5), lay(recordsCard(s), 7), lay(petsCard(s), 4), lay(breedsCard(s), 8)]),
+      'provoz': [lay(stateCard(s, ms), 12, true), externalCard(data.external)],
+      'hlaseni': [lay(reportsCard(data.reports, ctx), 12, true)],
+      'vydani': [lay(readinessCard(data.readiness, data, ctx), 12, true)],
+      'brzda': [brakeStatusCard(data.app_status), brakeBuildsCard(data.app_status, hl), brakeHowtoCard()]
+    };
+    var hw = healthWorst(hl);
+    setDot('zdravi', hw.level === 'ok' ? null : hw.level);
     igNav(data.integrity);
-    $('updated').textContent = 'Stav dat k ' + dateTime(s.generated_at);
-    $('loaded').textContent = 'Načteno v ' + new Date().toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' });
+    refreshBadges();
+    $('updated').textContent = 'Stav dat k ' + dateTime(s.generated_at) + '.';
+    $('loaded').textContent = 'Načteno v ' + new Date().toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' }) + '.';
+    showPage(currentPage, needFocus);
+    needFocus = false;
+    if (data.attention && Array.isArray(data.attention.items) && !visitSent && !demo && session) {
+      visitSent = true;
+      api('POST', '', { op: 'visit' }).catch(function () { /* nečeká se na to, chyba se ignoruje */ });
+    }
   }
 
   /* ---------- Ukázková data (?demo=1) ---------- */
@@ -1406,6 +1794,54 @@
     return { items: [mk(1, 'idea', 'Dalo by se přidat druhé krmení v poledne?', 5 * DAY), mk(2, 'bug', 'Upozornění přišlo o hodinu později.', 6 * DAY)], has_more: false, open: 2, total: 14 };
   }
 
+  /* Ukázka K řešení a Nouzové brzdy: jen počty a vymyšlené věty, žádné e-maily, jména ani id lidí.
+     ?demo=1&empty=1 = nic k řešení; ?demo=1&brake=1 = nouzová brzda nastavená. */
+  function demoAttention() {
+    var now = Date.now(), ago = function (ms) { return new Date(now - ms).toISOString(); }, ahead = function (ms) { return new Date(now + ms).toISOString(); };
+    var T = function (key, value, total, prev, prevTotal, prevDay) { return { key: key, value: value, total: total, prev: prev, prev_total: prevTotal, prev_day: prevDay }; };
+    var weekAgo = new Date(now - 7 * DAY), prevDay = isoDay(weekAgo);
+    if (demoEmpty) {
+      return {
+        generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false }, items: [],
+        tiles: [T('active_7d', 96, null, null, null, null), T('new_7d', 14, null, 14, null, prevDay), T('paying', 31, null, null, null, null), T('mrr', 1783, null, 1783, null, prevDay), T('failures', 0, null, null, null, null), T('integrity', 25, 25, null, null, null)],
+        changes: [],
+        release: { checks: [{ key: 'integrity', label: 'Kontroly správnosti dat', status: 'ok', value: '25 z 25' }, { key: 'migration', label: 'Nasazené migrace = očekávané', status: 'ok', value: 'v pořádku' },
+          { key: 'reports', label: 'Otevřená hlášení se štítkem chyba', status: 'ok', value: '0' }, { key: 'checklist', label: 'Kontrolní seznam před vydáním', status: 'ok', value: '12 z 12' }] }
+      };
+    }
+    var I = function (key, severity, title, detail, evidence, action, page, isNew, state, until) {
+      return { key: key, severity: severity, title: title, detail: detail, evidence: evidence, action: action, page: page, fingerprint: 'demo-' + key, state: state || 'open', until: until || null, is_new: !!isNew };
+    };
+    return {
+      generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false },
+      items: [
+        I('health_build', 'bad', 'Build 41 selhává při synchronizaci častěji než starší buildy', 'Za sedm dní hlásí chybu serveru při synchronizaci 4 ze 74 aktivních instalací, starší buildy je mají třikrát méně.', '4 z 74 instalací · posledních 7 dní', 'Otevřít rozbor', 'kvalita', true),
+        I('purge_failed', 'bad', 'Noční úklid úložiště dvakrát po sobě neproběhl', 'Smazané soubory zůstávají na serveru. Uživatelů se to zatím netýká, ale roste fronta.', 'fronta 214 souborů · poslední úspěch před 2 dny', 'Otevřít úlohu', 'provoz', false),
+        I('reports_old', 'watch', 'Pět hlášení od lidí čeká déle než 2 dny', 'Dvě z nich popisují totéž: připomínka léku nepřišla po aktualizaci.', 'nejstarší před 4 dny', 'Projít hlášení', 'hlaseni', true),
+        I('trial_ending', 'watch', 'Zkušební doba končí 9 domácnostem do 7 dnů', 'Zatím žádná z nich nemá předplatné. Tři používají aplikaci denně.', 'minulý měsíc přešlo na Premium 22 %', 'Zobrazit přehled', 'penize', false),
+        I('storage_91', 'watch', 'Jedna domácnost je na 91 % úložiště', 'Při zaplnění přestanou chodit fotky a dokumenty všem jejím členům.', '91 ze 100 MB', 'Zobrazit', 'data', false),
+        I('billing_retry', 'watch', 'Platba se nedaří u dvou předplatných', 'Obchod platbu zkouší znovu; předplatné zatím běží.', '2 předplatná', 'Otevřít platby', 'penize', false, 'snoozed', ahead(20 * HOURS)),
+        I('no_reminder', 'improve', '41 % nových lidí nepřidá do 3 dnů žádnou připomínku', 'Kdo ji přidá první den, zůstává třikrát častěji. Největší odpad je mezi přidáním mazlíčka a prvním lékem nebo krmením.', 'posledních 30 dní, 180 účtů', 'Otevřít cestu', 'uzivatele', true),
+        I('card_share', 'improve', 'Sdílení karty odkazem použilo jen 6 domácností', 'Funkce je schovaná v průkazu mazlíčka. Kdo ji našel, použil ji opakovaně.', '6 z 31 s Premium', 'Otevřít', 'uzivatele', false),
+        I('yearly_plan', 'improve', 'Roční předplatné si vybere 1 z 10', 'Na obrazovce Předplatné je měsíční volba předvybraná.', '3 roční, 28 měsíčních', 'Otevřít', 'penize', false)
+      ],
+      tiles: [T('active_7d', 96, null, 89, null, prevDay), T('new_7d', 14, null, 16, null, prevDay), T('paying', 31, null, 29, null, prevDay), T('mrr', 1783, null, 1620, null, prevDay), T('failures', 4, null, 1, null, prevDay), T('integrity', 24, 25, null, null, null)],
+      changes: [
+        { at: ago(2 * HOURS), kind: 'report', text: 'nové hlášení: „po aktualizaci nepřišla připomínka“ (build 41)', bad: false },
+        { at: ago(5 * HOURS), kind: 'account', text: 'nové předplatné, měsíční', bad: false },
+        { at: ago(11 * HOURS), kind: 'integrity', text: 'noční kontrola dat: 24 z 25, beze změny', bad: false },
+        { at: ago(13 * HOURS), kind: 'cron', text: 'úklid úložiště selhal, podruhé', bad: true },
+        { at: ago(17 * HOURS), kind: 'account', text: '3 nové účty, 2 dokončily úvod', bad: false }
+      ],
+      release: { checks: [{ key: 'integrity', label: 'Kontroly správnosti dat', status: 'watch', value: '24 z 25' }, { key: 'migration', label: 'Nasazené migrace = očekávané', status: 'ok', value: 'v pořádku' },
+        { key: 'reports', label: 'Otevřená hlášení se štítkem chyba', status: 'bad', value: '2' }, { key: 'checklist', label: 'Kontrolní seznam před vydáním', status: 'watch', value: '2 z 12' }] }
+    };
+  }
+  function demoStatus() {
+    if (demoBrake) return { min_build: 41, block_build: null, message: 'Doporučujeme aktualizovat aplikaci.', maintenance: false };
+    return { min_build: null, block_build: null, message: null, maintenance: null };
+  }
+
   function demoData() {
     var series = [], now = new Date(2026, 10, 27);
     for (var i = 89; i >= 0; i--) {
@@ -1422,7 +1858,7 @@
     }
     var last = series[series.length - 1];
     return {
-      integrity: demoIntegrity(),
+      integrity: demoIntegrity(), attention: demoAttention(), app_status: demoStatus(),
       since: demoOverview.since, reports: demoOverview.reports, health: demoOverview.health, funnel: demoOverview.funnel, payments: demoOverview.payments, security: demoOverview.security, readiness: demoOverview.readiness,
       external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } }, apple: { status: 'ok', downloads: 41, units: 52, missing: 1, days: [] }, revenuecat: { status: 'ok', currency: 'CZK', metrics: [{ id: 'active_trials', name: 'Zkušební doby', value: 9, unit: '' }, { id: 'active_subscriptions', name: 'Předplatná', value: 31, unit: '' }, { id: 'mrr', name: 'MRR', value: 1480, unit: 'Kč' }] }, supabase: { status: 'ok', interval: '7day', rest: 18420, auth: 1310, storage: 940, realtime: 0 }, google: { status: 'unconfigured' }, telemetrydeck: { status: 'unconfigured' } },
       series: series,
@@ -1535,6 +1971,9 @@
     factorId = null;
     if (s) auth('POST', '/logout?scope=local', null, s.access).catch(function () { /* stejně je zahozená */ });
     $('panels').textContent = '';
+    pages = null;
+    needFocus = true;
+    refreshBadges();
     $('updated').textContent = '';
     $('loaded').textContent = '';
     fail($('dash-error'), '');
