@@ -1125,7 +1125,7 @@
       { name: 'Instalace (jen informativně)', v: t.installs, shown: int(t.installs), pct: '', w: wid(t.installs, Math.max(t.installs, t.signups)), info: true },
       { name: 'Registrace', v: t.signups, shown: int(t.signups), pct: '', w: wid(t.signups, Math.max(t.installs, t.signups)) },
       { name: 'Ověřený e-mail nebo Apple', v: t.verified, shown: int(t.verified), ratio: t.signups > 0 ? t.verified / t.signups : null, w: wid(t.verified, t.signups) },
-      { name: 'První mazlíček', v: t.pet, shown: int(t.pet), ratio: t.verified > 0 ? t.pet / t.verified : null, w: wid(t.pet, t.signups) },
+      { name: 'První mazlíček', v: t.pet, shown: int(t.pet), ratio: t.verified - t.invited > 0 ? t.pet / (t.verified - t.invited) : null, w: wid(t.pet, t.signups) },
       { name: 'První odškrtnutý úkol', v: t.done, shown: int(t.done), ratio: t.pet > 0 ? t.done / t.pet : null, w: wid(t.done, t.signups) },
       { name: 'Návrat po 7 dnech', v: t.returned, shown: t.ret_base > 0 ? int(t.returned) + ' z ' + int(t.ret_base) : '–', ratio: t.ret_base > 0 ? t.returned / t.ret_base : null,
         w: t.ret_base > 0 ? wid(t.done, t.signups) * t.returned / t.ret_base : 0 }
@@ -1146,11 +1146,11 @@
       h('dt', null, 'Instalace'), h('dd', null, 'První hlášení anonymní instalace v období. Instalaci nejde spojit s účtem, proto je to jen informace a nepočítá se do procent ani do největšího úbytku.'),
       h('dt', null, 'Registrace'), h('dd', null, 'Účty založené za posledních 30 dní. Každý další krok jsou jen ti, kdo prošli všemi předchozími.'),
       h('dt', null, 'Ověřený e-mail nebo Apple'), h('dd', null, 'Potvrzený e-mail, nebo přihlášení přes Apple, Google či Facebook.'),
-      h('dt', null, 'První mazlíček'), h('dd', null, 'Domácnost uživatele má aspoň jednoho mazlíčka (i smazaného; u pozvaného člena se počítá mazlíček domácnosti, do které vstoupil).'),
-      h('dt', null, 'První odškrtnutý úkol'), h('dd', null, 'V domácnosti uživatele je po jeho registraci aspoň jedno odškrtnuté krmení nebo podaná dávka léku (vynechaná dávka se nepočítá, smazaný záznam také ne).'),
-      h('dt', null, 'Návrat po 7 dnech'), h('dd', null, 'V domácnosti vznikl nový záznam 7. až 14. den po registraci. Počítají se jen účty starší 14 dní, u mladších krok ještě není uzavřený, proto nejsou ani v čitateli, ani ve jmenovateli.')
+      h('dt', null, 'První mazlíček'), h('dd', null, 'Uživatel je vlastníkem domácnosti, která má aspoň jednoho mazlíčka (i smazaného). Pozvaní členové cizí domácnosti se od tohoto kroku nepočítají a jsou zvlášť jako „pozvaní členové“.'),
+      h('dt', null, 'První odškrtnutý úkol'), h('dd', null, 'V domácnosti, jejímž je vlastníkem, je po jeho registraci aspoň jedno odškrtnuté krmení nebo podaná dávka léku (vynechaná dávka se nepočítá, smazaný záznam také ne).'),
+      h('dt', null, 'Návrat po 7 dnech'), h('dd', null, 'V jeho domácnosti vznikl nový záznam 7. až 14. den po registraci. Počítají se jen účty starší 14 dní, u mladších krok ještě není uzavřený, proto nejsou ani v čitateli, ani ve jmenovateli.')
     ])]);
-    return card(head, [ol, note('Procento je proti předchozímu kroku, největší úbytek je zvýrazněný jantarově.')].concat(weeks, [defs]));
+    return card(head, [ol, note('Procento je proti předchozímu kroku, největší úbytek je zvýrazněný jantarově. Pozvaní členové: ' + int(t.invited) + ' (vstoupili do cizí domácnosti, od mazlíčka dál se nepočítají).')].concat(weeks, [defs]));
   }
 
   /* ---- Platby ---- */
@@ -1159,10 +1159,13 @@
     if (!py) { setDot('platby', null, 'bez údaje'); return card(head, [note(NO_DATA)]); }
     var rows = [], last = py.last_event_at || py.last_update_at;
     var ageMs = last ? Date.now() - new Date(last).getTime() : null;
+    /* upozornění na mlčící webhook jen podle produkčních zpráv; sandbox se ukazuje zvlášť a nikdy nevaruje */
     var stale = ageMs !== null && ageMs > 7 * DAY && py.paying > 0;
     rows.push(last
-      ? trow(stale ? 'warn' : 'ok', 'Poslední zpráva z RevenueCat', 'událost ' + (py.last_event_at ? ageText(py.last_event_at) : '–') + ' · zápis ' + (py.last_update_at ? ageText(py.last_update_at) : '–'), stale ? 'starší než 7 dní' : 'v pořádku')
-      : trow('off', 'Poslední zpráva z RevenueCat', 'webhook zatím nic nepřijal', '–'));
+      ? trow(stale ? 'warn' : 'ok', 'Poslední zpráva z RevenueCat (produkce)', 'událost ' + (py.last_event_at ? ageText(py.last_event_at) : '–') + ' · zápis ' + (py.last_update_at ? ageText(py.last_update_at) : '–'), stale ? 'starší než 7 dní' : 'v pořádku')
+      : trow('off', 'Poslední zpráva z RevenueCat (produkce)', 'zatím žádná produkční zpráva', '–'));
+    var sb = py.sandbox_last_event_at || py.sandbox_last_update_at;
+    rows.push(trow('off', 'Poslední zpráva z RevenueCat (sandbox)', sb ? 'událost ' + (py.sandbox_last_event_at ? ageText(py.sandbox_last_event_at) : '–') + ' · zápis ' + (py.sandbox_last_update_at ? ageText(py.sandbox_last_update_at) : '–') : 'zatím žádná', sb ? '' : '–'));
     rows.push(trow(py.billing_retry ? 'warn' : 'ok', 'Platba se nedaří', 'obchod to zkouší znovu', int(py.billing_retry)));
     rows.push(trow(py.grace ? 'warn' : 'ok', 'Odklad platby', 'předplatné běží, platba neprošla', int(py.grace)));
     rows.push(trow(py.refunded_30d + py.revoked_30d ? 'warn' : 'ok', 'Vrácené a odvolané za 30 dní', 'vráceno ' + int(py.refunded_30d) + ' · odvoláno ' + int(py.revoked_30d), int(py.refunded_30d + py.revoked_30d)));
@@ -1205,13 +1208,13 @@
     var m = rd.migration, measured = [];
     measured.push(m.ok === null ? trow('off', 'Migrace na serveru jsou aktuální', 'verzi nelze přečíst', '–')
       : trow(m.ok ? 'ok' : 'bad', 'Migrace na serveru jsou aktuální', m.ok ? 'měří se samo' : 'server má ' + m.server + ', očekává se ' + m.expected, m.ok ? 'ano' : 'ne'));
-    measured.push(rd.cron ? trow(rd.cron.ok === rd.cron.total ? 'ok' : 'bad', 'Noční úlohy běží', null, rd.cron.ok + ' z ' + rd.cron.total) : trow('off', 'Noční úlohy běží', 'nelze zjistit', '–'));
+    measured.push(rd.cron ? trow(rd.cron.failed ? 'bad' : 'ok', 'Noční úlohy běží', rd.cron.never ? rd.cron.never + ' ještě neběželo (první den po nasazení)' : null, rd.cron.ok + ' z ' + rd.cron.total + (rd.cron.never ? ', ' + rd.cron.never + ' ještě neběželo' : '')) : trow('off', 'Noční úlohy běží', 'nelze zjistit', '–'));
     measured.push(ig ? trow(ig.bad ? 'bad' : ig.warn ? 'warn' : 'ok', 'Kontroly správnosti dat', null, ig.ok + ' z ' + ig.total) : trow('off', 'Kontroly správnosti dat', 'kontrola není zapnutá', '–'));
     measured.push(trow(rd.apple_revoke ? 'ok' : 'bad', 'Odvolání přihlášení přes Apple', rd.apple_revoke ? null : 'chybí klíč na serveru', rd.apple_revoke ? 'ano' : 'ne'));
     measured.push(rd.sandbox_mode === null ? trow('off', 'Nákupy v sandboxu', 'režim nelze přečíst', '–')
       : trow(rd.sandbox_mode === 'all' ? 'warn' : 'ok', 'Nákupy v sandboxu jen testerům', rd.sandbox_mode === 'all' ? 'přepnout po schválení' : null, rd.sandbox_mode === 'all' ? 'všem' : 'testerům'));
     measured.push(trow(rd.secrets.set === rd.secrets.total ? 'ok' : 'warn', 'Tajemství funkcí nastavená', 'jen ano / ne, hodnoty se nečtou', rd.secrets.set + ' z ' + rd.secrets.total));
-    measured.push(trow('off', 'Nejvyšší build za 7 dní', 'podle hlášení instalací', rd.max_build === null ? '–' : String(rd.max_build)));
+    measured.push(trow('off', 'Nejvyšší build za 7 dní', 'orientačně, podle hlášení instalací', rd.max_build === null ? '–' : String(rd.max_build)));
     var doneN = rd.checklist.filter(function (c) { return c.done_at; }).length;
     var countEl = h('span', 'note', doneN + ' z ' + rd.checklist.length + ' hotovo');
     head.extra = countEl;
@@ -1249,7 +1252,7 @@
   function semaphore(data) {
     var items = [], s = data.stats || {}, ig = data.integrity && Array.isArray(data.integrity.checks) && data.integrity.checks.length ? igSummary(data.integrity.checks) : null;
     if (ig && ig.bad) items.push({ level: 'bad', text: 'Správnost dat: ' + ig.bad + ' ' + plural(ig.bad, 'chyba', 'chyby', 'chyb') });
-    var cronBad = (data.readiness && data.readiness.cron && data.readiness.cron.ok < data.readiness.cron.total) || ((s.state && s.state.cron) || []).some(function (j) { return j.status === 'failed'; });
+    var cronBad = (data.readiness && data.readiness.cron && data.readiness.cron.failed > 0) || ((s.state && s.state.cron) || []).some(function (j) { return j.status === 'failed'; });
     if (cronBad) items.push({ level: 'bad', text: 'Selhala noční úloha' });
     var hw = healthWorst(data.health);
     if (hw.level !== 'ok') items.push({ level: hw.level, text: hw.text });
@@ -1269,7 +1272,7 @@
       var diff = sn.new_users_24h - sn.new_users_avg7;
       nums.push(['Noví uživatelé, 24 h', int(sn.new_users_24h), signed(Math.round(diff * 10) / 10, nf1.format.bind(nf1)) + ' proti průměru 7 dní']);
       nums.push(['Aktivní dnes', int(sn.active_today), pctText(sn.active_today, sn.users_total) + ' ze všech']);
-      nums.push(['Předplatná, změna za den', sn.subs ? signed(sn.subs.paying_delta) : '–', sn.subs ? 'MRR ' + signed(sn.subs.mrr_delta_czk, kc) + ' od ' + dayShort(sn.subs.base_day) : 'bez denního snímku']);
+      nums.push([sn.subs ? 'Předplatná, změna od ' + dayShort(sn.subs.base_day) : 'Předplatná, změna za den', sn.subs ? signed(sn.subs.paying_delta) : '–', sn.subs ? 'MRR ' + signed(sn.subs.mrr_delta_czk, kc) : 'bez denního snímku']);
       nums.push(['Hlášení od lidí', int(sn.reports_open), 'nevyřízených z ' + int(sn.reports_total)]);
     } else {
       nums.push(['Noví uživatelé, 24 h', '–', 'část přibude po nasazení']);
@@ -1385,16 +1388,16 @@
         { build: '40', version: '1.0.0', active: 38, kinds: kinds({ sync_server: [1, 2], signin: [0, 0], upload: [2, 3], crash: [1, 1] }) },
         { build: '39', version: '1.0.0', active: 12, kinds: kinds({ sync_auth: [1, 1], crash: [1, 1] }) }
       ], older: { active: 9, kinds: kinds({ sync_server: [1, 1] }) } },
-      funnel: { total: { installs: 412, signups: 318, verified: 301, pet: 274, done: 198, ret_base: 150, returned: 91 }, weeks: [
-        { week: '2026-10-26', installs: 70, signups: 52, verified: 50, pet: 46, done: 35, ret_base: 35, returned: 22 },
-        { week: '2026-11-02', installs: 91, signups: 74, verified: 70, pet: 64, done: 49, ret_base: 49, returned: 30 },
-        { week: '2026-11-09', installs: 100, signups: 78, verified: 74, pet: 66, done: 46, ret_base: 46, returned: 28 },
-        { week: '2026-11-16', installs: 96, signups: 71, verified: 66, pet: 60, done: 40, ret_base: 20, returned: 11 },
-        { week: '2026-11-23', installs: 55, signups: 43, verified: 41, pet: 38, done: 28, ret_base: 0, returned: 0 }
+      funnel: { total: { installs: 412, signups: 318, verified: 301, invited: 27, pet: 274, done: 198, ret_base: 150, returned: 91 }, weeks: [
+        { week: '2026-10-26', installs: 70, signups: 52, verified: 50, invited: 4, pet: 46, done: 35, ret_base: 35, returned: 22 },
+        { week: '2026-11-02', installs: 91, signups: 74, verified: 70, invited: 6, pet: 64, done: 49, ret_base: 49, returned: 30 },
+        { week: '2026-11-09', installs: 100, signups: 78, verified: 74, invited: 7, pet: 66, done: 46, ret_base: 46, returned: 28 },
+        { week: '2026-11-16', installs: 96, signups: 71, verified: 66, invited: 6, pet: 60, done: 40, ret_base: 20, returned: 11 },
+        { week: '2026-11-23', installs: 55, signups: 43, verified: 41, invited: 4, pet: 38, done: 28, ret_base: 0, returned: 0 }
       ] },
-      payments: { last_event_at: ago(3 * HOURS), last_update_at: ago(3 * HOURS), paying: 31, production_rows: 44, billing_retry: 2, grace: 1, refunded_30d: 0, revoked_30d: 0, ending_7d: 4, sandbox: 6 },
+      payments: { last_event_at: ago(3 * HOURS), last_update_at: ago(3 * HOURS), sandbox_last_event_at: ago(2 * DAY), sandbox_last_update_at: ago(2 * DAY), paying: 31, production_rows: 44, billing_retry: 2, grace: 1, refunded_30d: 0, revoked_30d: 0, ending_7d: 4, sandbox: 6 },
       security: { invite_exhausted: 0, card_miss: 3, cards_active: 9, admin_logins_7d: 5, repeat_trials_30d: 1 },
-      readiness: { migration: { server: '20270108090000', expected: '20270108090000', ok: true }, cron: { total: 8, ok: 8 }, apple_revoke: false, sandbox_mode: 'all', secrets: { set: 8, total: 9 }, max_build: 40,
+      readiness: { migration: { server: '20270108090000', expected: '20270108090000', ok: true }, cron: { total: 8, ok: 7, failed: 0, never: 1 }, apple_revoke: false, sandbox_mode: 'all', secrets: { set: 8, total: 9 }, max_build: 40,
         checklist: CHECKLIST.map(function (c, i) { return { key: c[0], done_at: i === 7 || i === 4 ? ago(2 * DAY) : null }; }) }
     };
   })();
