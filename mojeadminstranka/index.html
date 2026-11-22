@@ -29,6 +29,7 @@
   <symbol id="i-funnel" viewBox="0 0 24 24"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></symbol>
   <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></symbol>
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
   <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
   <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
   <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
@@ -80,13 +81,28 @@
         <p id="loaded" class="muted"></p>
       </div>
       <nav class="side-nav" aria-label="Sekce přehledu">
+        <a href="#sec-vcera"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Od včera</a>
+        <p class="navgroup">Před vydáním</p>
+        <a href="#sec-pripravenost"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg>Připravenost</a>
+        <p class="navgroup">Lidé</p>
         <a href="#sec-uzivatele"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Uživatelé</a>
+        <a href="#sec-cesta"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg>Cesta uživatele</a>
+        <a href="#sec-zarizeni"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>Zařízení</a>
+        <a href="#sec-hlaseni"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg>Hlášení<span class="navdot" id="nd-hlaseni" hidden></span><span class="sr-only" id="nd-hlaseni-t"></span></a>
+        <a href="#sec-podpora"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg>Podpora</a>
+        <p class="navgroup">Peníze</p>
         <a href="#sec-vynos"><svg class="ic" aria-hidden="true"><use href="#i-money"/></svg>Výnos</a>
         <a href="#sec-zkouska"><svg class="ic" aria-hidden="true"><use href="#i-funnel"/></svg>Zkušební doba</a>
-        <a href="#sec-zarizeni"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg>Zařízení</a>
-        <a href="#sec-kapacita"><svg class="ic" aria-hidden="true"><use href="#i-db"/></svg>Kapacita</a>
-        <a href="#sec-data"><svg class="ic" aria-hidden="true"><use href="#i-paw"/></svg>Data</a>
+        <a href="#sec-platby"><svg class="ic" aria-hidden="true"><use href="#i-money"/></svg>Platby<span class="navdot" id="nd-platby" hidden></span><span class="sr-only" id="nd-platby-t"></span></a>
+        <p class="navgroup">Provoz</p>
+        <a href="#sec-zdravi"><svg class="ic" aria-hidden="true"><use href="#i-pulse"/></svg>Zdraví aplikace<span class="navdot" id="nd-zdravi" hidden></span><span class="sr-only" id="nd-zdravi-t"></span></a>
+        <a href="#sec-spravnost"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Správnost dat<span class="navdot" id="nd-spravnost" hidden></span><span class="sr-only" id="nd-spravnost-t"></span></a>
         <a href="#sec-stav"><svg class="ic" aria-hidden="true"><use href="#i-pulse"/></svg>Stav systému</a>
+        <a href="#sec-kapacita"><svg class="ic" aria-hidden="true"><use href="#i-db"/></svg>Kapacita</a>
+        <a href="#sec-bezpecnost"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Bezpečnost</a>
+        <a href="#sec-externi"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Externí služby</a>
+        <p class="navgroup">Obsah</p>
+        <a href="#sec-data"><svg class="ic" aria-hidden="true"><use href="#i-paw"/></svg>Data</a>
       </nav>
       <div class="side-actions">
         <button type="button" class="btn-dark" id="refresh"><span>Obnovit</span><span class="nest"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></span></button>
