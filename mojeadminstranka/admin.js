@@ -22,6 +22,8 @@
   var demo = qs.get('demo') === '1';
   var demoEmpty = demo && qs.get('empty') === '1';   // ?demo=1&empty=1: stav „nic k řešení“
   var demoBrake = demo && qs.get('brake') === '1';   // ?demo=1&brake=1: nouzová brzda nastavená
+  var demoFailed = demo && qs.get('failed') === '1'; // ?demo=1&failed=1: server nevyhodnotil některá pravidla
+  var demoPart = demo ? qs.get('part') : null;       // ?demo=1&part=error (část = null) nebo part=missing (část chybí)
 
   var $ = function (id) { return document.getElementById(id); };
   var nf = new Intl.NumberFormat('cs-CZ');
@@ -969,10 +971,14 @@
     ]);
   }
   function table(head, rows, cls) {
-    return h('div', 'tbl-wrap', h('table', 'tbl ' + (cls || ''), [
+    var wrap = h('div', 'tbl-wrap', h('table', 'tbl ' + (cls || ''), [
       h('thead', null, h('tr', null, head.map(function (c) { return h('th', null, c); }))),
       h('tbody', null, rows.map(function (r) { return h('tr', null, r.map(function (c, i) { return h(i ? 'td' : 'th', c && c.cls ? c.cls : null, c && c.cls !== undefined ? c.text : c); })); }))
     ]));
+    wrap.tabIndex = 0;
+    wrap.setAttribute('role', 'region');
+    wrap.setAttribute('aria-label', 'Tabulka, na úzkém displeji se posouvá do stran');
+    return wrap;
   }
   var DOTS = ['hlaseni', 'zdravi', 'spravnost', 'platby'];
   var DOT_PAGE = { hlaseni: 'hlaseni', zdravi: 'kvalita', spravnost: 'data', platby: 'penize' };
@@ -1363,7 +1369,9 @@
     box.textContent = '';
     ((pages && pages[name]) || []).forEach(function (el) { box.appendChild(el); });
     closeMenu();
+    if (!pages) { var ld = h('p', 'loading', 'Načítám…'); ld.setAttribute('role', 'status'); box.appendChild(ld); }
     if (focus) { window.scrollTo(0, 0); $('page-title').focus({ preventScroll: true }); }
+    maybeVisit();
   }
   window.addEventListener('hashchange', function () {
     var name = location.hash.replace(/^#/, '');
@@ -1377,7 +1385,15 @@
     el.className = el.className.replace(/\b(d\d+|m\d+)\b/g, '').replace(/\s+/g, ' ').trim() + ' d' + d + (m12 ? ' m12' : '');
     return el;
   }
-  function waiting() { return h('p', 'sub', 'Tato část čeká na nasazení serveru.'); }
+  /* Část odpovědi, která chybí úplně (stará funkce na serveru), a část, která je null (chyba nebo časový limit), se hlásí jinou větou. */
+  function reload() { if (demo) render(demoData(), null); else load(); }
+  function partFallback(v) {
+    if (v === undefined) return h('p', 'sub', 'Tato část čeká na nasazení serveru.');
+    var b = h('button', 'btn-dark sm', h('span', null, 'Zkusit znovu'));
+    b.type = 'button';
+    b.addEventListener('click', function () { b.disabled = true; reload(); });
+    return h('div', 'part-err', [h('p', 'sub', 'Tuto část se teď nepodařilo načíst. Zkuste to znovu.'), b]);
+  }
 
   /* ---------- Stránka K řešení (část odpovědi `attention`) ---------- */
 
@@ -1395,13 +1411,15 @@
   function wantsText(n) {
     return n + ' ' + (n === 1 ? 'věc chce' : n >= 2 && n <= 4 ? 'věci chtějí' : 'věcí chce') + ' vaši pozornost dnes.';
   }
-  function attVerdict(open) {
+  function attVerdict(open, hiddenBW) {
     var bad = open.filter(function (i) { return i.severity === 'bad'; });
     var watch = open.filter(function (i) { return i.severity === 'watch'; });
     var improve = open.filter(function (i) { return i.severity === 'improve'; });
-    if (bad.length) return { cls: 'bad', text: 'Pozor: ' + bad[0].title.replace(/[.\s]+$/, '') + '.' };
-    if (watch.length) return { cls: 'watch', text: 'Aplikace běží. ' + wantsText(watch.length) };
-    if (improve.length) return { cls: 'ok', text: 'Aplikace běží. Nic nehoří, jsou jen nápady na zlepšení.' };
+    var tail = hiddenBW ? ' (' + hiddenBW + ' ' + plural(hiddenBW, 'odložená', 'odložené', 'odložených') + ')' : '';
+    if (bad.length) return { cls: 'bad', text: 'Pozor: ' + bad[0].title.replace(/[.\s]+$/, '') + '.' + tail };
+    if (watch.length) return { cls: 'watch', text: 'Aplikace běží. ' + wantsText(watch.length) + tail };
+    if (improve.length) return { cls: 'ok', text: 'Aplikace běží. Nic nehoří, jsou jen nápady na zlepšení.' + tail };
+    if (hiddenBW) return { cls: 'ok', text: 'Aplikace běží. Nic otevřeného k řešení.' + tail };
     return { cls: 'ok', text: 'Vše v pořádku, nic k řešení.' };
   }
   function attCounts(open) {
@@ -1462,7 +1480,7 @@
     if (it.detail) li.appendChild(h('p', 'it-d', it.detail));
     li.appendChild(h('p', 'ev', ['Podle: ', h('b', null, PAGE_TITLE[it.page] || it.page), it.evidence ? ' · ' + it.evidence : '']));
     if (typeof it.action === 'string' && it.action.trim()) li.appendChild(h('p', 'it-a', it.action));
-    if (it.state === 'snoozed') li.appendChild(h('p', 'snz', 'odloženo do ' + (it.until ? dateTime(it.until) : '–')));
+    if (it.state !== 'open') li.appendChild(h('p', 'snz', it.state === 'snoozed' ? 'odloženo do ' + (it.until ? dateTime(it.until) : '–') : it.state === 'resolved' ? 'vyřešeno' : 'nezajímá mě'));
     var acts = h('div', 'acts');
     if (PAGE_TITLE[it.page]) {
       var open = h('a', 'btn-dark sm', 'Otevřít');
@@ -1482,7 +1500,7 @@
       acts.appendChild(button('Vyřešeno', 'resolve', 'Označit jako vyřešené'));
       if (it.severity === 'improve') acts.appendChild(button('Nezajímá mě', 'ignore', 'Už se nezobrazovat'));
       acts.appendChild(opts);
-    } else if (it.state === 'snoozed') {
+    } else {
       acts.appendChild(button('Vrátit', 'reopen', 'Vrátit mezi otevřené'));
     }
     li.appendChild(acts);
@@ -1514,16 +1532,24 @@
     attRoot.textContent = '';
     var items = Array.isArray(att.items) ? att.items : [];
     var open = items.filter(function (i) { return i.state === 'open'; });
-    var snoozed = items.filter(function (i) { return i.state === 'snoozed'; });
-    var v = attVerdict(open);
+    var hidden = items.filter(function (i) { return i.state !== 'open'; });
+    var hiddenBW = hidden.filter(function (i) { return (i.state === 'snoozed' || i.state === 'resolved') && (i.severity === 'bad' || i.severity === 'watch'); }).length;
+    var v = attVerdict(open, hiddenBW);
     attRoot.appendChild(h('div', 'verdict-bar ' + v.cls, [h('span', 'vdot'), h('div', null, [h('p', 'v-t', v.text), h('p', 'v-s', attCounts(open))])]));
+    var failed = Array.isArray(att.rules_failed) ? att.rules_failed : [];
+    if (failed.length) {
+      var rf = h('p', 'rules-fail', 'Některá pravidla se nepodařilo vyhodnotit (' + failed.length + ').');
+      rf.setAttribute('role', 'status');
+      rf.title = failed.join(', ');
+      attRoot.appendChild(rf);
+    }
     attRoot.appendChild(tilesRow(att));
 
-    var shown = attFilter === 'snoozed' ? snoozed : attFilter === 'new' ? open.filter(function (i) { return i.is_new; }) : open;
+    var shown = attFilter === 'hidden' ? hidden : attFilter === 'new' ? open.filter(function (i) { return i.is_new; }) : open;
     var filters = h('div', 'filters');
     filters.setAttribute('role', 'group');
     filters.setAttribute('aria-label', 'Které položky ukázat');
-    [['all', 'Vše'], ['new', 'Jen nové od poslední návštěvy'], ['snoozed', 'Odložené (' + snoozed.length + ')']].forEach(function (f) {
+    [['all', 'Vše'], ['new', 'Jen nové od poslední návštěvy'], ['hidden', 'Skryté (' + hidden.length + ')']].forEach(function (f) {
       var b = h('button', null, f[1]);
       b.type = 'button';
       b.setAttribute('aria-pressed', String(attFilter === f[0]));
@@ -1536,7 +1562,7 @@
       var list = shown.filter(function (i) { return i.severity === sv[0]; });
       return h('section', 'att-col', [
         h('h2', 'att-h ' + sv[2], [h('span', 'adot ' + sv[2]), sv[1], h('span', 'sr-only', ' (' + list.length + ')')]),
-        list.length ? h('ul', 'its', list.map(attItem)) : h('p', 'sub', attFilter === 'snoozed' ? 'Nic odloženého.' : attFilter === 'new' ? 'Nic nového.' : 'Nic.')
+        list.length ? h('ul', 'its', list.map(attItem)) : h('p', 'sub', attFilter === 'hidden' ? 'Nic skrytého.' : attFilter === 'new' ? 'Nic nového.' : 'Nic.')
       ]);
     });
     attRoot.appendChild(h('div', 'att-cols', cols));
@@ -1546,7 +1572,7 @@
   function attentionPage(data) {
     attRoot = h('div', 'att');
     if (!data.attention || !Array.isArray(data.attention.items)) {
-      attRoot.appendChild(card({ cls: 'd12 m12', icon: 'list', title: 'K řešení' }, [waiting()]));
+      attRoot.appendChild(card({ cls: 'd12 m12', icon: 'list', title: 'K řešení' }, [partFallback(data.attention)]));
       return attRoot;
     }
     drawAttention();
@@ -1593,7 +1619,7 @@
 
   function brakeStatusCard(st) {
     var head = { id: 'sec-brzda', cls: 'd6 m12', icon: 'shield', title: 'Co je nastaveno teď' };
-    if (st === undefined || st === null || typeof st !== 'object') return card(head, [waiting()]);
+    if (st === undefined || st === null || typeof st !== 'object') return card(head, [partFallback(st)]);
     var min = num(st.min_build), block = num(st.block_build), msg = typeof st.message === 'string' && st.message ? st.message : null, maint = st.maintenance === true;
     var rows = [];
     if (min !== null) rows.push(trow('warn', 'Měkký stupeň: build nižší než ' + min, 'Aplikace funguje dál, ale nic se neukládá na server a ukazuje se pruh „Aktualizujte aplikaci“.', 'build < ' + min));
@@ -1725,10 +1751,12 @@
     $('loaded').textContent = 'Načteno v ' + new Date().toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' }) + '.';
     showPage(currentPage, needFocus);
     needFocus = false;
-    if (data.attention && Array.isArray(data.attention.items) && !visitSent && !demo && session) {
-      visitSent = true;
-      api('POST', '', { op: 'visit' }).catch(function () { /* nečeká se na to, chyba se ignoruje */ });
-    }
+  }
+  /* Návštěva se hlásí serveru jen při zobrazené stránce K řešení, jednou za přihlášení; nečeká se na odpověď a chyba se ignoruje. */
+  function maybeVisit() {
+    if (visitSent || demo || !session || currentPage !== 'k-reseni' || !lastData || !lastData.attention || !Array.isArray(lastData.attention.items)) return;
+    visitSent = true;
+    api('POST', '', { op: 'visit' }).catch(function () { /* ignoruje se */ });
   }
 
   /* ---------- Ukázková data (?demo=1) ---------- */
@@ -1803,42 +1831,45 @@
   function demoAttention() {
     var now = Date.now(), ago = function (ms) { return new Date(now - ms).toISOString(); }, ahead = function (ms) { return new Date(now + ms).toISOString(); };
     var T = function (key, value, total, prev, prevTotal, prevDay) { return { key: key, value: value, total: total, prev: prev, prev_total: prevTotal, prev_day: prevDay }; };
-    var weekAgo = new Date(now - 7 * DAY), prevDay = isoDay(weekAgo);
+    var prevDay = demoDay(7);
+    var failed = demoFailed ? ['cron', 'storage'] : [];
+    var rules = { key: 'rules', label: 'Pravidla běží', status: failed.length ? 'bad' : 'ok', value: failed.length ? failed.length + ' selhalo' : 'ano' };
     if (demoEmpty) {
       return {
-        generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false }, items: [],
+        generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false }, items: [], rules_failed: failed,
         tiles: [T('active_7d', 96, null, null, null, null), T('new_7d', 14, null, 14, null, prevDay), T('paying', 31, null, null, null, null), T('mrr', 1783, null, 1783, null, prevDay), T('failures', 0, null, null, null, null), T('integrity', 25, 25, null, null, null)],
         changes: [],
-        release: { checks: [{ key: 'integrity', label: 'Kontroly správnosti dat', status: 'ok', value: '25 z 25' }, { key: 'migration', label: 'Nasazené migrace = očekávané', status: 'ok', value: 'v pořádku' },
-          { key: 'reports', label: 'Otevřená hlášení se štítkem chyba', status: 'ok', value: '0' }, { key: 'checklist', label: 'Kontrolní seznam před vydáním', status: 'ok', value: '12 z 12' }] }
+        release: { checks: [{ key: 'integrity', label: 'Kontroly serveru', status: 'ok', value: 'v pořádku' }, { key: 'migration', label: 'Nasazené migrace = očekávané', status: 'ok', value: 'v pořádku' },
+          { key: 'reports', label: 'Otevřená hlášení o chybě', status: 'ok', value: '0' }, { key: 'checklist', label: 'Kontrolní seznam před vydáním', status: 'ok', value: '12 z 12' }, rules] }
       };
     }
     var I = function (key, severity, title, detail, evidence, action, page, isNew, state, until) {
       return { key: key, severity: severity, title: title, detail: detail, evidence: evidence, action: action, page: page, fingerprint: 'demo-' + key, state: state || 'open', until: until || null, is_new: !!isNew };
     };
     return {
-      generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false },
+      generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false }, rules_failed: failed,
       items: [
         I('health_build', 'bad', 'Build 41 selhává při synchronizaci častěji než starší buildy', 'Za sedm dní hlásí chybu serveru při synchronizaci 4 ze 74 aktivních instalací, starší buildy je mají třikrát méně.', '4 z 74 instalací · posledních 7 dní', 'Porovnejte build 41 s předchozím a zvažte nouzovou brzdu.', 'kvalita', true),
-        I('purge_failed', 'bad', 'Noční úklid úložiště dvakrát po sobě neproběhl', 'Smazané soubory zůstávají na serveru. Uživatelů se to zatím netýká, ale roste fronta.', 'fronta 214 souborů · poslední úspěch před 2 dny', 'Zkontrolujte poslední běh úlohy úklidu a opravte příčinu.', 'provoz', false),
+        I('cron', 'bad', 'Noční úklid úložiště dvakrát po sobě neproběhl', 'Smazané soubory zůstávají na serveru. Uživatelů se to zatím netýká.', 'poslední úspěch před 2 dny', 'Zkontrolujte poslední běh úlohy úklidu a opravte příčinu.', 'provoz', false),
         I('reports_old', 'watch', 'Pět hlášení od lidí čeká déle než 2 dny', 'Dvě z nich popisují totéž: připomínka léku nepřišla po aktualizaci.', 'nejstarší před 4 dny', 'Projděte hlášení a označte vyřízená.', 'hlaseni', true),
         I('trial_ending', 'watch', 'Zkušební doba končí 9 domácnostem do 7 dnů', 'Zatím žádná z nich nemá předplatné. Tři používají aplikaci denně.', 'minulý měsíc přešlo na Premium 22 %', 'Podívejte se, kdo z nich aplikaci používá, a zvažte připomenutí.', 'penize', false),
-        I('storage_91', 'watch', 'Jedna domácnost je na 91 % úložiště', 'Při zaplnění přestanou chodit fotky a dokumenty všem jejím členům.', '91 ze 100 MB', 'Domácnosti u limitu úložiště pomůžete uklidit nebo limit zvednout.', 'data', false),
-        I('billing_retry', 'watch', 'Platba se nedaří u dvou předplatných', 'Obchod platbu zkouší znovu; předplatné zatím běží.', '2 předplatná', 'Počkejte, jestli obchod platbu stihne obnovit.', 'penize', false, 'snoozed', ahead(20 * HOURS)),
-        I('no_reminder', 'improve', '41 % nových lidí nepřidá do 3 dnů žádnou připomínku', 'Kdo ji přidá první den, zůstává třikrát častěji. Největší odpad je mezi přidáním mazlíčka a prvním lékem nebo krmením.', 'posledních 30 dní, 180 účtů', 'Prohlédněte si cestu nového uživatele a krok, kde lidé odpadají.', 'uzivatele', true),
-        I('card_share', 'improve', 'Sdílení karty odkazem použilo jen 6 domácností', 'Funkce je schovaná v průkazu mazlíčka. Kdo ji našel, použil ji opakovaně.', '6 z 31 s Premium', 'Zvažte, zda funkci ukázat výrazněji.', 'uzivatele', false),
-        I('yearly_plan', 'improve', 'Roční předplatné si vybere 1 z 10', 'Na obrazovce Předplatné je měsíční volba předvybraná.', '3 roční, 28 měsíčních', 'Zvažte, zda roční volbu předvybrat nebo zvýraznit.', 'penize', false)
+        I('storage', 'watch', 'Jedna domácnost je na 91 % úložiště', 'Při zaplnění přestanou chodit fotky a dokumenty všem jejím členům.', '91 ze 100 MB', 'Domácnosti pomůžete uklidit soubory nebo limit zvednout.', 'data', false),
+        I('purge_queue', 'watch', 'Fronta mazání souborů roste', 'Ve frontě čeká 214 souborů, noční úloha je nestíhá.', '214 souborů', 'Počkejte na další noční běh, potom fronta musí klesnout.', 'provoz', false, 'snoozed', ahead(20 * HOURS)),
+        I('refunds', 'watch', 'Za 30 dní byly vráceny dvě platby', 'Obchod vrátil dvě platby, předplatné u nich skončilo.', '2 platby', 'Zkontrolujte, zda vrácení nesouvisí s jednou chybou v aplikaci.', 'penize', false, 'resolved'),
+        I('checklist', 'improve', 'Kontrolní seznam před vydáním je hotový jen z 2 dvanáctin', 'Další build nemá smysl vydávat, dokud zbývá deset bodů.', '2 z 12 bodů', 'Projděte seznam a odškrtněte, co už máte hotové.', 'vydani', true),
+        I('annual_share', 'improve', 'Roční předplatné si vybere 1 z 10', 'Na obrazovce Předplatné je měsíční volba předvybraná.', '3 roční, 28 měsíčních', 'Zvažte, zda roční volbu předvybrat nebo zvýraznit.', 'penize', false)
       ],
       tiles: [T('active_7d', 96, null, 89, null, prevDay), T('new_7d', 14, null, 16, null, prevDay), T('paying', 31, null, 29, null, prevDay), T('mrr', 1783, null, 1620, null, prevDay), T('failures', 4, null, 1, null, prevDay), T('integrity', 24, 25, null, null, null)],
       changes: [
         { at: ago(2 * HOURS), kind: 'report', text: 'nové hlášení: „po aktualizaci nepřišla připomínka“ (build 41)', bad: false },
         { at: ago(5 * HOURS), kind: 'account', text: 'nové předplatné, měsíční', bad: false },
+        { at: ago(8 * HOURS), kind: 'cron', text: 'úlohy: 8 běhů v pořádku', bad: false },
         { at: ago(11 * HOURS), kind: 'integrity', text: 'noční kontrola dat: 24 z 25, beze změny', bad: false },
         { at: ago(13 * HOURS), kind: 'cron', text: 'úklid úložiště selhal, podruhé', bad: true },
         { at: ago(17 * HOURS), kind: 'account', text: '3 nové účty, 2 dokončily úvod', bad: false }
       ],
-      release: { checks: [{ key: 'integrity', label: 'Kontroly správnosti dat', status: 'watch', value: '24 z 25' }, { key: 'migration', label: 'Nasazené migrace = očekávané', status: 'ok', value: 'v pořádku' },
-        { key: 'reports', label: 'Otevřená hlášení se štítkem chyba', status: 'bad', value: '2' }, { key: 'checklist', label: 'Kontrolní seznam před vydáním', status: 'watch', value: '2 z 12' }] }
+      release: { checks: [{ key: 'integrity', label: 'Kontroly serveru', status: 'watch', value: '24 z 25' }, { key: 'migration', label: 'Nasazené migrace = očekávané', status: 'ok', value: 'v pořádku' },
+        { key: 'reports', label: 'Otevřená hlášení o chybě', status: 'bad', value: '2' }, { key: 'checklist', label: 'Kontrolní seznam před vydáním', status: 'watch', value: '2 z 12' }, rules] }
     };
   }
   function demoStatus() {
@@ -1861,7 +1892,7 @@
       });
     }
     var last = series[series.length - 1];
-    return {
+    var data = {
       integrity: demoIntegrity(), attention: demoAttention(), app_status: demoStatus(),
       since: demoOverview.since, reports: demoOverview.reports, health: demoOverview.health, funnel: demoOverview.funnel, payments: demoOverview.payments, security: demoOverview.security, readiness: demoOverview.readiness,
       external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } }, apple: { status: 'ok', downloads: 41, units: 52, missing: 1, days: [] }, revenuecat: { status: 'ok', currency: 'CZK', metrics: [{ id: 'active_trials', name: 'Zkušební doby', value: 9, unit: '' }, { id: 'active_subscriptions', name: 'Předplatná', value: 31, unit: '' }, { id: 'mrr', name: 'MRR', value: 1480, unit: 'Kč' }] }, supabase: { status: 'ok', interval: '7day', rest: 18420, auth: 1310, storage: 940, realtime: 0 }, google: { status: 'unconfigured' }, telemetrydeck: { status: 'unconfigured' } },
@@ -1907,6 +1938,9 @@
         }
       }
     };
+    if (demoPart === 'error') { data.attention = null; data.app_status = null; }
+    if (demoPart === 'missing') { delete data.attention; delete data.app_status; }
+    return data;
   }
 
   /* ---------- Přihlášení (Supabase Auth, heslo + TOTP) a načtení ---------- */
@@ -1977,6 +2011,7 @@
     $('panels').textContent = '';
     pages = null;
     needFocus = true;
+    visitSent = false;
     refreshBadges();
     $('updated').textContent = '';
     $('loaded').textContent = '';
@@ -2031,6 +2066,7 @@
   function load() {
     if (!session) return logout();
     fail($('dash-error'), '');
+    if (!pages) showPage(currentPage, false);
     $('refresh').disabled = true;
     var t0 = performance.now();
     return fresh()
@@ -2048,7 +2084,7 @@
         if (e && e.status) return logout('Přihlášení vypršelo. Přihlaste se znovu.');
         fail($('dash-error'), e instanceof TypeError ? 'Server se nepodařilo zavolat (síť nebo CORS).' : e.message);
       })
-      .then(function () { $('refresh').disabled = false; });
+      .then(function () { $('refresh').disabled = false; if (!pages) $('panels').textContent = ''; });
   }
 
   $('login-form').addEventListener('submit', function (e) {
