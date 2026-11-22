@@ -184,7 +184,7 @@ def main():
             for num, text, sid in toc
         )
         out = (
-            template.replace("{{title}}", html.escape(title))
+            template.replace("{{title}}", html.escape(title.replace(" – ", " · ")))
             .replace("{{description}}", html.escape(page["description"], quote=True))
             .replace("{{path}}", page["out"])
             .replace("{{h1}}", split_title(title))
