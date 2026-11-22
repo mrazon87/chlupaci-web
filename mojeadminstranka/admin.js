@@ -1461,6 +1461,7 @@
     li.appendChild(h('h3', 'it-t', it.title));
     if (it.detail) li.appendChild(h('p', 'it-d', it.detail));
     li.appendChild(h('p', 'ev', ['Podle: ', h('b', null, PAGE_TITLE[it.page] || it.page), it.evidence ? ' · ' + it.evidence : '']));
+    if (typeof it.action === 'string' && it.action.trim()) li.appendChild(h('p', 'it-a', it.action));
     if (it.state === 'snoozed') li.appendChild(h('p', 'snz', 'odloženo do ' + (it.until ? dateTime(it.until) : '–')));
     var acts = h('div', 'acts');
     if (PAGE_TITLE[it.page]) {
@@ -1758,6 +1759,9 @@
   }
 
   /* Ukázka rozšíření: čísla jako v maketě (docs/navrhy/admin-rozsireni-navrh.png), jen vymyšlená. */
+  /* Ukázková data se odvozují od aktuálního času, aby nikdy nebyla v budoucnosti. */
+  function demoDay(daysAgo) { return isoDay(new Date(Date.now() - daysAgo * DAY)); }
+  function demoMonday(weeksAgo) { var d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7) - weeksAgo * 7); return isoDay(d); }
   var demoOverview = (function () {
     var now = Date.now(), ago = function (ms) { return new Date(now - ms).toISOString(); };
     var R = function (id, kind, body, device, os, build, shot, age, resolved) {
@@ -1765,7 +1769,7 @@
     };
     var kinds = function (m) { return Object.keys(m).map(function (k) { return { kind: k, installs: m[k][0], events: m[k][1] }; }); };
     return {
-      since: { users_total: 174, new_users_24h: 8, new_users_avg7: 2.3, active_today: 106, reports_open: 2, reports_total: 14, subs: { paying_delta: 3, mrr_delta_czk: 207, base_day: '2026-11-26' } },
+      since: { users_total: 174, new_users_24h: 8, new_users_avg7: 2.3, active_today: 106, reports_open: 2, reports_total: 14, subs: { paying_delta: 3, mrr_delta_czk: 207, base_day: demoDay(1) } },
       reports: { open: 2, total: 14, has_more: true, items: [
         R('11111111-aaaa-4aaa-8aaa-000000000001', 'bug', 'Po uložení léku se neukázal na Dnes, musel jsem aplikaci zavřít a otevřít znovu. A tady je dlouhý text bez mezer: ' + 'dlouhedlouhedlouhe'.repeat(8), 'iPhone', 26, 41, true, 15 * HOURS, false),
         R('11111111-aaaa-4aaa-8aaa-000000000002', 'idea', 'Chtěla bych připomínku na stříhání drápků.', 'iPhone', 18, 41, false, 19 * HOURS, false),
@@ -1777,11 +1781,11 @@
         { build: '39', version: '1.0.0', active: 12, kinds: kinds({ sync_auth: [1, 1], crash: [1, 1] }) }
       ], older: { active: 9, kinds: kinds({ sync_server: [1, 1] }) } },
       funnel: { total: { installs: 412, signups: 318, verified: 301, invited: 27, pet: 274, done: 198, ret_base: 150, returned: 91 }, weeks: [
-        { week: '2026-10-26', installs: 70, signups: 52, verified: 50, invited: 4, pet: 46, done: 35, ret_base: 35, returned: 22 },
-        { week: '2026-11-02', installs: 91, signups: 74, verified: 70, invited: 6, pet: 64, done: 49, ret_base: 49, returned: 30 },
-        { week: '2026-11-09', installs: 100, signups: 78, verified: 74, invited: 7, pet: 66, done: 46, ret_base: 46, returned: 28 },
-        { week: '2026-11-16', installs: 96, signups: 71, verified: 66, invited: 6, pet: 60, done: 40, ret_base: 20, returned: 11 },
-        { week: '2026-11-23', installs: 55, signups: 43, verified: 41, invited: 4, pet: 38, done: 28, ret_base: 0, returned: 0 }
+        { week: demoMonday(4), installs: 70, signups: 52, verified: 50, invited: 4, pet: 46, done: 35, ret_base: 35, returned: 22 },
+        { week: demoMonday(3), installs: 91, signups: 74, verified: 70, invited: 6, pet: 64, done: 49, ret_base: 49, returned: 30 },
+        { week: demoMonday(2), installs: 100, signups: 78, verified: 74, invited: 7, pet: 66, done: 46, ret_base: 46, returned: 28 },
+        { week: demoMonday(1), installs: 96, signups: 71, verified: 66, invited: 6, pet: 60, done: 40, ret_base: 20, returned: 11 },
+        { week: demoMonday(0), installs: 55, signups: 43, verified: 41, invited: 4, pet: 38, done: 28, ret_base: 0, returned: 0 }
       ] },
       payments: { last_event_at: ago(3 * HOURS), last_update_at: ago(3 * HOURS), sandbox_last_event_at: ago(2 * DAY), sandbox_last_update_at: ago(2 * DAY), paying: 31, production_rows: 44, billing_retry: 2, grace: 1, refunded_30d: 0, revoked_30d: 0, ending_7d: 4, sandbox: 6 },
       security: { invite_exhausted: 0, card_miss: 3, cards_active: 9, admin_logins_7d: 5, repeat_trials_30d: 1 },
@@ -1815,15 +1819,15 @@
     return {
       generated_at: new Date(now).toISOString(), visit: { last: ago(20 * HOURS), first: false },
       items: [
-        I('health_build', 'bad', 'Build 41 selhává při synchronizaci častěji než starší buildy', 'Za sedm dní hlásí chybu serveru při synchronizaci 4 ze 74 aktivních instalací, starší buildy je mají třikrát méně.', '4 z 74 instalací · posledních 7 dní', 'Otevřít rozbor', 'kvalita', true),
-        I('purge_failed', 'bad', 'Noční úklid úložiště dvakrát po sobě neproběhl', 'Smazané soubory zůstávají na serveru. Uživatelů se to zatím netýká, ale roste fronta.', 'fronta 214 souborů · poslední úspěch před 2 dny', 'Otevřít úlohu', 'provoz', false),
-        I('reports_old', 'watch', 'Pět hlášení od lidí čeká déle než 2 dny', 'Dvě z nich popisují totéž: připomínka léku nepřišla po aktualizaci.', 'nejstarší před 4 dny', 'Projít hlášení', 'hlaseni', true),
-        I('trial_ending', 'watch', 'Zkušební doba končí 9 domácnostem do 7 dnů', 'Zatím žádná z nich nemá předplatné. Tři používají aplikaci denně.', 'minulý měsíc přešlo na Premium 22 %', 'Zobrazit přehled', 'penize', false),
-        I('storage_91', 'watch', 'Jedna domácnost je na 91 % úložiště', 'Při zaplnění přestanou chodit fotky a dokumenty všem jejím členům.', '91 ze 100 MB', 'Zobrazit', 'data', false),
-        I('billing_retry', 'watch', 'Platba se nedaří u dvou předplatných', 'Obchod platbu zkouší znovu; předplatné zatím běží.', '2 předplatná', 'Otevřít platby', 'penize', false, 'snoozed', ahead(20 * HOURS)),
-        I('no_reminder', 'improve', '41 % nových lidí nepřidá do 3 dnů žádnou připomínku', 'Kdo ji přidá první den, zůstává třikrát častěji. Největší odpad je mezi přidáním mazlíčka a prvním lékem nebo krmením.', 'posledních 30 dní, 180 účtů', 'Otevřít cestu', 'uzivatele', true),
-        I('card_share', 'improve', 'Sdílení karty odkazem použilo jen 6 domácností', 'Funkce je schovaná v průkazu mazlíčka. Kdo ji našel, použil ji opakovaně.', '6 z 31 s Premium', 'Otevřít', 'uzivatele', false),
-        I('yearly_plan', 'improve', 'Roční předplatné si vybere 1 z 10', 'Na obrazovce Předplatné je měsíční volba předvybraná.', '3 roční, 28 měsíčních', 'Otevřít', 'penize', false)
+        I('health_build', 'bad', 'Build 41 selhává při synchronizaci častěji než starší buildy', 'Za sedm dní hlásí chybu serveru při synchronizaci 4 ze 74 aktivních instalací, starší buildy je mají třikrát méně.', '4 z 74 instalací · posledních 7 dní', 'Porovnejte build 41 s předchozím a zvažte nouzovou brzdu.', 'kvalita', true),
+        I('purge_failed', 'bad', 'Noční úklid úložiště dvakrát po sobě neproběhl', 'Smazané soubory zůstávají na serveru. Uživatelů se to zatím netýká, ale roste fronta.', 'fronta 214 souborů · poslední úspěch před 2 dny', 'Zkontrolujte poslední běh úlohy úklidu a opravte příčinu.', 'provoz', false),
+        I('reports_old', 'watch', 'Pět hlášení od lidí čeká déle než 2 dny', 'Dvě z nich popisují totéž: připomínka léku nepřišla po aktualizaci.', 'nejstarší před 4 dny', 'Projděte hlášení a označte vyřízená.', 'hlaseni', true),
+        I('trial_ending', 'watch', 'Zkušební doba končí 9 domácnostem do 7 dnů', 'Zatím žádná z nich nemá předplatné. Tři používají aplikaci denně.', 'minulý měsíc přešlo na Premium 22 %', 'Podívejte se, kdo z nich aplikaci používá, a zvažte připomenutí.', 'penize', false),
+        I('storage_91', 'watch', 'Jedna domácnost je na 91 % úložiště', 'Při zaplnění přestanou chodit fotky a dokumenty všem jejím členům.', '91 ze 100 MB', 'Domácnosti u limitu úložiště pomůžete uklidit nebo limit zvednout.', 'data', false),
+        I('billing_retry', 'watch', 'Platba se nedaří u dvou předplatných', 'Obchod platbu zkouší znovu; předplatné zatím běží.', '2 předplatná', 'Počkejte, jestli obchod platbu stihne obnovit.', 'penize', false, 'snoozed', ahead(20 * HOURS)),
+        I('no_reminder', 'improve', '41 % nových lidí nepřidá do 3 dnů žádnou připomínku', 'Kdo ji přidá první den, zůstává třikrát častěji. Největší odpad je mezi přidáním mazlíčka a prvním lékem nebo krmením.', 'posledních 30 dní, 180 účtů', 'Prohlédněte si cestu nového uživatele a krok, kde lidé odpadají.', 'uzivatele', true),
+        I('card_share', 'improve', 'Sdílení karty odkazem použilo jen 6 domácností', 'Funkce je schovaná v průkazu mazlíčka. Kdo ji našel, použil ji opakovaně.', '6 z 31 s Premium', 'Zvažte, zda funkci ukázat výrazněji.', 'uzivatele', false),
+        I('yearly_plan', 'improve', 'Roční předplatné si vybere 1 z 10', 'Na obrazovce Předplatné je měsíční volba předvybraná.', '3 roční, 28 měsíčních', 'Zvažte, zda roční volbu předvybrat nebo zvýraznit.', 'penize', false)
       ],
       tiles: [T('active_7d', 96, null, 89, null, prevDay), T('new_7d', 14, null, 16, null, prevDay), T('paying', 31, null, 29, null, prevDay), T('mrr', 1783, null, 1620, null, prevDay), T('failures', 4, null, 1, null, prevDay), T('integrity', 24, 25, null, null, null)],
       changes: [
@@ -1843,7 +1847,7 @@
   }
 
   function demoData() {
-    var series = [], now = new Date(2026, 10, 27);
+    var series = [], now = new Date();
     for (var i = 89; i >= 0; i--) {
       var d = new Date(now); d.setDate(d.getDate() - i);
       var k = 89 - i;
@@ -1863,10 +1867,10 @@
       external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } }, apple: { status: 'ok', downloads: 41, units: 52, missing: 1, days: [] }, revenuecat: { status: 'ok', currency: 'CZK', metrics: [{ id: 'active_trials', name: 'Zkušební doby', value: 9, unit: '' }, { id: 'active_subscriptions', name: 'Předplatná', value: 31, unit: '' }, { id: 'mrr', name: 'MRR', value: 1480, unit: 'Kč' }] }, supabase: { status: 'ok', interval: '7day', rest: 18420, auth: 1310, storage: 940, realtime: 0 }, google: { status: 'unconfigured' }, telemetrydeck: { status: 'unconfigured' } },
       series: series,
       stats: {
-        generated_at: '2026-11-27T09:02:00Z',
+        generated_at: new Date(Date.now() - 25 * 60000).toISOString(),
         users: { total: last.users, new_7d: 14, new_30d: 52, active_7d: last.active_7d, active_30d: last.active_30d, with_premium: 31, in_trial: 9 },
         trial: { trial_days: 30, in_trial: 9, in_trial_paying: 2, ending_3d: 3, ended: 147, converted: 38, paying_now: 31, read_only: 116, conversion_pct: 25.9,
-          cohorts: [{ week: '2026-10-05', signups: 12, converted: 3, in_trial: 0 }, { week: '2026-10-12', signups: 15, converted: 4, in_trial: 0 }, { week: '2026-10-19', signups: 11, converted: 2, in_trial: 0 }, { week: '2026-11-16', signups: 9, converted: 1, in_trial: 7 }] },
+          cohorts: [{ week: demoMonday(6), signups: 12, converted: 3, in_trial: 0 }, { week: demoMonday(5), signups: 15, converted: 4, in_trial: 0 }, { week: demoMonday(4), signups: 11, converted: 2, in_trial: 0 }, { week: demoMonday(1), signups: 9, converted: 1, in_trial: 7 }] },
         devices: {
           total: 168, active_30d: 121,
           platform: [{ key: 'ios', active: 121, total: 168 }],
@@ -1882,7 +1886,7 @@
         },
         records: { medications: 214, preventions: 388, weights: 1260, expenses: 742, health_issues: 96, documents: 58, diary_notes: 530, vaccinations: 301 },
         revenue: {
-          estimate: true, paying: 31, trial: 9, not_renewing: 4, mrr_czk: 1783, arr_czk: 21391, mrr_prev_czk: 1085, mrr_prev_day: '2026-10-28',
+          estimate: true, paying: 31, trial: 9, not_renewing: 4, mrr_czk: 1783, arr_czk: 21391, mrr_prev_czk: 1085, mrr_prev_day: demoDay(30),
           by_product: [
             { plan: 'individual', period: 'monthly', price_czk: 69, active: 18, trial: 5, monthly_czk: 1242 },
             { plan: 'individual', period: 'yearly', price_czk: 499, active: 13, trial: 4, monthly_czk: 540.58 },
@@ -1898,8 +1902,8 @@
           }
         },
         state: {
-          server_time: '2026-11-27T09:02:00Z', trash_rows: 63, storage_purge_queue: 2,
-          cron: [{ job: 'admin-snapshot', last_run: '2026-11-27T03:43:00Z', status: 'succeeded' }, { job: 'purge-trash', last_run: '2026-11-27T03:17:00Z', status: 'succeeded' }]
+          server_time: new Date(Date.now() - 25 * 60000).toISOString(), trash_rows: 63, storage_purge_queue: 2,
+          cron: [{ job: 'admin-snapshot', last_run: new Date(Date.now() - 9 * HOURS).toISOString(), status: 'succeeded' }, { job: 'purge-trash', last_run: new Date(Date.now() - 9.5 * HOURS).toISOString(), status: 'succeeded' }]
         }
       }
     };

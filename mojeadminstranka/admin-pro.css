@@ -209,3 +209,5 @@
 .admin .rep.done .rep-t,.admin .rep.done .rep-m{opacity:1}
 .admin .rep.done .rep-t{color:var(--muted)}
 .admin .chk[aria-pressed="true"] .box{background:var(--ok-ink)}
+
+.it-a{margin-top:5px;font-size:12px;line-height:17px;font-style:italic;color:var(--muted)}
