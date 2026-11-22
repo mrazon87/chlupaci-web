@@ -701,19 +701,264 @@
     ]);
   }
 
+  /* ---------- Správnost dat (#1076) ----------
+     Server vrací jen počty a stavy (`integrity`: { checks, history } nebo null, dokud migrace není nasazená). Názvy a rady „Jak opravit“ jsou tady podle id kontroly;
+     neznámé id (server je novější než stránka) se ukáže pod svým id bez rady. Žádná data ze serveru se nevkládají jinak než přes textContent. */
+  var IG_GROUPS = [
+    ['domacnosti', 'Domácnosti a členství', 'users'],
+    ['soubory', 'Soubory a úložiště', 'db'],
+    ['vazby', 'Vazby mezi záznamy', 'list'],
+    ['pristup', 'Předplatné a přístup', 'shield']
+  ];
+  var IG = {
+    hh_bez_clenu: ['Domácnost bez členů',
+      'Vznikne, když se účet smaže mimo aplikaci (například v dashboardu Supabase) a domácnost po něm zůstane.',
+      'Nikoho neohrožuje: nikdo se k ní nedostane, jen zabírá místo.',
+      'Smazat prázdnou domácnost. Od migrace no_empty_household to server dělá sám při každém dalším smazání člena; kontrola tu zůstává jako pojistka.'],
+    hh_bez_vlastnika: ['Domácnost bez právě jednoho vlastníka',
+      'Vlastník zmizel (smazaný účet mimo aplikaci) nebo vznikli dva vlastníci.',
+      'Členové domácnosti ji nemohou spravovat (zvát, odebírat členy), data jim ale zůstávají.',
+      'Určit nového vlastníka u nejstaršího člena. Od migrace no_empty_household to server dělá sám; zbylé případy opravit ručně v databázi.'],
+    uziv_vice_hh: ['Uživatel ve více domácnostech',
+      'Aplikace i server počítají s jednou domácností na člověka; dvě vzniknou jen obejitím pravidel nebo chybou při přijetí pozvánky.',
+      'Může vidět data obou domácností. Pro ostatní členy to riziko není větší než běžné členství.',
+      'Rozhodnout, ve které domácnosti uživatel zůstane, z ostatních ho odebrat a doplnit jedinečnost (postup v docs/postupy.md, Zpevnění serveru, bod 9).'],
+    hh_nad_5: ['Domácnost nad 5 členů',
+      'Limit 5 členů hlídají pozvánky; víc členů vznikne jen ruční úpravou databáze.',
+      'Nikoho neohrožuje, jen se rozcházejí pravidla s tím, co slibuje aplikace.',
+      'Odebrat nadbytečné členy nebo limit vědomě změnit.'],
+    ucty_bez_clenstvi: ['Účet bez domácnosti',
+      'Nový účet nemá domácnost, dokud se aplikace poprvé neotevře; stejně tak účet správce nebo účet po smazané domácnosti.',
+      'Nikoho neohrožuje. Je to jen informace, nepočítá se mezi chyby.',
+      'Nic, pokud číslo zůstává malé. Trvale rostoucí číslo znamená, že se lidé registrují, ale aplikaci neotevřou.'],
+    bkp_soubory: ['Staré zálohy z testovací doby',
+      'Do složky záloh se od 2. 11. 2026 nic nezapisuje; zůstaly soubory z doby, kdy se zálohovalo na server.',
+      'Soubory může číst jejich autor i po odchodu z domácnosti, proto je dobré je uklidit.',
+      'Smazat soubory ručně podle docs/postupy.md (Zpevnění serveru, bod 10) a ověřit, že číslo spadne na 0.'],
+    hh_sirotci: ['Soubory domácností, které už neexistují',
+      'Domácnost se smazala, ale její soubory nejsou ve frontě mazání (úklid selhal nebo se přeskočil).',
+      'Nikoho neohrožuje, soubory ale zbytečně zabírají místo a patřily lidem, kteří o ně přišli.',
+      'Zařadit soubory do fronty mazání nebo je smazat ručně; příčinu hledat v noční úloze storage-purge.'],
+    radek_bez_souboru: ['Záznam ukazuje na soubor, který chybí',
+      'Fotka nebo příloha se nenahrála (telefon byl bez sítě déle než den) nebo se soubor smazal bez záznamu.',
+      'Nikoho neohrožuje. Uživatel v aplikaci uvidí prázdné místo místo fotky.',
+      'Počkat na další synchronizaci telefonu. Když číslo neklesá, dohledat řádek dotazem v databázi a fotku vyřadit.'],
+    soubor_bez_radku: ['Soubor bez záznamu (starší než 7 dní)',
+      'Fotka se nahradila novou, ale stará zůstala, nebo se řádek smazal a soubor zůstal.',
+      'Nikoho neohrožuje, jen zabírá místo a počítá se do limitu domácnosti.',
+      'Smazat zbylé soubory ručně (nejdřív ověřit dotazem, že k nim opravdu není záznam). Opakuje-li se to, hledat příčinu v aplikaci.'],
+    fronta_stara: ['Fronta úklidu čeká déle než 24 hodin',
+      'Noční úloha storage-purge nedoběhla nebo soubor nejde smazat.',
+      'Nikoho neohrožuje; smazané soubory ale zůstávají déle, než mají.',
+      'Zkontrolovat poslední běh úlohy storage-purge a funkci storage-purge v dashboardu; po opravě se fronta vyprázdní sama.'],
+    nad_kvotou: ['Domácnost nad limitem 300 MB',
+      'Soubory domácnosti přesáhly 300 MB (limit hlídá nahrávání; víc vznikne starými soubory nebo souběhem).',
+      'Nikoho neohrožuje. Domácnost nové soubory nenahraje, dokud nějaké nesmaže.',
+      'Nic, nebo domácnosti pomoci s úklidem. Opakuje-li se to u víc domácností, rozhodnout o změně limitu.'],
+    nazvy_mimo_vzor: ['Název souboru v neočekávaném tvaru',
+      'Starší záznam má cestu souboru, která nesedí na dnešní pravidlo (omezení platí jen pro nové záznamy).',
+      'Cizí nebo upravená cesta by mohla ukazovat mimo domácnost, proto je to chyba, ne varování.',
+      'Opravit nebo smazat záznam, pak potvrdit omezení (docs/postupy.md, Zpevnění serveru, body 7 a 8).'],
+    cizi_rodic: ['Záznam navázaný na data jiné domácnosti',
+      'Záznam (například očkování) ukazuje na mazlíčka z jiné domácnosti. Server to běžně odmítne, vznikne jen obejitím pravidel.',
+      'Ano: mohl by odhalit nebo propojit data dvou domácností.',
+      'Záznam smazat nebo přesunout, dohledat, jak vznikl (docs/analyzy), a před dalším nasazením ověřit hlídací pravidla.'],
+    zivy_pod_smazanym: ['Živý záznam pod smazaným mazlíčkem',
+      'Smazání mazlíčka smaže i jeho záznamy; živý záznam vznikne pozdním zápisem ze starého zařízení nebo vrácením jednoho záznamu z Koše.',
+      'Nikoho neohrožuje. Záznam není nikde vidět, protože mazlíček je v Koši.',
+      'Smazat záznam, nebo mazlíčka vrátit z Koše, pokud o něj uživatel stojí.'],
+    kos_stary: ['Koš starší než 32 dní',
+      'Koš se vysype po 30 dnech nočním úklidem; starší řádek znamená, že úklid některou tabulku přeskočil.',
+      'Uživatelům jejich smazaná data zůstávají déle, než slibují zásady ochrany údajů.',
+      'Zkontrolovat poslední běh úlohy purge-trash a varování v logu databáze, opravit příčinu a úklid spustit znovu.'],
+    pozvanky_prosle: ['Prošlé pozvánky neuklizené',
+      'Pozvánky maže až další vytvoření pozvánky, takže prošlá pozvánka běžně chvíli leží.',
+      'Nikoho neohrožuje, kód je po vypršení nepoužitelný. Je to jen informace.',
+      'Nic. Uklidí se při dalším zvaní.'],
+    karty_prosle: ['Prošlé odkazy na kartu neuklizené',
+      'Hodinová úloha card-share-cleanup maže prošlé odkazy; leží-li déle než pár hodin, úloha nedoběhla.',
+      'Prošlý odkaz už nic neotevře, ale jeho snímek dat zbytečně leží v databázi.',
+      'Zkontrolovat poslední běh úlohy card-share-cleanup.'],
+    pes_nad_50_dok: ['Mazlíček nad 50 dokumentů',
+      'Limit 50 dokumentů platí jen pro nově přidané; starší mazlíčci ho mohli mít překročený.',
+      'Nikoho neohrožuje, jen zabírá místo.',
+      'Nic: nic se nemaže. Další dokument ale uživatel nepřidá, dokud některý nesmaže.'],
+    predplatne_bez_uctu: ['Předplatné bez účtu',
+      'Předplatné patří účtu, který už neexistuje. Cizí klíč v databázi to normálně znemožňuje.',
+      'Nikoho neohrožuje, ale hrozí, že platící člověk přišel o Premium.',
+      'Zjistit v RevenueCat, komu předplatné patří, a zkontrolovat, zda se nezměnil cizí klíč v databázi.'],
+    predplatne_prosle: ['Aktivní předplatné s prošlým datem',
+      'Konec předplatného uplynul před víc než třemi dny a stav se nezměnil na „vypršelo“ (chybějící zpráva z RevenueCat).',
+      'Uživatel může mít Premium zdarma, nebo naopak o něj přijít, když se stav opraví zpětně.',
+      'Zkontrolovat zprávy RevenueCat v logu funkce revenuecat-webhook a stav předplatného v RevenueCat.'],
+    tabulky_bez_rls: ['Tabulka bez pravidel přístupu',
+      'Nová tabulka vznikla bez zapnutých pravidel přístupu k řádkům.',
+      'Ano, vážné: kdo má přístup k rozhraní databáze, může číst a měnit celou tabulku.',
+      'Okamžitě zapnout pravidla (alter table … enable row level security) a doplnit politiky.'],
+    anon_funkce: ['Funkce volatelná bez přihlášení navíc',
+      'Nová funkce dostala výchozí právo pro nepřihlášené.',
+      'Ano: kdokoli bez účtu ji může zavolat. Závažnost závisí na tom, co funkce dělá.',
+      'Odebrat právo (revoke execute … from public, anon) a v migraci udělat totéž natrvalo.'],
+    verejny_bucket: ['Veřejné úložiště',
+      'Složka úložiště je nastavená jako veřejná (soubory jde otevřít bez přihlášení).',
+      'Ano: fotky a dokumenty by byly dostupné komukoli, kdo zná adresu.',
+      'Přepnout složku na soukromou v dashboardu Supabase (Storage).'],
+    siroka_politika: ['Příliš široké pravidlo přístupu',
+      'Pravidlo přístupu povoluje vše („true“) nebo je určené pro nepřihlášené.',
+      'Ano: data by mohl číst nebo měnit kdokoli.',
+      'Pravidlo opravit nebo smazat a ověřit zkouškou izolace (rls_isolation_test.sql).'],
+    cron_ulohy: ['Noční úlohy: poslední běh v pořádku',
+      'Některá plánovaná úloha (úklid Koše, souborů, pozvánek, snímek přehledu) naposledy selhala.',
+      'Nikoho přímo neohrožuje, ale úklid neběží, takže se hromadí data.',
+      'V dashboardu Supabase (Integrations, Cron) otevřít úlohu, přečíst chybu posledního běhu a opravit příčinu.']
+  };
+
+  function plural(n, one, few, many) { return n === 1 ? one : n >= 2 && n <= 4 ? few : many; }
+  function dayShort(iso) { var d = new Date(iso + 'T00:00:00'); return isNaN(d) ? '' : d.getDate() + '. ' + (d.getMonth() + 1) + '.'; }
+  function isoDay(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function showVal(v) { return typeof v === 'string' ? v : num(v) === null ? '–' : int(v); }
+
+  /* Souhrn: počítá se jen chyba a varování; informace a „bez údaje“ (ok null) se do celku nepočítají. */
+  function igSummary(checks) {
+    var s = { total: 0, ok: 0, bad: 0, warn: 0 };
+    checks.forEach(function (c) {
+      if (c.level === 'informace' || c.ok === null) return;
+      s.total++;
+      if (c.ok) s.ok++;
+      else if (c.level === 'chyba') s.bad++;
+      else s.warn++;
+    });
+    s.level = s.bad ? 'bad' : s.warn ? 'warn' : 'ok';
+    return s;
+  }
+
+  function igRow(c, since) {
+    var info = c.level === 'informace', failed = c.ok === false;
+    var state = c.ok === null ? 'off' : info ? 'off' : failed ? (c.level === 'chyba' ? 'bad' : 'warn') : 'ok';
+    var def = IG[c.id], name = def ? def[0] : c.id;
+    var words = { ok: 'v pořádku', warn: 'varování', bad: 'chyba', off: info ? 'informace' : 'bez údaje' };
+    var detail = null;
+    if (c.ok === null) detail = 'nelze zjistit';
+    else if (failed && !info) detail = 'selhává od ' + (since ? dayShort(since) : 'dnes') + ' · má být ' + showVal(c.expected);
+    else if (info) detail = 'informace, nehlásí se';
+    var li = h('li', 'srow irow ' + state, [
+      h('i', 'sdot ' + (state === 'off' ? '' : state) + (info ? ' info' : '')),
+      h('span', 'sr-only', words[state] + ': '),
+      h('span', 'name', [name, detail ? h('small', 'idetail', detail) : null]),
+      h('span', 'detail ival', showVal(c.value))
+    ]);
+    if (def && ((failed && c.ok === false) || (info && num(c.value) > 0))) {
+      li.appendChild(h('details', 'how', [
+        h('summary', null, 'Jak opravit'),
+        h('dl', null, [
+          h('dt', null, 'Proč vzniká'), h('dd', null, def[1]),
+          h('dt', null, 'Ohrožuje někoho?'), h('dd', null, def[2]),
+          h('dt', null, 'Co s tím'), h('dd', null, def[3])
+        ])
+      ]));
+    }
+    return li;
+  }
+
+  function igStrip(history, summary) {
+    var byDay = {}, now = new Date(), i, cells = [];
+    (history.days || []).forEach(function (d) { byDay[d.day] = d; });
+    var bad = 0, warn = 0, none = 0;
+    for (i = 29; i >= 0; i--) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i), key = isoDay(d), r = byDay[key];
+      var cls = !r ? 'n' : r.failed > 0 ? 'b' : r.warned > 0 ? 'w' : 'g';
+      if (cls === 'b') bad++; else if (cls === 'w') warn++; else if (cls === 'n') none++;
+      cells.push(h('i', cls));
+    }
+    var el = h('div', 'istrip', cells);
+    el.setAttribute('role', 'img');
+    el.setAttribute('aria-label', 'Posledních 30 dní: ' + bad + ' ' + plural(bad, 'den s chybou', 'dny s chybou', 'dní s chybou') + ', ' + warn + ' ' +
+      plural(warn, 'den s varováním', 'dny s varováním', 'dní s varováním') + ', ' + none + ' ' + plural(none, 'den bez záznamu', 'dny bez záznamu', 'dní bez záznamu') + '.');
+    return el;
+  }
+
+  function integrityCards(ig) {
+    if (!ig || !Array.isArray(ig.checks) || !ig.checks.length) {
+      return [card({ id: 'sec-spravnost', cls: 'd12 m12 slim', icon: 'shield', title: 'Správnost dat' }, [
+        note('Kontrola správnosti dat ještě není na serveru zapnutá.')
+      ])];
+    }
+    var checks = ig.checks, hist = ig.history || { days: [], failing: [] }, s = igSummary(checks), since = {};
+    (hist.failing || []).forEach(function (f) { since[f.id] = f.since; });
+    var verdict = s.bad || s.warn
+      ? [s.bad ? s.bad + ' ' + plural(s.bad, 'chyba', 'chyby', 'chyb') : null, s.warn ? s.warn + ' ' + plural(s.warn, 'varování', 'varování', 'varování') : null].filter(Boolean).join(' · ')
+      : 'Vše v pořádku';
+    var sentence = s.bad ? 'Aspoň jedna chyba čeká na opravu.' : s.warn ? 'Jen varování, nic nepospíchá.' : 'Všechno sedí, není co opravovat.';
+    var btn = h('button', 'btn-dark', [h('span', null, 'Zkontrolovat teď'), h('span', 'nest', icon('refresh'))]);
+    btn.type = 'button';
+    btn.addEventListener('click', function () { if (!demo) $('refresh').click(); });
+    var main = card({ id: 'sec-spravnost', cls: 'd4 m12', icon: 'shield', title: 'Správnost dat' }, [
+      h('p', 'igbig', [h('b', null, String(s.ok)), h('small', null, ' z ' + s.total + ' ' + plural(s.total, 'kontroly', 'kontrol', 'kontrol') + ' v pořádku')]),
+      h('span', 'verdict ' + s.level, verdict),
+      note(sentence),
+      h('p', 'sub', ['Naposledy vše v pořádku: ', h('strong', null, hist.last_all_ok ? dayShort(hist.last_all_ok) : 'zatím není záznam')]),
+      igStrip(hist, s),
+      h('div', 'istrip-l', [h('span', null, 'před 30 dny'), h('span', null, 'dnes')]),
+      btn,
+      note('Server kontroluje každou noc. Do přehledu jdou jen počty, žádná data uživatelů.')
+    ]);
+    var cards = [main];
+    IG_GROUPS.forEach(function (g) {
+      var rows = checks.filter(function (c) { return c.group === g[0]; }).map(function (c) { return igRow(c, since[c.id]); });
+      cards.push(card({ cls: (g[0] === 'vazby' || g[0] === 'pristup' ? 'd6' : 'd4') + ' m6', icon: g[2], title: g[1] }, [h('ul', 'states', rows)]));
+    });
+    return cards;
+  }
+
+  /* Tečka u odkazu v postranní nabídce: červená = aspoň jedna chyba, jantarová = jen varování, žádná = vše v pořádku; text pro čtečky je vždy. */
+  function igNav(ig) {
+    var dot = $('integrity-dot'), txt = $('integrity-dot-text');
+    if (!dot || !txt) return;
+    var s = ig && Array.isArray(ig.checks) && ig.checks.length ? igSummary(ig.checks) : null;
+    dot.className = 'navdot' + (s && s.level !== 'ok' ? ' ' + s.level : '');
+    dot.hidden = !s || s.level === 'ok';
+    txt.textContent = !s ? ' (kontrola není zapnutá)' : s.level === 'bad' ? ' (chyba)' : s.level === 'warn' ? ' (varování)' : ' (vše v pořádku)';
+  }
+
   /* ---------- Vykreslení ---------- */
 
   function render(data, ms) {
     var s = data.stats || {}, series = data.series || [];
     var box = $('panels');
     box.textContent = '';
-    [heroCard(s, series), growthCard(s, series), petsCard(s), revenueCard(s, series), trialCard(s), devicesCard(s), capacityCard(s, series), externalCard(data.external), breedsCard(s), recordsCard(s), householdsCard(s), stateCard(s, ms), supportCard()]
+    [heroCard(s, series), growthCard(s, series), petsCard(s), revenueCard(s, series), trialCard(s), devicesCard(s), capacityCard(s, series), externalCard(data.external), breedsCard(s), recordsCard(s), householdsCard(s), stateCard(s, ms)].concat(integrityCards(data.integrity), [supportCard()])
       .forEach(function (p) { box.appendChild(p); });
+    igNav(data.integrity);
     $('updated').textContent = 'Stav dat k ' + dateTime(s.generated_at);
     $('loaded').textContent = 'Načteno v ' + new Date().toLocaleTimeString('cs-CZ', { hour: '2-digit', minute: '2-digit' });
   }
 
   /* ---------- Ukázková data (?demo=1) ---------- */
+
+  /* Ukázka správnosti dat: jedna chyba (domácnost bez členů od včerejška) a jedno varování (staré zálohy), jako v maketě. */
+  function demoIntegrity() {
+    var C = function (id, group, level, value, expected) { return { id: id, group: group, level: level, value: value, expected: expected, ok: level === 'informace' ? value === 0 : value === expected }; };
+    var checks = [
+      C('hh_bez_clenu', 'domacnosti', 'chyba', 1, 0), C('hh_bez_vlastnika', 'domacnosti', 'chyba', 0, 0), C('uziv_vice_hh', 'domacnosti', 'chyba', 0, 0),
+      C('hh_nad_5', 'domacnosti', 'chyba', 0, 0), C('ucty_bez_clenstvi', 'domacnosti', 'informace', 2, 0),
+      C('bkp_soubory', 'soubory', 'varovani', 4, 0), C('hh_sirotci', 'soubory', 'chyba', 0, 0), C('radek_bez_souboru', 'soubory', 'varovani', 0, 0),
+      C('soubor_bez_radku', 'soubory', 'varovani', 0, 0), C('fronta_stara', 'soubory', 'varovani', 0, 0), C('nad_kvotou', 'soubory', 'varovani', 0, 0), C('nazvy_mimo_vzor', 'soubory', 'chyba', 0, 0),
+      C('cizi_rodic', 'vazby', 'chyba', 0, 0), C('zivy_pod_smazanym', 'vazby', 'varovani', 0, 0), C('kos_stary', 'vazby', 'chyba', 0, 0),
+      C('pozvanky_prosle', 'vazby', 'informace', 0, 0), C('karty_prosle', 'vazby', 'varovani', 0, 0), C('pes_nad_50_dok', 'vazby', 'varovani', 0, 0),
+      C('predplatne_bez_uctu', 'pristup', 'chyba', 0, 0), C('predplatne_prosle', 'pristup', 'varovani', 0, 0), C('tabulky_bez_rls', 'pristup', 'chyba', 0, 0),
+      C('anon_funkce', 'pristup', 'chyba', 0, 0), C('verejny_bucket', 'pristup', 'chyba', 0, 0), C('siroka_politika', 'pristup', 'chyba', 0, 0),
+      C('cron_ulohy', 'pristup', 'chyba', '7 z 7', '7 z 7')
+    ];
+    var days = [], now = new Date(), i;
+    for (i = 29; i >= 0; i--) {
+      var d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+      days.push({ day: isoDay(d), failed: i <= 1 ? 1 : 0, warned: i === 18 || i <= 1 ? 1 : 0 });
+    }
+    var y = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2);
+    var from = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+    return { checks: checks, history: { days: days, last_all_ok: isoDay(y), failing: [
+      { id: 'hh_bez_clenu', since: isoDay(from), last_ok: isoDay(y) }, { id: 'bkp_soubory', since: isoDay(from), last_ok: isoDay(y) }] } };
+  }
 
   function demoData() {
     var series = [], now = new Date(2026, 10, 27);
@@ -731,6 +976,7 @@
     }
     var last = series[series.length - 1];
     return {
+      integrity: demoIntegrity(),
       external: { facebook: { status: 'ok', name: 'Moji chlupáči', usage: { call_count: 3, total_cputime: 1.5, total_time: 2 } }, apple: { status: 'ok', downloads: 41, units: 52, missing: 1, days: [] }, revenuecat: { status: 'ok', currency: 'CZK', metrics: [{ id: 'active_trials', name: 'Zkušební doby', value: 9, unit: '' }, { id: 'active_subscriptions', name: 'Předplatná', value: 31, unit: '' }, { id: 'mrr', name: 'MRR', value: 1480, unit: 'Kč' }] }, supabase: { status: 'ok', interval: '7day', rest: 18420, auth: 1310, storage: 940, realtime: 0 }, google: { status: 'unconfigured' }, telemetrydeck: { status: 'unconfigured' } },
       series: series,
       stats: {
